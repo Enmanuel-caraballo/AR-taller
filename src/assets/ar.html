@@ -44,14 +44,15 @@
     <!-- Marcador KANJI con esfera --> <a-marker id="marker-kanji" preset="kanji"> <a-sphere position="0 0.5 0"
         radius="0.5" color="#EF2D5E"
         animation="property: scale; to: 1.5 1.5 1.5; dir: alternate; dur: 1500; loop: true"> </a-sphere> </a-marker>
-    <a-entity camera></a-entity> </a-scene>
-  <!--Mi marcador --> <a-marker type="pattern" url="pattern-iconGameshop.patt"> <a-box
-      position="0 0.5 0" material="color: #4CC3D9;" rotation="0 45 0"
-      animation="property: rotation; to: 0 405 0; loop: true; dur: 10000; easing: linear"> </a-box> </a-marker>
+    <!--Mi marcador --> <a-marker type="pattern" url="targets/target1/pattern-iconGameshop.patt">
+      <a-entity obj-model="obj: url(3dModels/naveEspacial/Intergalactic_Spaceships_Version_2.obj); mtl: url(3dModels/naveEspacial/Intergalactic_Spaceships_Version_2.mtl)"></a-entity>
+    </a-marker>
+    <a-entity camera></a-entity>
+  </a-scene>
   <script>
     window.addEventListener('load', function () { setTimeout(() => { const loader = document.querySelector('.arjs-loader'); if (loader) loader.style.display = 'none'; }, 2000); });
     const urlParams = new URLSearchParams(window.location.search); const selectedMarker = urlParams.get('marker') || 'hiro';
-    // Mostrar solo el marcador seleccionado document.addEventListener('DOMContentLoaded', function() { const markers = ['hiro', 'kanji']; markers.forEach(marker => { const element = document.getElementById('marker-' + marker); if (element && marker !== selectedMarker) { element.remove(); } }); console.log('Marcador activo:', selectedMarker); }); </script>
+     </script>
 </body>
 
 </html>
