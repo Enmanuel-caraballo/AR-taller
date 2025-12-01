@@ -7,13 +7,13 @@ const routes: Routes = [
     loadChildren: () => import('./pages/render-page/render-page.module').then( m => m.RenderPagePageModule)
   },
   {
-    path: '**',
-    redirectTo: 'render-page',
-    pathMatch: 'full'
-  },
-  {
     path: 'home',
     loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'home',
+    pathMatch: 'full'
   },
 ];
 
