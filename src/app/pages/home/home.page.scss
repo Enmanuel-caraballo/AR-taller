@@ -103,6 +103,14 @@
  padding-left: 1px;
 }
 
+.cards-container{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: 95%;
+  
+}
+
 // .chips-container{
 //   mask-image: linear-gradient(900deg, transparent, white 20%, white 80%, transparent);
 //   overflow: hidden;

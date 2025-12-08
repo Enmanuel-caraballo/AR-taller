@@ -1,0 +1,73 @@
+// .carta{
+//   width: 90%;
+//   position: relative;
+//   //  --backgroun: transparent;
+//   // background: transparent;
+//   // box-shadow: none;
+//   // border: 5px double #ffffff;
+// }
+
+// .img{
+//   filter: drop-shadow(
+//     0 0 10px rgba(0,0,0, .8)
+//   );
+// }
+
+// .carta::before{
+//   content: '';
+//   background-image: linear-gradient(180deg, #ff00c8, cyan);
+//   animation: animate 3s linear infinite;
+//   transition: all .3s linear;
+// }
+
+// .carta::after{
+//   inset: 5px;
+//   background: #141414;
+//   border-radius: 15px;
+//   position: absolute;
+// }
+
+// @keyframes animate {
+//   from{
+//     transform: rotate(0deg);
+//   }
+
+//   to{
+//     transform: rotate(360deg);
+//   }
+// }
+
+
+.carta {
+  width: 90%;
+  position: relative;
+  border-radius: 15px;
+}
+
+.carta::before,
+.carta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 15px;
+  z-index: -1;
+}
+
+.carta::before {
+  background-image: linear-gradient(180deg, #bda0b7, rgb(37, 49, 49));
+  animation: animate 10s linear infinite;
+}
+
+.carta::after {
+  inset: 5px;
+  background: #141414;
+}
+
+@keyframes animate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

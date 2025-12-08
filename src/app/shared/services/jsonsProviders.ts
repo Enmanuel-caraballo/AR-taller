@@ -16,4 +16,10 @@ export class Categories {
   getMessages(): Observable<any>{
     return this.http.get('/assets/JSONS/messages.json')
   }
+
+  getCartContent(): Observable<any>{
+    return this.http.get('/assets/JSONS/cardItems.json')
+  }
+
+  
 }
