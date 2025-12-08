@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Categories } from '../../services/categories';
+import { Categories } from '../../services/jsonsProviders';
 import { ICategory } from 'src/app/interfaces/category.interface';
 
 @Component({

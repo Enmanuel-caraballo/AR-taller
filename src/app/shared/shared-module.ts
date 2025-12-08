@@ -9,9 +9,10 @@ import { ChipComponent } from './components/chip/chip.component';
 import {
   register as registerSwiperElement
 } from 'swiper/element/bundle';
+import { TextsComponent } from './components/texts/texts.component';
 registerSwiperElement();
 
-const components = [TabComponentComponent, HeaderComponent, ChipComponent];
+const components = [TabComponentComponent, HeaderComponent, ChipComponent, TextsComponent];
 const modules = [IonicModule, RouterModule];
 
 @NgModule({

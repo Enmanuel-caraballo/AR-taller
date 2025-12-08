@@ -1,0 +1,15 @@
+<swiper-container class="s"
+slides-per-view="1"
+loop="true"
+centered-slides="false"
+autoplay='
+{
+  "delay": 4000,
+  "disableOnInteraction": false
+}'
+>
+  <swiper-slide
+  class="label-container" *ngFor="let item of messages">
+<ion-text class="label-h">{{item.message}}</ion-text>
+ </swiper-slide>
+</swiper-container>

@@ -10,7 +10,10 @@ export class Categories {
   constructor(private readonly http: HttpClient){}
 
   getCategories(): Observable<any>{
-
     return this.http.get('/assets/JSONS/categories.json');
+  }
+
+  getMessages(): Observable<any>{
+    return this.http.get('/assets/JSONS/messages.json')
   }
 }
