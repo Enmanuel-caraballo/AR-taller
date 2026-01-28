@@ -1,0 +1,24 @@
+:host {
+  display: block;
+  height: 90%;
+
+}
+
+full-calendar {
+
+  width: 90%;
+  justify-self: center;
+  margin-right: 20px;
+}
+
+// .fc-theme-standard .fc-scrollgrid{
+//   border-radius: 12px !important;
+// }
+/* Contenedor principal del calendario */
+.fc {
+   height: 455px;
+  border-radius: 12px;
+  overflow: hidden;
+  width: 90%;
+  padding-top: 5px;
+}

@@ -18,30 +18,89 @@
 // }
 
 
+// .label-container {
+//   font-size: 30px;
+//   font-weight: 500;
+//   padding: 20px;
+//   opacity: 0.7;
+
+//   opacity: 0.7;
+//   text-indent: -40px;
+//   padding-left: 50px;
+
+//   display: flex;
+//   justify-content: flex-start; /* alineado izquierda */
+//   align-items: center;
+
+//   width: 100%;
+// }
+
+// .label-h {
+//   text-align: left;   /* refuerzo del alineado */
+//   width: 100%;
+// }
+
+// .s {
+//   max-width: 400px;
+//   height: 70px;
+// }
+
+// .card{
+//   width: 100% !important;
+//   justify-self: center;
+//   max-height: 70px;
+
+// }
+
+/* Contenedor del slide */
 .label-container {
-  font-size: 30px;
-  font-weight: 500;
-  padding: 20px;
-  opacity: 0.7;
-
-  opacity: 0.7;
-  text-indent: -40px;
-  padding-left: 50px;
-
+  width: 100%;
+  padding: 12px 16px;
   display: flex;
-  justify-content: flex-start; /* alineado izquierda */
-  align-items: center;
-
-  width: 100%;
+  align-items: flex-start;   /* arriba */
+  justify-content: stretch;
+  opacity: 0.9;
 }
 
-.label-h {
-  text-align: left;   /* refuerzo del alineado */
-  width: 100%;
-}
-
+/* Swiper container */
 .s {
-  max-width: 400px;
+ max-width: 400px;
+  height: auto;              /* CLAVE */
 }
 
+/* Permitir que el contenido crezca */
+swiper-container {
+  width: 100%;
+  overflow: visible;
+}
 
+swiper-slide {
+  height: auto;
+  display: flex;
+}
+
+/* Card */
+.card {
+  width: 100%;
+  margin: 0;
+  border-radius: 12px;
+  margin-right: 20px;
+}
+
+/* Card header */
+.card ion-card-header {
+  padding: 12px 16px;
+}
+
+/* Título */
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Subtítulo */
+.subtitle {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}

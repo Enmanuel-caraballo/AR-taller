@@ -11,9 +11,10 @@ import {
 } from 'swiper/element/bundle';
 import { TextsComponent } from './components/texts/texts.component';
 import { CardComponent } from './components/card/card.component';
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
 registerSwiperElement();
 
-const components = [TabComponentComponent, HeaderComponent, ChipComponent, TextsComponent, CardComponent];
+const components = [TabComponentComponent, HeaderComponent, ChipComponent, TextsComponent, CardComponent, SideMenuComponent];
 const modules = [IonicModule, RouterModule];
 
 @NgModule({

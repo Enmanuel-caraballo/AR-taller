@@ -17,9 +17,13 @@ export class Categories {
     return this.http.get('/assets/JSONS/messages.json')
   }
 
+  getEvent(): Observable<any>{
+    return this.http.get('/assets/JSONS/events.json')
+  }
+
   getCartContent(): Observable<any>{
     return this.http.get('/assets/JSONS/cardItems.json')
   }
 
-  
+
 }

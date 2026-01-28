@@ -8,14 +8,18 @@ import { Categories } from '../../services/jsonsProviders';
   standalone: false,
 })
 export class TextsComponent  implements OnInit {
-  
+
   messages: { message: ''}[] = [];
+  events: { id: '', title: '', start: ''}[] = [];
 
   constructor(private readonly providerJsonSrv: Categories) { }
 
   ngOnInit() {
-    this.providerJsonSrv.getMessages().subscribe(m => {
-      this.messages = m;
-    })
+    // this.providerJsonSrv.getMessages().subscribe(m => {
+    //   this.messages = m;
+    this.providerJsonSrv.getEvent().subscribe(m => {
+      this.events = m;
+
+    });
   }
 }

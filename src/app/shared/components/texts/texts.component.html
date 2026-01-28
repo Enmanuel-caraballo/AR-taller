@@ -9,7 +9,22 @@ autoplay='
 }'
 >
   <swiper-slide
-  class="label-container" *ngFor="let item of messages">
-<ion-text class="label-h">{{item.message}}</ion-text>
+  class="label-container" *ngFor="let item of events">
+
+  <ion-card class="card">
+  <ion-card-header>
+    <ion-card-title class="title">{{item.title}}</ion-card-title>
+    <ion-card-subtitle class="subtitle">{{item.start}}</ion-card-subtitle>
+  </ion-card-header>
+
+  <!-- <ion-card-content>
+    Here's a small text description for the card content. Nothing more, nothing less.
+  </ion-card-content> -->
+</ion-card>
+
+
+
+<!-- <ion-text class="label-h">{{item.title}}</ion-text> -->
+<!-- <ion-text class="label-h">{{item.start}}</ion-text> -->
  </swiper-slide>
 </swiper-container>

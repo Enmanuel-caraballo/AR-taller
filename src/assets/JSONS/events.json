@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "title": "Hablar con Giussepe",
+    "start": "2026-28-01"
+  },
+  {
+    "id": "2",
+    "title": "Visita punto de venta",
+    "start": "2026-29-01"
+  },
+  {
+    "id": "3",
+    "title": "Visita de seguimiento",
+    "start": "2026-30-01"
+  },
+  {
+    "id": "4",
+    "title": "Tarea x",
+    "start": "2026-31-01"
+  }
+]
