@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonText } from "@ionic/angular/standalone";
-import { IonicModule } from "@ionic/angular";
+import { IonicModule, MenuController } from "@ionic/angular";
 
 @Component({
   selector: 'app-header',
@@ -10,7 +10,11 @@ import { IonicModule } from "@ionic/angular";
 })
 export class HeaderComponent  implements OnInit {
   name: string = 'Enmanuel';
-  constructor() { }
+
+  openSideBar(){
+    this.menuCtrl.open('end');
+  }
+  constructor(private readonly menuCtrl: MenuController) { }
 
   ngOnInit() {}
 
