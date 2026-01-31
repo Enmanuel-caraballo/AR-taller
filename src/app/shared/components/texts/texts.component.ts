@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Categories } from '../../services/jsonsProviders';
+import { IEvents } from 'src/app/interfaces/events.interface';
 
 @Component({
   selector: 'app-texts',
@@ -10,7 +11,7 @@ import { Categories } from '../../services/jsonsProviders';
 export class TextsComponent  implements OnInit {
 
   messages: { message: ''}[] = [];
-  events: { id: '', title: '', start: ''}[] = [];
+  events: IEvents[] = [];
 
   constructor(private readonly providerJsonSrv: Categories) { }
 

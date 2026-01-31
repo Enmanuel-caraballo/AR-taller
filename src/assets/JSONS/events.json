@@ -2,21 +2,21 @@
   {
     "id": "1",
     "title": "Hablar con Giussepe",
-    "start": "2026-28-01"
+    "start": "2026-01-30"
   },
   {
     "id": "2",
     "title": "Visita punto de venta",
-    "start": "2026-29-01"
+    "start": "2026-01-29"
   },
   {
     "id": "3",
     "title": "Visita de seguimiento",
-    "start": "2026-30-01"
+    "start": "2026-01-31"
   },
   {
     "id": "4",
     "title": "Tarea x",
-    "start": "2026-31-01"
+    "start": "2026-01-28"
   }
 ]

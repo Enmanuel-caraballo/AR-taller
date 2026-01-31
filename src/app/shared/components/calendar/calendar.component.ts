@@ -3,6 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular'
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+import interactionPlugin from '@fullcalendar/interaction';
+import esLocale from '@fullcalendar/core/locales/es';
+import { Categories } from '../../services/jsonsProviders';
+import { IEvents } from 'src/app/interfaces/events.interface';
 
 
 @Component({
@@ -14,15 +20,34 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 })
 export class CalendarComponent  implements OnInit {
 
+  events: IEvents[] = [];
+
   calendarOptions: CalendarOptions = {
     initialView: 'dayGridMonth',
-    plugins: [dayGridPlugin]
+    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
+    locale: esLocale,
   }
 
-  constructor() { }
+  constructor(private readonly providerJsonSrv: Categories) { }
 
   ngOnInit() {
+     this.providerJsonSrv.getEvent().subscribe( e => {
+      this.events = e;
 
-  }
+       this.calendarOptions = {
+      ...this.calendarOptions,
+      events: this.events,
+    }
+      // console.log(e);
+      // console.log(this.events);
+
+    });
+    // console.log(this.events);
+
+    // this.calendarOptions = {
+    //   ...this.calendarOptions,
+    //   events: this.events,
+    // }
+  };
 
 }
