@@ -18,5 +18,15 @@
     "id": "4",
     "title": "Tarea x",
     "start": "2026-01-28"
+  },
+  {
+    "id": "5",
+    "title": "Tarea y",
+    "start": "2026-01-28"
+  },
+  {
+    "id": "6",
+    "title": "Tarea z",
+    "start": "2026-01-28"
   }
 ]

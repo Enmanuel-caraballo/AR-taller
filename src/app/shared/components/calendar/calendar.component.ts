@@ -26,7 +26,21 @@ export class CalendarComponent  implements OnInit {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
     locale: esLocale,
+    dayMaxEvents: 1,
+    moreLinkClick: (info) => {
+      this.openModal(info.allSegs.map(s => s.event));
+      return 'none';
+    },
+    eventContent: () => {
+    return { html: '<span class="fc-custom-event">Evento</span>' };
+  },
+
   }
+
+    openModal(events: any[]) {
+      console.log(events);
+
+    }
 
   constructor(private readonly providerJsonSrv: Categories) { }
 
