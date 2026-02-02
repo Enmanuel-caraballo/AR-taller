@@ -67,10 +67,6 @@ export class CalendarComponent implements OnInit {
 
     await modal.present();
 
-    // this.globaEventSrv.setEvents(events);
-
-
-
   }
 
   constructor(private readonly providerJsonSrv: Categories, private readonly modalCtrl: ModalController, private readonly globaEventSrv: GlobalEvent) { }

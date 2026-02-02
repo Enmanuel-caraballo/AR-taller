@@ -11,10 +11,28 @@
 </ion-header>
 
 <ion-content class="modal-content">
-  <div class="modal-card">
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni illum quidem recusandae ducimus quos
-      reprehenderit. Veniam, molestias quos, dolorum consequuntur nisi deserunt omnis id illo sit cum qui.
-    </p>
+  <div class="modal-card" *ngFor="let item of events">
+
+    <div class="card-header">
+      <ion-text class="card-title">{{ item.title }}</ion-text>
+      <ion-text class="card-date">
+        {{ item.start | date:'dd MMM yyyy' }}
+      </ion-text>
+    </div>
+
+    <ion-text class="card-description">
+      {{ item.description }}
+    </ion-text>
+
+    <div class="card-footer">
+      <ion-text class="card-author">
+        Responsable: <strong>{{ item.author }}</strong>
+      </ion-text>
+      <ion-text class="card-place">
+        Lugar: {{ item.place }}
+      </ion-text>
+    </div>
+
   </div>
 </ion-content>
+

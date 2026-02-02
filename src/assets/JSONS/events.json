@@ -16,13 +16,20 @@
   },
   {
     "id": "4",
-    "title": "Tarea x",
-    "start": "2026-01-28"
+    "title": "Visita de seguimiento",
+    "start": "2026-01-28",
+    "description": "Revision de cumplimiento de manual de convivencia",
+    "author": "Luisa Flores",
+    "place": "Mall plaza"
+
   },
   {
     "id": "5",
     "title": "Tarea y",
-    "start": "2026-01-28"
+    "start": "2026-01-28",
+    "description": "Revision de cumplimiento de manual de convivencia",
+    "author": "Luisa Flores",
+    "place": "Caribe plaza"
   },
   {
     "id": "6",

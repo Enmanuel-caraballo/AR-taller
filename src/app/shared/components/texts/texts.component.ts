@@ -13,13 +13,12 @@ export class TextsComponent  implements OnInit {
   messages: { message: ''}[] = [];
   events: IEvents[] = [];
 
-  
+
 
   constructor(private readonly providerJsonSrv: Categories) { }
 
   ngOnInit() {
-    // this.providerJsonSrv.getMessages().subscribe(m => {
-    //   this.messages = m;
+
     this.providerJsonSrv.getEvent().subscribe(m => {
       this.events = m;
 

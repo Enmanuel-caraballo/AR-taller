@@ -4,5 +4,9 @@ export interface IEvents{
   start: string;
   end: string;
   allDay: boolean;
+  description: string;
+  department: string;
+  author: string;
+  place: string;
 }
 
