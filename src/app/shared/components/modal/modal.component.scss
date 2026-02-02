@@ -1,0 +1,40 @@
+/* Header del modal */
+.modal-header {
+  ion-toolbar {
+    --background: #6b4a3a; // Marrón elegante (ajústalo al de tu app)
+    --color: #ffffff;
+    --border-width: 0;
+
+    ion-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      justify-self: center;
+    }
+
+    ion-button {
+      --color: #ffffff;
+    }
+  }
+}
+
+/* Fondo del contenido */
+.modal-content {
+  --background: #f5f3f2; // Gris cálido muy suave
+  padding: 16px;
+}
+
+/* Tarjeta principal */
+.modal-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4a4a4a;
+  }
+}
