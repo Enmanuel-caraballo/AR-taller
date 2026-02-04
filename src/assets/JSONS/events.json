@@ -33,6 +33,22 @@
   },
   {
     "id": "6",
+    "title": "Mantenimiento de equipos",
+    "start": "2026-01-28",
+    "description": "Mantenimiento de impresoras y equipos",
+    "author": "Giussepe Robles",
+    "place": "San Martín"
+  },
+  {
+    "id": "7",
+    "title": "Mantenimiento de Redes",
+    "start": "2026-01-28",
+    "description": "Mantenimiento de Rede",
+    "author": "Giussepe Robles",
+    "place": "San Martín"
+  },
+  {
+    "id": "8",
     "title": "Tarea z",
     "start": "2026-01-28"
   }
