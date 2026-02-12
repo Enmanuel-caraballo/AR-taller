@@ -20,11 +20,17 @@ const modules = [IonicModule, RouterModule];
 
 @NgModule({
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [components],
+  declarations: [
+    ...components
+  ],
   imports: [
     CommonModule,
-    modules,
-],
-  exports:[components, modules],
+    ...modules
+  ],
+  exports:[
+    ...components,
+    ...modules
+  ],
 })
 export class SharedModule { }
+
