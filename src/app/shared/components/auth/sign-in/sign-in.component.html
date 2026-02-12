@@ -1,30 +1,109 @@
-<div class="d-flex justify-content-center">
-  <div class="text-center mt-5 pt-5">
+<div class="container-fluid vh-100 d-flex justify-content-center align-items-center bg-white">
+
+  <div class="card shadow-lg border-0" style="width: 100%; max-width: 420px; border-radius: 16px;">
+
+    <div class="card-body p-5">
+
+      <div class="text-center mb-4">
+        <h2 class="fw-bold" style="color: #503629;">
+          Crepes & Waffles
+        </h2>
+        <p class="text-muted mb-0">
+          Iniciar sesión
+        </p>
+      </div>
+
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+
+        <!-- EMAIL -->
+        <div class="form-floating mb-1">
+          <input type="email" class="form-control" id="email" placeholder="Email" formControlName="email" [ngClass]="{
+                   'is-invalid': authForm.get('email')?.touched && authForm.get('email')?.invalid
+                 }">
+          <label for="email">Email</label>
+        </div>
+
+        <div class="text-danger small mb-3" *ngIf="authForm.get('email')?.touched && authForm.get('email')?.invalid">
+
+          <div *ngIf="authForm.get('email')?.errors?.['required']">
+            El email es obligatorio
+          </div>
+
+          <div *ngIf="authForm.get('email')?.errors?.['email']">
+            El formato del email no es válido
+          </div>
+
+        </div>
 
 
-    <h2>
-      inicio de sesión
-    </h2>
-    <mat-form-field appearance="outline" class="d-block">
-      <mat-label>Email</mat-label>
-      <input matInput>
-    </mat-form-field>
+        <!-- PASSWORD -->
+        <div class="form-floating mb-1">
+          <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password"
+            [ngClass]="{
+                   'is-invalid': authForm.get('password')?.touched && authForm.get('password')?.invalid
+                 }">
+          <label for="password">Password</label>
+        </div>
 
-    <mat-form-field appearance="outline" class="d-block">
-      <mat-label>Password</mat-label>
-      <input type="password" matInput>
-    </mat-form-field>
-    <button mat-raised-button color="primary" class="d-block mb-1 ">Sign-in</button>
-    <button mat-raised-button color="primary" class="d-block mb-2 w-100">Sign-in with google</button>
-    <button mat-raised-button color="primary" class="d-block mb-2 auth-button w-100">Sign-in with microsoft</button>
- 
+        <div class="text-danger small mb-3"
+          *ngIf="authForm.get('password')?.touched && authForm.get('password')?.invalid">
+
+          <div *ngIf="authForm.get('password')?.errors?.['required']">
+            La contraseña es obligatoria
+          </div>
+
+          <div *ngIf="authForm.get('password')?.errors?.['minlength']">
+            Mínimo 6 caracteres
+          </div>
+
+        </div>
 
 
+        <!-- BOTÓN -->
+        <button type="submit" class="btn w-100 mb-3 text-white fw-semibold" style="background-color: #503629;"
+          [disabled]="authForm.invalid">
+          Ingresar
+        </button>
 
-    <p>
-      ¿No tienes una cuenta?
-    </p>
+      </form>
 
-    <button matButton="filled" [routerLink]="['/auth/sign-up']">Sign-up</button>
+      <!--Error Message  -->
+
+      <div class="alert alert-danger d-flex align-items-center p-2" *ngIf="errorMessage">
+
+        {{errorMessage}}
+      </div>
+      <!-- Spinner -->
+      <div class="d-flex align-items-center">
+        <mat-spinner *ngIf="isSubmissionInProgress" [diameter]="22"></mat-spinner>
+        <!--     Ingresando..... -->
+      </div>
+
+
+      <!-- Divider -->
+      <div class="text-center my-3 text-muted small">
+        ───────── O continuar con ─────────
+      </div>
+
+      <!-- Google -->
+      <button class="btn btn-outline-secondary w-100 mb-2" (click)="onSignInWithGoogle()">
+        Continuar con Google
+      </button>
+
+      <!-- Microsoft -->
+      <button class="btn btn-outline-secondary w-100 mb-3" (click)="onSignInWithMicrosoft()">
+        Continuar con Microsoft
+      </button>
+
+
+      <div class="text-center">
+        <small class="text-muted">¿No tienes cuenta?</small><br>
+        <a [routerLink]="['/auth/sign-up']" class="fw-semibold text-decoration-none" style="color: #503629;">
+          Crear cuenta
+        </a>
+      </div>
+
+    </div>
   </div>
+
 </div>

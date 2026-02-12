@@ -6,18 +6,19 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 
 const routes: Routes = [
   {
-    path:'',
+    path: '',
     component: SignInComponent
   },
   {
-    path:'sign-in',
+    path: 'sign-in',
     component: SignInComponent
-  }, {
-    path:'sign-up',
+  },
+  {
+    path: 'sign-up',
     component: SignUpComponent
   },
   {
-    path:'forgot-password',
+    path: 'forgot-password',
     component: ForgotPasswordComponent
   }
 ];
