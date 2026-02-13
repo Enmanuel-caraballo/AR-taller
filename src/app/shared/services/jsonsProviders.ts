@@ -25,5 +25,13 @@ export class Categories {
     return this.http.get('/assets/JSONS/cardItems.json')
   }
 
+  getPdv(): Observable<any>{
+    return this.http.get('/assets/JSONS/pdv.json')
+  }
+
+  getDepartment(): Observable<any>{
+    return this.http.get('/assets/JSONS/areas.json')
+  }
+
 
 }
