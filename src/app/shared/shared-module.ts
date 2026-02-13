@@ -17,11 +17,17 @@ import { ModalComponent } from './components/modal/modal.component';
 import { InputComponent } from './components/input/input.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { SelectComponent } from './components/select/select.component';
+import { DateComponent } from './components/date/date.component';
+import { registerLocaleData } from '@angular/common';
+import localeEsCo from '@angular/common/locales/es-CO';
+
+registerLocaleData(localeEsCo);
+
 registerSwiperElement();
 
 const components = [TabComponentComponent, HeaderComponent,
   ChipComponent, TextsComponent, CardComponent, SideMenuComponent,
-   ModalComponent, InputComponent, TextAreaComponent, SelectComponent];
+   ModalComponent, InputComponent, TextAreaComponent, SelectComponent, DateComponent];
 const modules = [IonicModule, RouterModule, FormsModule, ReactiveFormsModule];
 
 @NgModule({
