@@ -5,7 +5,17 @@ import { IEvents } from 'src/app/interfaces/events.interface';
   providedIn: 'root',
 })
 export class GlobalEvent {
+  private uid: string = '';
+
   private events: IEvents[] = [];
+
+  setUid(uid: string){
+    this.uid = uid;
+  }
+
+  getUid(): string{
+    return this.uid;
+  }
 
   setEvents(events: IEvents[]){
     this.events = events;

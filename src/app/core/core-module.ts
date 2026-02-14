@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { } from '@angular/fire/firestore'
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore'
+import { provideAuth, getAuth} from '@angular/fire/auth';
+import { environment } from 'src/environments/environment.prod';
 
 
 
@@ -8,6 +11,17 @@ import { CommonModule } from '@angular/common';
   declarations: [],
   imports: [
     CommonModule
-  ]
+  ],
+  providers: [
+
+    provideFirebaseApp(() => initializeApp(environment.FIREBASE_CONFIG)),
+    provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
+
+
+  ],
 })
-export class CoreModule { }
+export class CoreModule {
+
+
+}

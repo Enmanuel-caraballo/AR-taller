@@ -1,12 +1,12 @@
 export interface IEvents{
-  id: string;
+  // id: string;
   title: string;
   start: string;
   end: string;
-  allDay: boolean;
+  // allDay: boolean;
   description: string;
   department: string;
-  author: string;
-  place: string;
+  // author: string;
+  pdv: string;
 }
 

@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Event } from 'src/app/shared/services/event/event';
 
 @Component({
   selector: 'app-notes',
@@ -14,11 +15,11 @@ description!: FormControl;
 pdv!: FormControl;
 start!: FormControl;
 end!: FormControl;
-departamento!: FormControl;
+department!: FormControl;
 
 registerForm!: FormGroup;
 
-  constructor() {
+  constructor(private readonly eventSrv: Event) {
     this.initForm();
    }
 
@@ -38,6 +39,7 @@ console.log(now);
   this.pdv = new FormControl('', [Validators.required]);
   this.start  = new FormControl(nowCol, [Validators.required]);
   this.end  = new FormControl(nowCol, [Validators.required]);
+  this.department = new FormControl('', [Validators.required])
 
   this.registerForm = new FormGroup({
     title: this.title,
@@ -45,11 +47,14 @@ console.log(now);
     pdv: this.pdv,
     start: this.start,
     end: this.end,
+    department: this.department
   });
 }
 
 public async doSchedule(){
   console.log(this.registerForm.value);
+
+  this.eventSrv.createEvent(this.registerForm.value)
 
 }
 
