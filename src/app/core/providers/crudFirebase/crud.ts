@@ -8,7 +8,7 @@ export class Crud {
   constructor(private readonly fireSt: Firestore){ }
 
 
-  async create(collectionName: string, data:any, uid:string){
+  async register(collectionName: string, data:any, uid:string){
     try {
       const docRef = doc(this.fireSt, collectionName, uid);
       await setDoc(docRef, data);

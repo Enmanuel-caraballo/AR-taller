@@ -16,7 +16,7 @@ export class Event {
 
       if (uid) {
 
-        await this.crudSrv.create('events', {
+        await this.crudSrv.register('events', {
           uid,
           // id: event.id,
           title: event.title,
