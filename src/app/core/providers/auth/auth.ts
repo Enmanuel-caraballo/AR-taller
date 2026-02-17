@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth} from '@angular/fire/auth';
+import {Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword} from '@angular/fire/auth';
 import { GlobalEvent } from 'src/app/shared/services/global-event';
 
 @Injectable({
@@ -26,5 +26,18 @@ export class Auth {
     const request = await createUserWithEmailAndPassword(this.authFirebase, email, password);
     console.log(request);
     return request.user.uid;
+  }
+
+  async login(email: string, password: string){
+    try {
+      const resp = await signInWithEmailAndPassword(this.authFirebase, email, password);
+
+      if (resp) {
+        console.log('Login exitoso');
+
+      }
+    } catch (error) {
+     console.log((error as any).message);
+    }
   }
 }

@@ -8,31 +8,16 @@
   <div class="container-title">
     <h1 class="main-title">
       <span class="brand">Gestión Integral x CREPES & WAFFLES</span>
-      <span class="subtitle">Registro de usuarios</span>
+      <span class="subtitle">Inicio de sesión</span>
     </h1>
   </div>
 
-  <form [formGroup]="registerForm" (ngSubmit)="registerUser()">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
 
     <ion-card>
 
       <ion-card-content>
 
-        <ion-item>
-          <app-input type="text" label="Name"
-          [control]="name">
-          </app-input>
-        </ion-item>
-        <ion-item>
-          <app-input type="text" label="Last name"
-          [control]="lastName">
-          </app-input>
-        </ion-item>
-        <ion-item>
-          <app-select label="Departamento" id="dep"
-          [control]="department"></app-select>
-
-        </ion-item>
 
         <ion-item>
           <app-input type="text" label="Email"
@@ -49,7 +34,7 @@
 
 
         <div class="button-container">
-          <ion-button type="submit" [disabled]="registerForm.invalid">Registrar</ion-button>
+          <ion-button type="submit" [disabled]="loginForm.invalid">Login</ion-button>
         </div>
       </ion-card-content>
 
