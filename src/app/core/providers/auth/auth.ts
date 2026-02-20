@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword} from '@angular/fire/auth';
+import {Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut} from '@angular/fire/auth';
 import { GlobalEvent } from 'src/app/shared/services/global-event';
 
 @Injectable({
@@ -40,5 +40,13 @@ export class Auth {
      console.log((error as any).message);
      return error;
     }
+  }
+
+  async logOut(){
+   try {
+    await signOut(this.authFirebase);
+   } catch (error) {
+    throw error;
+   }
   }
 }

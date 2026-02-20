@@ -41,7 +41,6 @@ export class LoginPage implements OnInit {
       this.navSrv.navigateRoot('home');
     }else{
       console.log('nada');
-
     }
 
   }
