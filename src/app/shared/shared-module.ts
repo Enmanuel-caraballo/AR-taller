@@ -20,23 +20,51 @@ import { SelectComponent } from './components/select/select.component';
 import { DateComponent } from './components/date/date.component';
 import { registerLocaleData } from '@angular/common';
 import localeEsCo from '@angular/common/locales/es-CO';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { CalendarComponent } from './components/calendar/calendar.component';
 
 registerLocaleData(localeEsCo);
-
 registerSwiperElement();
 
-const components = [TabComponentComponent, HeaderComponent,
-  ChipComponent, TextsComponent, CardComponent, SideMenuComponent,
-   ModalComponent, InputComponent, TextAreaComponent, SelectComponent, DateComponent];
-const modules = [IonicModule, RouterModule, FormsModule, ReactiveFormsModule];
+const components = [
+  TabComponentComponent,
+  HeaderComponent,
+  ChipComponent,
+  TextsComponent,
+  CardComponent,
+  SideMenuComponent,
+  ModalComponent,
+  InputComponent,
+  TextAreaComponent,
+  SelectComponent,
+  DateComponent,
+
+];
+
+const modules = [
+  IonicModule,
+  RouterModule,
+  FormsModule,
+  ReactiveFormsModule
+];
 
 @NgModule({
-  schemas:[CUSTOM_ELEMENTS_SCHEMA],
-  declarations: [components],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  declarations: [
+    ...components,
+    CalendarComponent
+    
+  ],
   imports: [
     CommonModule,
-    modules,
-],
-  exports:[components, modules],
+    ...modules,
+    FullCalendarModule,
+
+  ],
+  exports: [
+    ...components,
+    ...modules,
+    CalendarComponent
+  ]
 })
 export class SharedModule { }

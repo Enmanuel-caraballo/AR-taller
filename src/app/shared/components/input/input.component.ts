@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -7,18 +7,14 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./input.component.scss'],
   standalone: false
 })
-export class InputComponent  implements OnInit {
-@Input() type: string = '';
-@Input() label: string = '';
-@Input() placeholder = '';
-@Input() control: FormControl = new FormControl();
-  constructor() { }
+export class InputComponent {
 
-  ngOnInit() {}
-
+  @Input() type: string = '';
+  @Input() label: string = '';
+  @Input() placeholder = '';
+  @Input() control!: FormControl;
 
   public onType(event: any){
     this.control.setValue(event.target.value);
   }
-
 }

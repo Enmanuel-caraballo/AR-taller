@@ -1,36 +1,94 @@
 import { Injectable } from '@angular/core';
-import {Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut} from '@angular/fire/auth';
+import {Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, OAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut} from '@angular/fire/auth';
 import { GlobalEvent } from 'src/app/shared/services/global-event';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class Auth {
-  constructor(private readonly authFirebase: AuthFirebase, private readonly globalUidSrv: GlobalEvent){}
 
-  async getCurrentUser(): Promise<string | null>{
-    const auth = getAuth();
-    const user = auth.currentUser;
+  constructor(
+    private authFirebase: AuthFirebase,
+    private globalUidSrv: GlobalEvent
+  ) { }
 
-    if(user){
-      const uid = user.uid;
+  //auntificaciones
+
+  async getCurrentUser(): Promise<string | null> {
+    const user = this.authFirebase.currentUser;
+
+    if (user) {
+      this.globalUidSrv.setUid(user.uid);
+      return user.uid;
+    }
+
+    return null;
+  }
+
+  async create(email: string, password: string): Promise<string | null> {
+    try {
+
+      const resp = await createUserWithEmailAndPassword(
+        this.authFirebase,
+        email,
+        password
+      );
+
+      const uid = resp.user.uid;
+
       this.globalUidSrv.setUid(uid);
-      return uid
-    }else{
-      console.log("Not logged user");
+
+      return uid;
+
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+  async login(email: string, password: string): Promise<string | null> {
+    try {
+
+      const resp = await signInWithEmailAndPassword(
+        this.authFirebase,
+        email,
+        password
+      );
+
+      const uid = resp.user.uid;
+
+      this.globalUidSrv.setUid(uid);
+
+      return uid;
+
+    } catch (error) {
+      console.log(error);
       return null;
     }
   }
 
-  async create(email: string, password: string){
-    const request = await createUserWithEmailAndPassword(this.authFirebase, email, password);
-    console.log(request);
-    return request.user.uid;
+  async loginWithGoogle(): Promise<string | null> {
+    try {
+
+      const provider = new GoogleAuthProvider();
+      const resp = await signInWithPopup(this.authFirebase, provider);
+
+      const uid = resp.user.uid;
+
+      this.globalUidSrv.setUid(uid);
+
+      return uid;
+
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   }
 
-  async login(email: string, password: string){
+  async loginWithMicrosoft(): Promise<string | null> {
     try {
-      const resp = await signInWithEmailAndPassword(this.authFirebase, email, password);
+
+      const provider = new OAuthProvider('microsoft.com');
+      const resp = await signInWithPopup(this.authFirebase, provider);
 
       console.log("SI", resp.operationType);
 
@@ -38,7 +96,7 @@ export class Auth {
 
     } catch (error) {
      console.log((error as any).message);
-     return error;
+     return null
     }
   }
 

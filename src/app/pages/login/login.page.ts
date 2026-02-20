@@ -13,19 +13,24 @@ export class LoginPage implements OnInit {
 
   email!: FormControl;
   password!: FormControl;
-
   loginForm!: FormGroup;
 
   constructor(private authSrv: Auth, private readonly navSrv: NavController) {
     this.initForm();
-   }
-
-  ngOnInit() {
   }
 
-  private initForm(){
-    this.email = new FormControl('', [Validators.required]);
-    this.password = new FormControl('', [Validators.required]);
+  ngOnInit(): void { }
+
+  private initForm(): void {
+    this.email = new FormControl('', [
+      Validators.required,
+      Validators.email
+    ]);
+
+    this.password = new FormControl('', [
+      Validators.required,
+      Validators.minLength(6)
+    ]);
 
     this.loginForm = new FormGroup({
       email: this.email,
@@ -34,15 +39,47 @@ export class LoginPage implements OnInit {
   }
 
 
-  async login(){
-   const request = await this.authSrv.login(this.email.value, this.password.value);
+  async login() {
+    const request = await this.authSrv.login(this.email.value, this.password.value);
 
     if (request === 'signIn') {
       this.navSrv.navigateRoot('home');
-    }else{
+    } else {
       console.log('nada');
     }
 
+  }
+  //google
+  async loginWithGoogle(): Promise<void> {
+    /* this.isLoading = true;
+    this.errorMessage = ''; */
+
+    const uid = await this.authSrv.loginWithGoogle();
+
+    /* this.isLoading = false; */
+
+    if (uid) {
+      this.navSrv.navigateRoot('home');
+    } else {
+      console.log('Error al iniciar sesión con Google');
+    }
+  }
+
+  //  MICROSOFT
+  async loginWithMicrosoft(): Promise<void> {
+     /* this.isLoading = true;
+     this.errorMessage = ''; */
+
+    const uid = await this.authSrv.loginWithMicrosoft();
+
+      /* this.isLoading = false; */
+
+    if (uid) {
+      this.navSrv.navigateRoot('home');
+    } else {
+      console.log('Error al iniciar sesión con Microsoft');
+      ;
+    }
   }
 
 }
