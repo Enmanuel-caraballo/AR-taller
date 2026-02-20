@@ -22,6 +22,7 @@ import { registerLocaleData } from '@angular/common';
 import localeEsCo from '@angular/common/locales/es-CO';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarComponent } from './components/calendar/calendar.component';
+import { CreateEventModalComponent } from './components/create-event-modal/create-event-modal.component';
 
 registerLocaleData(localeEsCo);
 registerSwiperElement();
@@ -52,7 +53,8 @@ const modules = [
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     ...components,
-    CalendarComponent
+    CalendarComponent,
+    CreateEventModalComponent
     
   ],
   imports: [
@@ -64,7 +66,8 @@ const modules = [
   exports: [
     ...components,
     ...modules,
-    CalendarComponent
+    CalendarComponent,
+    CreateEventModalComponent
   ]
 })
 export class SharedModule { }

@@ -22,3 +22,15 @@ full-calendar {
   width: 90%;
   padding-top: 5px;
 }
+
+
+/* Estilo para el enlace "+N más" de FullCalendar */
+.fc-more-link,
+.fc-more-link-custom {
+  background-color: #6b4a3a;
+  color: #ffffff !important;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  text-decoration: none;
+}

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular'
-import { CalendarOptions } from '@fullcalendar/core';
+import { CalendarOptions, EventClickArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
@@ -36,6 +36,12 @@ export class CalendarComponent implements OnInit {
     },
     eventContent: () => {
       return { html: '<span class="fc-custom-event">Evento</span>' };
+    },
+  dateClick: (arg: any) => {
+      this.openCreatePrompt(arg);
+    },
+    eventClick: (arg: EventClickArg) => {
+      this.openModal([arg.event]);
     },
 
   }
@@ -90,5 +96,34 @@ export class CalendarComponent implements OnInit {
     //   events: this.events,
     // }
   };
+
+  async openCreatePrompt(arg: any) {
+    const clickedDate = new Date(arg.dateStr);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    clickedDate.setHours(0, 0, 0, 0);
+
+    if (clickedDate < today) {
+      alert('No puedes crear eventos en fechas pasadas');
+      return;
+    }
+
+    const { CreateEventModalComponent } = await import('../create-event-modal/create-event-modal.component');
+
+    const modal = await this.modalCtrl.create({
+      component: CreateEventModalComponent,
+      cssClass: 'custom-create-modal',
+      componentProps: {
+        dateStr: arg.dateStr
+      }
+    });
+
+    await modal.present();
+
+    const { data, role } = await modal.onDidDismiss();
+    if (role === 'confirm' && data) {
+      console.log('Tipo seleccionado:', data.type, 'Fecha:', data.date);
+    }
+  }
 
 }
