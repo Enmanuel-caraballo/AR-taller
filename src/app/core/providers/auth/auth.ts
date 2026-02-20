@@ -1,14 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Auth as AuthFirebase } from '@angular/fire/auth';
-import {
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-  OAuthProvider
-} from 'firebase/auth';
-
-import { GlobalEvent } from '../../../shared/services/global-event';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, OAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut} from '@angular/fire/auth';
+import { GlobalEvent } from 'src/app/shared/services/global-event';
 
 @Injectable({
   providedIn: 'root'
@@ -98,15 +90,21 @@ export class Auth {
       const provider = new OAuthProvider('microsoft.com');
       const resp = await signInWithPopup(this.authFirebase, provider);
 
-      const uid = resp.user.uid;
+      console.log("SI", resp.operationType);
 
-      this.globalUidSrv.setUid(uid);
-
-      return uid;
+      return resp.operationType;
 
     } catch (error) {
-      console.log(error);
-      return null;
+     console.log((error as any).message);
+     return null
     }
+  }
+
+  async logOut(){
+   try {
+    await signOut(this.authFirebase);
+   } catch (error) {
+    throw error;
+   }
   }
 }

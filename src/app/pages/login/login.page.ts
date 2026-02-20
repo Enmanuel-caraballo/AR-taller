@@ -15,17 +15,11 @@ export class LoginPage implements OnInit {
   password!: FormControl;
   loginForm!: FormGroup;
 
-  isLoading = false;
-  errorMessage = '';
-
-  constructor(
-    private authSrv: Auth,
-    private readonly navSrv: NavController
-  ) {
+  constructor(private authSrv: Auth, private readonly navSrv: NavController) {
     this.initForm();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   private initForm(): void {
     this.email = new FormControl('', [
@@ -44,60 +38,48 @@ export class LoginPage implements OnInit {
     });
   }
 
-  // 🔐 LOGIN NORMAL
-  async login(): Promise<void> {
 
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
+  async login() {
+    const request = await this.authSrv.login(this.email.value, this.password.value);
 
-    this.isLoading = true;
-    this.errorMessage = '';
-
-    const uid = await this.authSrv.login(
-      this.email.value,
-      this.password.value
-    );
-
-    this.isLoading = false;
-
-    if (uid) {
+    if (request === 'signIn') {
       this.navSrv.navigateRoot('home');
     } else {
-      this.errorMessage = 'Credenciales incorrectas';
+      console.log('nada');
     }
-  }
 
-  // 🔵 GOOGLE
+  }
+  //google
   async loginWithGoogle(): Promise<void> {
-    this.isLoading = true;
-    this.errorMessage = '';
+    /* this.isLoading = true;
+    this.errorMessage = ''; */
 
     const uid = await this.authSrv.loginWithGoogle();
 
-    this.isLoading = false;
+    /* this.isLoading = false; */
 
     if (uid) {
       this.navSrv.navigateRoot('home');
     } else {
-      this.errorMessage = 'Error al iniciar sesión con Google';
+      console.log('Error al iniciar sesión con Google');
     }
   }
 
-  // 🟦 MICROSOFT
+  //  MICROSOFT
   async loginWithMicrosoft(): Promise<void> {
-    this.isLoading = true;
-    this.errorMessage = '';
+     /* this.isLoading = true;
+     this.errorMessage = ''; */
 
     const uid = await this.authSrv.loginWithMicrosoft();
 
-    this.isLoading = false;
+      /* this.isLoading = false; */
 
     if (uid) {
       this.navSrv.navigateRoot('home');
     } else {
-      this.errorMessage = 'Error al iniciar sesión con Microsoft';
+      console.log('Error al iniciar sesión con Microsoft');
+      ;
     }
   }
+
 }

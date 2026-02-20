@@ -11,14 +11,13 @@ export class Event {
 
   async createEvent(event: IEvents): Promise<void> {
     try {
-      // const uid = await this.AuthSrv.getCurrentUser();
-      const uid = 'hola123';
+       const uid = await this.AuthSrv.getCurrentUser();
+      // const uid = 'hola123';
 
       if (uid) {
 
-        await this.crudSrv.register('events', {
+        await this.crudSrv.add('events', {
           uid,
-          // id: event.id,
           title: event.title,
           start: event.start,
           end: event.end,
@@ -27,7 +26,7 @@ export class Event {
           department: event.department,
           // author: event.author,
           pdv: event.pdv
-        }, uid );
+        }, );
         console.log('Funciona');
 
       }else{

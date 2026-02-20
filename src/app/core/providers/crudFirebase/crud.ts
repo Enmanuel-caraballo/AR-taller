@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, setDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +13,15 @@ export class Crud {
       const docRef = doc(this.fireSt, collectionName, uid);
       await setDoc(docRef, data);
       console.log("Documento con", uid);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async add(collectionName: string, data:any,){
+    try {
+      const docRef = collection(this.fireSt, collectionName);
+      return await addDoc(docRef,data)
     } catch (error) {
       throw error;
     }
