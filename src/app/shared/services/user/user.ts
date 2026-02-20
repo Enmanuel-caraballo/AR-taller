@@ -7,14 +7,18 @@ import { IUserCreate } from 'src/app/interfaces/user.interface';
   providedIn: 'root',
 })
 export class User {
-  constructor(private readonly authSrv: Auth, private readonly crudSrv: Crud){}
+  constructor(private readonly authSrv: Auth, private readonly crudSrv: Crud) { }
 
-  async createUser(user: IUserCreate): Promise<void>{
+  async createUser(user: IUserCreate): Promise<void> {
 
     try {
       console.log(user);
 
       const uid = await this.authSrv.create(user.email, user.password);
+
+      if (!uid) {
+        throw new Error('No se pudo crear el usuario');
+      }
 
       await this.crudSrv.register('users', {
         uid,
@@ -25,7 +29,7 @@ export class User {
         password: user.password,
       }, uid)
       console.log('Funciono');
-      
+
     } catch (error) {
       console.log('No funciono', error);
     }

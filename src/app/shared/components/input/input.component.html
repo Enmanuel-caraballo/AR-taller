@@ -1,12 +1,13 @@
 <ion-input
-[type]="type"
-[label]="label"
-[value]="control.value || '' "
-labelPlacement="floating"
-(keyup) = 'onType($event);'>
+  [type]="type"
+  [label]="label"
+  [value]="control.value || ''"
+  labelPlacement="floating"
+  (keyup)="onType($event)">
 
-@if (type ==='password') {
-<ion-input-password-toggle slot="end"></ion-input-password-toggle>
-}
+  <ion-input-password-toggle
+    *ngIf="type === 'password'"
+    slot="end">
+  </ion-input-password-toggle>
+
 </ion-input>
-

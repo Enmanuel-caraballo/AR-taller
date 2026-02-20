@@ -18,8 +18,8 @@ import { GlobalEvent } from '../../services/global-event';
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
-  standalone: true,
-  imports: [FullCalendarModule, CommonModule],
+  standalone: false,
+ /*  imports: [FullCalendarModule, CommonModule], */
 })
 export class CalendarComponent implements OnInit {
 
