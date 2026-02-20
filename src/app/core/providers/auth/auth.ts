@@ -32,12 +32,13 @@ export class Auth {
     try {
       const resp = await signInWithEmailAndPassword(this.authFirebase, email, password);
 
-      if (resp) {
-        console.log('Login exitoso');
+      console.log("SI", resp.operationType);
 
-      }
+      return resp.operationType;
+
     } catch (error) {
      console.log((error as any).message);
+     return error;
     }
   }
 }

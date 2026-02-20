@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NavController } from '@ionic/angular';
 import { Auth } from 'src/app/core/providers/auth/auth';
 
 @Component({
@@ -15,7 +16,7 @@ export class LoginPage implements OnInit {
 
   loginForm!: FormGroup;
 
-  constructor(private authSrv: Auth) {
+  constructor(private authSrv: Auth, private readonly navSrv: NavController) {
     this.initForm();
    }
 
@@ -33,8 +34,16 @@ export class LoginPage implements OnInit {
   }
 
 
-  login(){
-    this.authSrv.login(this.email.value, this.password.value);
+  async login(){
+   const request = await this.authSrv.login(this.email.value, this.password.value);
+
+    if (request === 'signIn') {
+      this.navSrv.navigateRoot('home');
+    }else{
+      console.log('nada');
+
+    }
+
   }
 
 }
