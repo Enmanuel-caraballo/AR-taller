@@ -75,7 +75,7 @@ export class LoginPage implements OnInit {
   }
   //google
   async loginWithGoogle(): Promise<void> {
-    this.authSrv.loginWithGoogle();
+    this.authSrv.loginConGoogle();
   }
 
   //  MICROSOFT

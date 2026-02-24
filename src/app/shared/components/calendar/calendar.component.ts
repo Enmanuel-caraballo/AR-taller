@@ -12,6 +12,7 @@ import { IEvents } from 'src/app/interfaces/events.interface';
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../modal/modal.component';
 import { GlobalEvent } from '../../services/global-event';
+import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 
 
 @Component({
@@ -75,20 +76,77 @@ export class CalendarComponent implements OnInit {
 
   }
 
-  constructor(private readonly providerJsonSrv: Categories, private readonly modalCtrl: ModalController, private readonly globaEventSrv: GlobalEvent) { }
+  constructor(private readonly providerJsonSrv: Categories, private readonly modalCtrl: ModalController, private readonly globaEventSrv: GlobalEvent, private readonly crudSrv: Crud) { }
 
-  ngOnInit() {
-    this.providerJsonSrv.getEvent().subscribe(e => {
-      this.events = e;
+  async ngOnInit() {
 
-      this.calendarOptions = {
-        ...this.calendarOptions,
-        events: this.events,
-      }
-      // console.log(e);
-      // console.log(this.events);
+    const eventsData = await this.crudSrv.getAll('events');
 
-    });
+  if (eventsData) {
+    // 1. Mapeamos los eventos a tu interfaz
+// ...existing code...
+this.events = eventsData.map(event => ({
+  title: event.title || 'Sin título',
+  start: event.start,
+  end: event.end,
+  // satisfy IEvents:
+  description: event.description || '',
+  department: event.department || '',
+  pdv: event.pdv || '',
+  // keep extendedProps if you use FullCalendar's extendedProps
+  extendedProps: {
+    pdv: event.pdv,
+    description: event.description,
+    department: event.department
+  }
+}));
+// ...existing code...
+
+    // 2. ¡ESTO ES LO IMPORTANTE! Reasignar las opciones
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      events: this.events
+    };
+
+    console.log('Eventos cargados:', this.events);
+  }
+
+
+
+
+//  if (events) {
+//        events.forEach(event =>{
+
+//         //  this.name = user.name;
+//         //  this.lastName = user.lastName;
+//         //  this.gender = user.gender;
+//         //  this.img = user.images[0];
+
+//          const eventR: IEvents = {
+//          title: event.title,
+//          pdv:  event.pdv,
+//          start: event.start,
+//          end: event.end,
+//          description: event.description,
+//          department: event.department
+//         }
+//         this.events = eventR;
+//        });
+
+//     console.log(this.events);
+//       }
+
+    // this.providerJsonSrv.getEvent().subscribe(e => {
+    //   this.events = e;
+
+    //   this.calendarOptions = {
+    //     ...this.calendarOptions,
+    //     events: this.events,
+    //   }
+    //   // console.log(e);
+    //   // console.log(this.events);
+
+    // });
     // console.log(this.events);
 
     // this.calendarOptions = {

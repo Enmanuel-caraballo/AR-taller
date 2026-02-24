@@ -68,10 +68,17 @@ export class Auth {
     }
   }
 
-  async loginWithGoogle(){
-      const provider = new GoogleAuthProvider();
-
-      return await signInWithRedirect(this.authFirebase, provider);
+ async loginConGoogle() {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(this.authFirebase, provider);
+      console.log('Usuario de Google:', result.user);
+      if (result.user) {
+        this.navSrv.navigateRoot('home')
+      }
+    } catch (error) {
+      console.error('Error en Google:', error);
+    }
   }
 
   async getResiltadosRedirect(){
