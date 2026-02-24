@@ -1,6 +1,9 @@
 import { Component, OnInit,  } from '@angular/core';
+import { Auth } from 'src/app/core/providers/auth/auth';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 import { IEvents } from 'src/app/interfaces/events.interface';
+import { IUserCreate } from 'src/app/interfaces/user.interface';
+import { GlobalEvent } from 'src/app/shared/services/global-event';
 
 
 
@@ -14,9 +17,23 @@ export class HomePage implements OnInit {
 
   // arrayEvents: any[] = [];
 
-  constructor(private readonly crudSrv: Crud) { }
+  constructor(private readonly crudSrv: Crud, private readonly authSrv: Auth, private readonly globalSrv: GlobalEvent) { }
 
   async ngOnInit() {
+
+   const uid= await this.authSrv.getCurrentUser();
+
+   if (uid) {
+   const user = this.crudSrv.getByUid('users', uid)
+   console.log(user);
+
+   }else{
+    console.log('No se recupero el usuario');
+
+   }
+
+
+
 //    const events = await this.crudSrv.getAll('events');
 
 //  if (events) {

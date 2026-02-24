@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, doc, Firestore, getDocs, setDoc } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, getDocs, query, setDoc, where } from '@angular/fire/firestore';
 import { IEvents } from 'src/app/interfaces/events.interface';
+import { IUserCreate } from 'src/app/interfaces/user.interface';
 
 
 @Injectable({
@@ -49,6 +50,31 @@ export class Crud {
     console.log("Error en getById",error);
     return;
   }
+ }
+
+
+ async getByUid(collectionName: string, uid: string){
+  try {
+    const ref = collection(this.fireSt, collectionName);
+    const q = query(ref, where("uid", "==", uid));
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      console.warn("No hay usuario con esa uid")
+      return null;
+    }else{
+      return snapshot.docs.map(doc => ({
+        uid: doc.id,
+        ...(doc.data() as IUserCreate)
+      }));
+    }
+
+  } catch (error) {
+    console.log('Error al obtener', error);
+    return;
+  }
+
+
  }
 
 }

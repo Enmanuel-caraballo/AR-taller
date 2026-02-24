@@ -17,12 +17,10 @@ export class Auth {
 
   }
 
-  async getCurrentUser(): Promise<string | null> {
+  async getCurrentUser() {
     const user = this.authFirebase.currentUser;
 
     if (user) {
-      this.globalUidSrv.setUid(user.uid);
-
       return user.uid;
     }
 

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-create-event-modal',
@@ -10,13 +10,17 @@ import { ModalController } from '@ionic/angular';
 export class CreateEventModalComponent {
   @Input() dateStr = '';
 
-  constructor(private readonly modalCtrl: ModalController) {}
+  constructor(private readonly modalCtrl: ModalController, private readonly navSrv: NavController) {}
 
   closeModal() {
     this.modalCtrl.dismiss(null, 'cancel');
   }
 
   selectType(type: 'evento' | 'tarea') {
+
+    if (type == 'evento') {
+      this.navSrv.navigateRoot('notes')
+    }
     this.modalCtrl.dismiss({ type, date: this.dateStr }, 'confirm');
   }
 }

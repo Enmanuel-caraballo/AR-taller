@@ -14,6 +14,7 @@ import { ModalComponent } from '../modal/modal.component';
 import { GlobalEvent } from '../../services/global-event';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 
+//npm run start -- --host=0.0.0.0 --port:8100 
 
 @Component({
   selector: 'app-calendar',

@@ -3,10 +3,10 @@
         label-placement="floating"
         [id]="id"
         (ionChange)='onSelect($event)'
-        
+
         >
           <ion-select-option *ngFor="let item of usable"
-          [value]="item[valuekey]">{{item[labelKey]}}</ion-select-option>
+          [value]="item[labelKey]">{{item[labelKey]}}</ion-select-option>
           <!-- <ion-select-option value="plaza-bocagrande">Plaza Bocagrande</ion-select-option>
           <ion-select-option value="san-juan">San Juan</ion-select-option>
           <ion-select-option value="san-pedro">San Pedro</ion-select-option>
