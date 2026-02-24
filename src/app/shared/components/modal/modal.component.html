@@ -26,9 +26,19 @@
       </ion-text>
 
       <div class="card-footer">
-        <!-- <ion-text class="card-author">
-          Responsable: <strong>{{ item.author }}</strong>
-        </ion-text> -->
+        <ion-text class="card-time">
+          Horario:
+          <strong>
+            {{ item.start | date:'HH:mm' }}
+            –
+            {{ item.end   | date:'HH:mm' }}
+          </strong>
+        </ion-text>
+
+        <ion-text class="card-department">
+          Área: <strong>{{ item.department }}</strong>
+        </ion-text>
+
         <ion-text class="card-place">
           Lugar: {{ item.pdv }}
         </ion-text>
