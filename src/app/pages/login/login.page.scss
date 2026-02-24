@@ -77,13 +77,12 @@ ion-datetime-button::part(native) {
 }
 
 .button-container{
-display: grid;
-place-items: center;
-
+  display: grid;
+  place-items: center;
 }
 
-/* Botón guardar */
-ion-button {
+/* Botón principal (Login) */
+.button-container ion-button {
   margin-top: 20px;
   --background: #6b4f3a; /* color similar al header */
   --border-radius: 16px;
@@ -92,14 +91,77 @@ ion-button {
   font-weight: 600;
   letter-spacing: 0.5px;
   --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-
 }
-
-
 
 /* Efecto al presionar */
 ion-button:active {
   transform: scale(0.98);
+}
+
+/* Divider “O continuar con” */
+.divider-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8a8a8a;
+  font-size: 13px;
+  margin-top: 18px;
+
+  .line {
+    flex: 1;
+    height: 1px;
+    background: #dcdde1;
+    margin: 0 8px;
+  }
+
+  .divider-label {
+    white-space: nowrap;
+  }
+}
+
+/* Contenedor de botones sociales */
+.social-button-container {
+  margin: 8px 10px 0 10px;
+}
+
+/* Botones sociales: Google/Microsoft */
+.social-button {
+  --border-radius: 999px;
+  --border-color: #6b4e3d;
+  --border-width: 1.5px;
+  --background: #ffffff;
+  --color: #6b4e3d;
+  --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  text-transform: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  height: 44px;
+}
+
+.social-button ion-icon {
+  font-size: 18px;
+}
+
+/* Colores específicos */
+.social-button.google {
+  --border-color: #db4437;
+}
+
+.social-button.microsoft {
+  --border-color: #0078d4;
+}
+
+/* Texto de registro al final */
+.register-text {
+  font-size: 14px;
+  color: #555;
+
+  a {
+    color: #6b4e3d;
+    font-weight: 600;
+    text-decoration: underline;
+  }
 }
 
 /* Ajuste para pantallas grandes */
