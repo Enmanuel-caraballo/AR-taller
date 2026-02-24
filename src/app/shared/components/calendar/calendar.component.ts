@@ -83,26 +83,22 @@ export class CalendarComponent implements OnInit {
     const eventsData = await this.crudSrv.getAll('events');
 
   if (eventsData) {
-    // 1. Mapeamos los eventos a tu interfaz
-// ...existing code...
+    // Mapeamos los eventos a la interfaz
 this.events = eventsData.map(event => ({
   title: event.title || 'Sin título',
   start: event.start,
   end: event.end,
-  // satisfy IEvents:
+
   description: event.description || '',
   department: event.department || '',
   pdv: event.pdv || '',
-  // keep extendedProps if you use FullCalendar's extendedProps
+
   extendedProps: {
     pdv: event.pdv,
     description: event.description,
     department: event.department
   }
 }));
-// ...existing code...
-
-    // 2. ¡ESTO ES LO IMPORTANTE! Reasignar las opciones
     this.calendarOptions = {
       ...this.calendarOptions,
       events: this.events
