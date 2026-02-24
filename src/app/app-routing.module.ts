@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { AuthGuard } from './core/providers/auth/auth.guard';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
 

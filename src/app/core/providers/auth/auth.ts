@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, OAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut} from '@angular/fire/auth';
+import { NavController } from '@ionic/angular';
 import { GlobalEvent } from 'src/app/shared/services/global-event';
 
 @Injectable({
@@ -9,16 +10,16 @@ export class Auth {
 
   constructor(
     private authFirebase: AuthFirebase,
-    private globalUidSrv: GlobalEvent
+    private globalUidSrv: GlobalEvent,
+    private readonly navSrv: NavController
   ) { }
-
-  //auntificaciones
 
   async getCurrentUser(): Promise<string | null> {
     const user = this.authFirebase.currentUser;
 
     if (user) {
       this.globalUidSrv.setUid(user.uid);
+
       return user.uid;
     }
 
@@ -54,11 +55,9 @@ export class Auth {
         password
       );
 
-      const uid = resp.user.uid;
+      const request = resp.operationType;
 
-      this.globalUidSrv.setUid(uid);
-
-      return uid;
+      return request;
 
     } catch (error) {
       console.log(error);
@@ -72,9 +71,20 @@ export class Auth {
       const provider = new GoogleAuthProvider();
       const resp = await signInWithPopup(this.authFirebase, provider);
 
+
+
       const uid = resp.user.uid;
 
-      this.globalUidSrv.setUid(uid);
+      if (uid) {
+        console.log("we have an user", uid);
+        this.navSrv.navigateRoot('/home')
+
+      return uid;
+
+      }else{
+        console.log("we dont hava an user :(");
+
+      }
 
       return uid;
 
