@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, OAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut} from '@angular/fire/auth';
+import {Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, getRedirectResult, GoogleAuthProvider, OAuthProvider, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut} from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
 import { GlobalEvent } from 'src/app/shared/services/global-event';
 
@@ -8,11 +8,14 @@ import { GlobalEvent } from 'src/app/shared/services/global-event';
 })
 export class Auth {
 
+
   constructor(
     private authFirebase: AuthFirebase,
     private globalUidSrv: GlobalEvent,
     private readonly navSrv: NavController
-  ) { }
+  ) {
+
+  }
 
   async getCurrentUser(): Promise<string | null> {
     const user = this.authFirebase.currentUser;
@@ -65,33 +68,14 @@ export class Auth {
     }
   }
 
-  async loginWithGoogle(): Promise<string | null> {
-    try {
-
+  async loginWithGoogle(){
       const provider = new GoogleAuthProvider();
-      const resp = await signInWithPopup(this.authFirebase, provider);
 
+      return await signInWithRedirect(this.authFirebase, provider);
+  }
 
-
-      const uid = resp.user.uid;
-
-      if (uid) {
-        console.log("we have an user", uid);
-        this.navSrv.navigateRoot('/home')
-
-      return uid;
-
-      }else{
-        console.log("we dont hava an user :(");
-
-      }
-
-      return uid;
-
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
+  async getResiltadosRedirect(){
+    return await getRedirectResult(this.authFirebase);
   }
 
   async loginWithMicrosoft(): Promise<string | null> {

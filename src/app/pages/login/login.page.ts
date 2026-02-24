@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { Auth } from 'src/app/core/providers/auth/auth';
+import { User } from '../../shared/services/user/user';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,10 @@ import { Auth } from 'src/app/core/providers/auth/auth';
 })
 export class LoginPage implements OnInit {
 
+  picture: string | null = '';
+  name: string | null = '';
+  emailF: string | null = '';
+
   email!: FormControl;
   password!: FormControl;
   loginForm!: FormGroup;
@@ -19,9 +24,28 @@ export class LoginPage implements OnInit {
     this.initForm();
   }
 
-  ngOnInit(): void { }
+  async ngOnInit() {
+    try {
+      const res = await this.authSrv.getResiltadosRedirect();
 
-  private initForm(): void {
+      if (res && res.user) {
+        const user = res.user;
+        console.log('usuario logeado', user);
+
+        console.log(this.picture = user.photoURL,
+          this.name = user.displayName,
+          this.emailF = user.email);
+
+
+          this.navSrv.navigateRoot('home');
+      }
+    } catch (error) {
+    console.log(error);
+
+    }
+  }
+
+  private initForm() {
     this.email = new FormControl('', [
       Validators.required,
       Validators.email
@@ -51,28 +75,17 @@ export class LoginPage implements OnInit {
   }
   //google
   async loginWithGoogle(): Promise<void> {
-    /* this.isLoading = true;
-    this.errorMessage = ''; */
-
-    const uid = await this.authSrv.loginWithGoogle();
-
-    /* this.isLoading = false; */
-
-    if (uid) {
-      this.navSrv.navigateRoot('home');
-    } else {
-      console.log('Error al iniciar sesión con Google');
-    }
+    this.authSrv.loginWithGoogle();
   }
 
   //  MICROSOFT
   async loginWithMicrosoft(): Promise<void> {
-     /* this.isLoading = true;
-     this.errorMessage = ''; */
+    /* this.isLoading = true;
+    this.errorMessage = ''; */
 
     const uid = await this.authSrv.loginWithMicrosoft();
 
-      /* this.isLoading = false; */
+    /* this.isLoading = false; */
 
     if (uid) {
       this.navSrv.navigateRoot('home');
