@@ -48,22 +48,42 @@
     </ion-text> -->
 
     <!-- DIVIDER -->
-    <div class="ion-text-center ion-margin-top">
-      ───────── O continuar con ─────────
+    <div class="ion-text-center ion-margin-top divider-text">
+      <span class="line"></span>
+      <span class="divider-label">O continuar con</span>
+      <span class="line"></span>
     </div>
 
     <!-- GOOGLE -->
-    <div class="button-container ion-margin-top">
-      <ion-button expand="block" fill="outline" (click)="loginWithGoogle()">
+    <div class="social-button-container ion-margin-top">
+      <ion-button
+        expand="block"
+        fill="outline"
+        class="social-button google"
+        (click)="loginWithGoogle()"
+      >
+        <ion-icon slot="start" name="logo-google"></ion-icon>
         Continuar con Google
       </ion-button>
     </div>
 
     <!-- MICROSOFT -->
-    <div class="button-container ion-margin-top">
-      <ion-button expand="block" fill="outline" (click)="loginWithMicrosoft()">
+    <div class="social-button-container ion-margin-top">
+      <ion-button
+        expand="block"
+        fill="outline"
+        class="social-button microsoft"
+        (click)="loginWithMicrosoft()"
+      >
+        <ion-icon slot="start" name="logo-windows"></ion-icon>
         Continuar con Microsoft
       </ion-button>
+    </div>
+
+    <!-- LINK REGISTRO -->
+    <div class="register-text ion-text-center ion-margin-top">
+      <span>¿No tienes cuenta?</span>
+      <a (click)="goToRegister()"> Regístrate</a>
     </div>
 
   </form>
