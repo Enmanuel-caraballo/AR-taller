@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, getRedirectResult, GoogleAuthProvider, OAuthProvider, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut} from '@angular/fire/auth';
+import { Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, getRedirectResult, GoogleAuthProvider, OAuthProvider, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut } from '@angular/fire/auth';
 import { NavController } from '@ionic/angular';
 import { GlobalEvent } from 'src/app/shared/services/global-event';
+import { Crud } from '../crudFirebase/crud';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class Auth {
   constructor(
     private authFirebase: AuthFirebase,
     private globalUidSrv: GlobalEvent,
-    private readonly navSrv: NavController
+    private readonly navSrv: NavController,
+    private crudSrv: Crud
   ) {
 
   }
@@ -66,12 +68,13 @@ export class Auth {
     }
   }
 
- async loginConGoogle() {
+  async loginConGoogle() {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(this.authFirebase, provider);
       console.log('Usuario de Google:', result.user);
       if (result.user) {
+        await this.syncUserWithDb(result.user);
         this.navSrv.navigateRoot('home')
       }
     } catch (error) {
@@ -79,31 +82,67 @@ export class Auth {
     }
   }
 
-  async getResiltadosRedirect(){
-    return await getRedirectResult(this.authFirebase);
+  async getResiltadosRedirect() {
+    const result = await getRedirectResult(this.authFirebase);
+    if (result && result.user) {
+      await this.syncUserWithDb(result.user);
+    }
+    return result;
   }
 
   async loginWithMicrosoft(): Promise<string | null> {
     try {
-
       const provider = new OAuthProvider('microsoft.com');
+      // Opcional: provider.setCustomParameters({ prompt: 'select_account' });
+
       const resp = await signInWithPopup(this.authFirebase, provider);
 
-      console.log("SI", resp.operationType);
+      if (resp.user) {
+        await this.syncUserWithDb(resp.user);
+        this.navSrv.navigateRoot('home');
+      }
 
       return resp.operationType;
 
     } catch (error) {
-     console.log((error as any).message);
-     return null
+      console.error('Error en Microsoft Popup:', error);
+      // Fallback a redirect si el popup es bloqueado
+      if ((error as any).code === 'auth/popup-blocked') {
+        const provider = new OAuthProvider('microsoft.com');
+        await signInWithRedirect(this.authFirebase, provider);
+      }
+      return null;
     }
   }
 
-  async logOut(){
-   try {
-    await signOut(this.authFirebase);
-   } catch (error) {
-    throw error;
-   }
+  async logOut() {
+    try {
+      await signOut(this.authFirebase);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  private async syncUserWithDb(user: any) {
+    try {
+      const userExists = await this.crudSrv.getByUid('users', user.uid);
+
+      if (!userExists || (Array.isArray(userExists) && userExists.length === 0)) {
+        console.log('Usuario no existe en BD, registrando...');
+        const nameParts = user.displayName ? user.displayName.split(' ') : ['', ''];
+        await this.crudSrv.register('users', {
+          uid: user.uid,
+          name: nameParts[0] || '',
+          lastName: nameParts.slice(1).join(' ') || '',
+          email: user.email || '',
+          password: '',
+          department: '',
+        }, user.uid);
+      } else {
+        console.log('Usuario ya existe en BD');
+      }
+    } catch (error) {
+      console.error('Error al sincronizar usuario:', error);
+    }
   }
 }
