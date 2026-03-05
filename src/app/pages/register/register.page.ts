@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NavController } from '@ionic/angular';
 import { User } from 'src/app/shared/services/user/user';
 
 @Component({
@@ -21,19 +22,23 @@ export class RegisterPage implements OnInit {
 
 
 
-  constructor(private readonly userSrv: User) {
+  constructor(private readonly userSrv: User, private readonly navSrv: NavController) {
     this.initForm();
    }
 
   ngOnInit() {
   }
 
-  registerUser(){
+ async registerUser(){
 
-    this.userSrv.createUser(this.registerForm.value)
+  await this.userSrv.createUser(this.registerForm.value).then((result) => {
+    this.navSrv.navigateRoot('home')
+  }).catch((error) =>{
 
+    console.log(error);
 
-    console.log(this.registerForm.value);
+  })
+
 
   }
 

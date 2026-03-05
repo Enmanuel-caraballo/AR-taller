@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NavController } from '@ionic/angular';
 import { Event } from 'src/app/shared/services/event/event';
 
 @Component({
@@ -19,7 +20,7 @@ department!: FormControl;
 
 registerForm!: FormGroup;
 
-  constructor(private readonly eventSrv: Event) {
+  constructor(private readonly eventSrv: Event, private readonly navSrv: NavController) {
     this.initForm();
    }
 
@@ -54,7 +55,14 @@ console.log(now);
 public async doSchedule(){
   console.log(this.registerForm.value);
 
-  this.eventSrv.createEvent(this.registerForm.value)
+  await this.eventSrv.createEvent(this.registerForm.value).then((result) =>{
+    this.navSrv.navigateRoot('home')
+  }).catch((error) =>{
+    console.log(error);
+  })
+
+
+
 
 }
 
