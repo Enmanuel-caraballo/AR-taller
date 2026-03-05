@@ -105,9 +105,12 @@ export class Auth {
       return resp.operationType;
 
     } catch (error) {
-      console.error('Error en Microsoft Popup:', error);
-      // Fallback a redirect si el popup es bloqueado
-      if ((error as any).code === 'auth/popup-blocked') {
+      const err = error as any;
+      console.error('Error detallado en Microsoft:', err.code, err.message);
+
+      if (err.code === 'auth/account-exists-with-different-credential') {
+        alert('Ya existe una cuenta con este correo vinculada a otro proveedor (ej. Google). Por favor, usa el método con el que te registraste originalmente o habilita "Múltiples cuentas por correo" en la consola de Firebase.');
+      } else if (err.code === 'auth/popup-blocked') {
         const provider = new OAuthProvider('microsoft.com');
         await signInWithRedirect(this.authFirebase, provider);
       }
