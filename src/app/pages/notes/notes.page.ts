@@ -27,9 +27,15 @@ minDate!: string;
    }
 
   ngOnInit() {
-    const hoy = new Date();
+    // const hoy = new Date();
 
-    this.minDate = hoy.toISOString().slice(0,16);
+    // this.minDate = hoy.setDate(hoy.getDate()-1);
+
+    // console.log(this.minDate);
+    const now = new Date().toISOString()
+
+    const nowCol = formatDate(now, "yyyy-MM-ddTHH:mm:ss", 'es-CO', '-0500');
+    this.minDate = nowCol;
   }
 
 private initForm(){
