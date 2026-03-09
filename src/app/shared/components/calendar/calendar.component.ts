@@ -14,7 +14,7 @@ import { ModalComponent } from '../modal/modal.component';
 import { GlobalEvent } from '../../services/global-event';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 
-//npm run start -- --host=0.0.0.0 --port:8100 
+//npm run start -- --host=0.0.0.0 --port:8100
 
 @Component({
   selector: 'app-calendar',
@@ -153,8 +153,10 @@ this.events = eventsData.map(event => ({
   };
 
   async openCreatePrompt(arg: any) {
-    const clickedDate = new Date(arg.dateStr);
+    const clickedDate = new Date(arg.date);
+
     const today = new Date();
+
     today.setHours(0, 0, 0, 0);
     clickedDate.setHours(0, 0, 0, 0);
 

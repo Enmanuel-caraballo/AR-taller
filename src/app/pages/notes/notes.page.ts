@@ -20,11 +20,16 @@ department!: FormControl;
 
 registerForm!: FormGroup;
 
+minDate!: string;
+
   constructor(private readonly eventSrv: Event, private readonly navSrv: NavController) {
     this.initForm();
    }
 
   ngOnInit() {
+    const hoy = new Date();
+
+    this.minDate = hoy.toISOString().slice(0,16);
   }
 
 private initForm(){
@@ -53,13 +58,22 @@ console.log(now);
 }
 
 public async doSchedule(){
-  console.log(this.registerForm.value);
 
-  await this.eventSrv.createEvent(this.registerForm.value).then((result) =>{
-    this.navSrv.navigateRoot('home')
-  }).catch((error) =>{
-    console.log(error);
-  })
+  // console.log(this.start.value, this.end.value);
+
+
+  if (this.end.value <= this.start.value) {
+    console.log('El evento no puede terminar antes de la fecha inicial');
+  }else{
+
+    console.log(this.registerForm.value);
+
+    await this.eventSrv.createEvent(this.registerForm.value).then((result) =>{
+      this.navSrv.navigateRoot('home')
+    }).catch((error) =>{
+      console.log(error);
+    })
+  }
 
 
 
