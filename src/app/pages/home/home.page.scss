@@ -203,11 +203,6 @@
   padding: 0 5px;
 }
 
-.text-container {
-  padding-left: 1px;
-  flex-shrink: 0; /* Evita que este contenedor se aplaste */
-}
-
 .content-container {
   /* Eliminamos el height: 100% para que el ion-content haga el scroll natural */
   display: flex;

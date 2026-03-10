@@ -32,6 +32,12 @@ export class CalendarComponent implements OnInit {
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
     locale: esLocale,
     dayMaxEvents: 1,
+
+    // height: 'auto',
+    // contentHeight: 'auto',
+
+    eventDisplay: 'block',
+
     moreLinkClick: (info) => {
       this.openModal(info.allSegs.map(s => s.event));
       return 'none';
@@ -109,9 +115,6 @@ this.events = eventsData.map(event => ({
 
     console.log('Eventos cargados:', this.events);
   }
-
-
-
 
 //  if (events) {
 //        events.forEach(event =>{
