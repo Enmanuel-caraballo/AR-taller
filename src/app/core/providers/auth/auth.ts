@@ -3,7 +3,7 @@ import { Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, getRedir
 import { NavController } from '@ionic/angular';
 import { GlobalEvent } from 'src/app/shared/services/global-event';
 import { Crud } from '../crudFirebase/crud';
-import { IUser } from '../../../interfaces/user.interface';
+
 
 @Injectable({
   providedIn: 'root'

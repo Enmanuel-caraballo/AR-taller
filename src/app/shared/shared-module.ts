@@ -39,7 +39,6 @@ const components = [
   TextAreaComponent,
   SelectComponent,
   DateComponent,
-
 ];
 
 const modules = [
@@ -55,7 +54,7 @@ const modules = [
     ...components,
     CalendarComponent,
     CreateEventModalComponent
-    
+
   ],
   imports: [
     CommonModule,
