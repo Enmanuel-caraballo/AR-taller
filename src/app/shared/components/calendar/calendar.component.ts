@@ -93,11 +93,13 @@ this.events = eventsData.map(event => ({
   description: event.description || '',
   department: event.department || '',
   pdv: event.pdv || '',
+  responsible: event.responsible || '',
 
   extendedProps: {
     pdv: event.pdv,
     description: event.description,
-    department: event.department
+    department: event.department,
+    responsible: event.responsible
   }
 }));
     this.calendarOptions = {

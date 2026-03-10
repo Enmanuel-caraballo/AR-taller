@@ -21,7 +21,9 @@ export class HomePage implements OnInit {
 
   async ngOnInit() {
 
-   const uid= await this.authSrv.getCurrentUser();
+   const user= await this.authSrv.getCurrentUser();
+
+   const uid = user?.userUid;
 
    if (uid) {
    const user = this.crudSrv.getByUid('users', uid)

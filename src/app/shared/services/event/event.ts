@@ -3,6 +3,7 @@ import { Auth } from 'src/app/core/providers/auth/auth';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 import { IEvents } from 'src/app/interfaces/events.interface';
 
+
 @Injectable({
   providedIn: 'root',
 })
@@ -11,10 +12,16 @@ export class Event {
 
   async createEvent(event: IEvents): Promise<void> {
     try {
-       const uid = await this.AuthSrv.getCurrentUser();
+       const user = await this.AuthSrv.getCurrentUser();
+      console.log(user);
+
+       const uid = user?.userUid;
       // const uid = 'hola123';
 
-      if (uid) {
+     console.log(user?.userName, '||', user?.userUid);
+
+
+      if (uid != null) {
 
         await this.crudSrv.add('events', {
           uid,
@@ -24,7 +31,7 @@ export class Event {
           // allDay: event.allDay,
           description: event.description,
           department: event.department,
-          // author: event.author,
+          responsible: user?.userName,
           pdv: event.pdv
         }, );
         console.log('Funciona');

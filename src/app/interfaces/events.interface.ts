@@ -5,7 +5,7 @@ export interface IEvents{
   // allDay: boolean;
   description: string;
   department: string;
-  // author: string;
+  responsible: string;
   pdv: string;
 }
 

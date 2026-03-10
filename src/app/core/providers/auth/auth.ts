@@ -3,6 +3,7 @@ import { Auth as AuthFirebase, createUserWithEmailAndPassword, getAuth, getRedir
 import { NavController } from '@ionic/angular';
 import { GlobalEvent } from 'src/app/shared/services/global-event';
 import { Crud } from '../crudFirebase/crud';
+import { IUser } from '../../../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +21,34 @@ export class Auth {
   }
 
   async getCurrentUser() {
-    const user = this.authFirebase.currentUser;
+    const user =  this.authFirebase.currentUser;
 
     if (user) {
-      return user.uid;
+      try {
+        const userData = await this.crudSrv.getByUid('users', user.uid);
+
+
+        console.log(userData);
+
+
+        if (userData && Array.isArray(userData) && userData.length > 0) {
+        return {
+          userUid: user.uid,
+          userName: userData[0].name + ' ' + userData[0].lastName
+        };
+        }
+      } catch (error) {
+         console.error('Error al obtener datos del usuario:', error);
+      }
     }
+
+    // if (user) {
+    //   return {
+    //     userUid: user.uid,
+    //     userName: user.displayName
+    //   }
+
+    // }
 
     return null;
   }
