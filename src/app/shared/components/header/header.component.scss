@@ -1,73 +1,254 @@
-.header{
-  display: grid;
-  grid-template-columns: 80px 1fr 150px;
-  background-color: #6B4E3D;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  overflow: hidden;
-  overflow-x: unset;
-}
+// Variables for easy theming
+$primary-color: #6B4E3D; // The brand brown
+$secondary-color: #FDFBF7; // Cream/Off-white background
+$text-color: #334155; // Dark slate for general text
+$accent-color: #D97706; // An accent color if needed (e.g. for notifications)
+$shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+$shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
 
-.d-header{
-  clip-path: circle(50%);
-  background-color: #6B4E3D;
-  width: 60px;
-  height: 60px;
-  margin-top: 9px;
-  margin-left: 10px;
-  margin-bottom: 3px;
-}
-
-.img-header{
-  height: 100%;
-  width: 100%;
-}
-
-.label-container{
-  font-size: 20px;
-  font-weight: 500;
-  display: block;
-  padding: 20px;
-  opacity: 0.7;
-  text-indent: -40px;
-  padding-left: 50px;
-}
-
-.container-header{
-  --backgroun: transparent;
-  background: transparent;
+.app-header {
+  --background: transparent;
   box-shadow: none;
+  padding: 12px 16px;
+  background-color: $secondary-color;
 }
 
-.button-search{
-  clip-path: circle(50%);
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 8px 16px;
+  box-shadow: $shadow-light;
+  border: 1px solid rgba($primary-color, 0.08);
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: $shadow-hover;
+    border-color: rgba($primary-color, 0.15);
+  }
+}
+
+// Left Section
+.start-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba($primary-color, 0.3);
+  border: 2px solid #FFFFFF;
+}
+
+.user-greeting {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.2;
+
+  .welcome-label {
+    font-size: 0.75rem;
+    color: lighten($primary-color, 20%);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+
+  .user-name {
+    font-size: 1rem;
+    color: $primary-color;
+    font-weight: 700;
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// Right Section
+.end-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
   background: transparent;
-  width: 60px;
-  height: 60px;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: lighten($primary-color, 10%);
+  transition: background 0.2s;
+
+  ion-icon {
+    font-size: 1.4rem;
+  }
+
+  &:hover {
+    background-color: rgba($primary-color, 0.05);
+    color: $primary-color;
+  }
 }
 
-.icon{
-  opacity: 0.6;
-  height: 90%;
-  width: 100%;
-  margin-left: 0px;
+.separator {
+  width: 1px;
+  height: 24px;
+  background-color: rgba($primary-color, 0.15);
+  margin: 0 8px;
 }
 
-.button-challenges{
-  width: 80px;
-  height: 30px;
-  border-radius: 40px;
-  border: solid 2px #FFFFFF;
+.options-btn {
   background: transparent;
-  padding: 4px;
-  text-align: center;
-  opacity: 0.8;
-  margin-right: 4px;
+  border: 1px solid rgba($primary-color, 0.2);
+  border-radius: 20px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: $primary-color;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+
+  ion-icon {
+    font-size: 1rem;
+    transition: transform 0.2s;
+  }
+
+  &:hover {
+    background-color: rgba($primary-color, 0.05);
+    border-color: $primary-color;
+    
+    ion-icon {
+      transform: translateY(2px);
+    }
+  }
+
+  &:active {
+    background-color: rgba($primary-color, 0.1);
+  }
 }
 
-.item-header{
-  display: grid;
-  grid-template-columns: repeat(2,1fr);
-  place-items: center;
+// Popover Customization
+::ng-deep .custom-popover {
+  --width: 200px;
+  --backdrop-opacity: 0.1;
+  --box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+::ng-deep .popover-menu {
+  --background: #FFFFFF;
+  
+  ion-list {
+    padding: 6px;
+    background: #FFFFFF;
+  }
+
+  ion-item {
+    --min-height: 40px;
+    --padding-start: 10px;
+    --padding-end: 10px;
+    --inner-padding-end: 0;
+    --background: transparent;
+    border-radius: 8px;
+    margin-bottom: 2px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: $text-color;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    ion-icon {
+      margin-right: 10px;
+      font-size: 1.1rem;
+      color: lighten($primary-color, 15%);
+    }
+
+    &:hover {
+      --background: rgba($primary-color, 0.04);
+      color: $primary-color;
+
+      ion-icon {
+        color: $primary-color;
+      }
+    }
+  }
+
+  .item-separator {
+    height: 1px;
+    background: rgba(0,0,0,0.06);
+    margin: 4px 8px;
+  }
+
+  .logout-item {
+    color: #EF4444; // Red for danger
+
+    ion-icon {
+      color: #EF4444;
+    }
+
+    &:hover {
+      --background: rgba(239, 68, 68, 0.05);
+      color: #DC2626;
+
+      ion-icon {
+        color: #DC2626;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 576px) {
+  .app-header {
+    padding: 8px 12px;
+  }
+
+  .header-content {
+    padding: 6px 12px;
+    border-radius: 12px;
+  }
+
+  .welcome-label {
+    display: none; // Hide "Bienvenido" on very small screens
+  }
+
+  .user-name {
+    font-size: 0.95rem;
+  }
+  
+  .options-btn {
+    span {
+      display: none; // Hide "Opciones" text on mobile, keep icon
+    }
+    padding: 8px;
+    border-radius: 50%; // Make it circular
+    width: 36px;
+    height: 36px;
+    justify-content: center;
+  }
+  
+  .separator {
+    margin: 0 4px;
+  }
 }

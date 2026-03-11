@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, doc, Firestore, getDocs, query, setDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { IEvents } from 'src/app/interfaces/events.interface';
 import { IUserCreate } from 'src/app/interfaces/user.interface';
 
@@ -52,6 +52,15 @@ export class Crud {
   }
  }
 
+
+ async update(collectionName: string, uid: string, data: Partial<any>) {
+  try {
+    const docRef = doc(this.fireSt, collectionName, uid);
+    await updateDoc(docRef, data);
+  } catch (error) {
+    throw error;
+  }
+ }
 
  async getByUid(collectionName: string, uid: string){
   try {

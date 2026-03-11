@@ -1,30 +1,50 @@
-  <ion-header class="container-header">
-    <div class="header">
-      <div class="picture-container">
-        <div class="d-header">
-          <img src="../../../assets/imgPrueba/enmanuel.jpeg" alt="profile-img" class="img-header">
-        </div>
+<ion-header class="app-header">
+  <div class="header-content">
+    <!-- Left Section: Avatar & Greeting -->
+    <div class="start-section">
+      <div class="avatar-circle">
+        {{ initial }}
       </div>
-      <div class="label-container">
-        <ion-text class="label-h">Welcome {{name}}</ion-text>
-      </div>
-      <div class="item-header">
-        <button class="button-search">
-          <ion-icon class="icon" name="search-circle-outline"></ion-icon>
-        </button>
-
-        <!-- <app-side-menu></app-side-menu> -->
-
-
-      <!-- <ion-buttons slot="end">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons> -->
-         <button class="button-challenges" (click)="openSideBar()">
-          Options
-        </button>
-
-
+      <div class="user-greeting">
+        <span class="welcome-label">Bienvenido,</span>
+        <span class="user-name">{{ name }}</span>
       </div>
     </div>
-  </ion-header>
 
+    <!-- Right Section: Actions -->
+    <div class="end-section">
+      <button class="icon-btn search-btn">
+        <ion-icon name="search-outline"></ion-icon>
+      </button>
+
+      <div class="separator"></div>
+
+      <button id="options-trigger" class="options-btn">
+        <span>Opciones</span>
+        <ion-icon name="chevron-down-outline"></ion-icon>
+      </button>
+
+      <ion-popover trigger="options-trigger" triggerAction="click" [dismissOnSelect]="true" class="custom-popover">
+        <ng-template>
+          <ion-content class="popover-menu">
+            <ion-list lines="none">
+              <ion-item button (click)="openSideBar()" detail="false">
+                <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+                <ion-label>Mi Perfil</ion-label>
+              </ion-item>
+              <ion-item button detail="false">
+                <ion-icon name="settings-outline" slot="start"></ion-icon>
+                <ion-label>Configuración</ion-label>
+              </ion-item>
+              <div class="item-separator"></div>
+              <ion-item button (click)="logout()" lines="none" detail="false" class="logout-item">
+                <ion-icon name="log-out-outline" slot="start"></ion-icon>
+                <ion-label>Cerrar Sesión</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-popover>
+    </div>
+  </div>
+</ion-header>
