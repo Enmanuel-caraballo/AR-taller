@@ -27,10 +27,16 @@ const routes: Routes = [
     ...canActivate(redirectToLogin)
   },
   {
+    path: 'add-task',
+    loadChildren: () => import('./pages/add-task/add-task.module').then( m => m.AddTaskPageModule),
+    ...canActivate(redirectToLogin)
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'
   },
+
 ];
 
 @NgModule({

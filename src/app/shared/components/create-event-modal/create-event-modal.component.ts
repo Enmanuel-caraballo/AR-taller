@@ -20,6 +20,8 @@ export class CreateEventModalComponent {
 
     if (type == 'evento') {
       this.navSrv.navigateRoot('notes')
+    }else if(type == 'tarea'){
+      this.navSrv.navigateRoot('add-task')
     }
     this.modalCtrl.dismiss({ type, date: this.dateStr }, 'confirm');
   }
