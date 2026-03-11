@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from "@ionic/angular";
+import { MenuController, ModalController, PopoverController } from '@ionic/angular';
 import { Auth } from 'src/app/core/providers/auth/auth';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 import { IUser } from 'src/app/interfaces/user.interface';
+import { ModalComponent } from '../modal/modal.component';
+import { ProfileModalComponent } from '../profile-modal/profile-modal.component';
+import { ProfilePopoverComponent } from '../profile-popover/profile-popover.component';
 
 @Component({
   selector: 'app-header',
@@ -11,49 +14,119 @@ import { IUser } from 'src/app/interfaces/user.interface';
   standalone: false,
 })
 export class HeaderComponent implements OnInit {
-  name: string = '';
-  initial: string = '';
-  userUid: string = '';
+  user: IUser | null = null;
+  initials = '';
+
+  isSearchOpen = false;
+  searchQuery = '';
+  searchResults: any[] = [];
+  private allEvents: any[] = [];
 
   constructor(
-    private readonly menuCtrl: MenuController,
+    private readonly authSrv: Auth,
     private readonly crudSrv: Crud,
-    private readonly authSrv: Auth
-  ) { }
+    private readonly modalCtrl: ModalController,
+    private readonly popoverCtrl: PopoverController,
+    private readonly menuCtrl: MenuController
+  ) {}
 
   async ngOnInit() {
-    const user = await this.authSrv.getCurrentUser();
-    if (user) {
-      this.userUid = user.userUid;
-      // Fetch fresh data if needed, or use what's returned
-      // user.userName might already be there, but let's double check with crud if needed
-      // The authSrv.getCurrentUser already fetches from crud, so user.userName should be correct
-      if (user.userName) {
-         this.name = user.userName;
-         this.setInitial();
-      } else {
-         // Fallback if userName is missing in the returned object (though logic in Auth says it returns it)
-         const userData = await this.crudSrv.getByUid('users', this.userUid);
-         if (userData && userData[0]) {
-            this.name = `${userData[0].name}`;
-            this.setInitial();
-         }
+    const currentUser = await this.authSrv.getCurrentUser();
+    if (currentUser?.userUid) {
+      const userData = await this.crudSrv.getByUid('users', currentUser.userUid);
+      if (userData && userData.length > 0) {
+        this.user = userData[0] as IUser;
+        this.initials = this.buildInitials(this.user.name, this.user.lastName);
       }
     }
+    const eventsData = await this.crudSrv.getAll('events');
+    if (eventsData) this.allEvents = eventsData;
   }
 
-  setInitial() {
-    if (this.name) {
-      this.initial = this.name.charAt(0).toUpperCase();
+  buildInitials(name: string, lastName: string): string {
+    return (name?.charAt(0) || '').toUpperCase() + (lastName?.charAt(0) || '').toUpperCase();
+  }
+
+  // ── Popover del avatar (Ver perfil / Cerrar sesión) ───────────────────
+  async openAvatarMenu(event: Event) {
+    const popover = await this.popoverCtrl.create({
+      component: ProfilePopoverComponent,
+      componentProps: {
+        initials: this.initials,
+        userName: `${this.user?.name || ''} ${this.user?.lastName || ''}`.trim(),
+        department: this.user?.department || '',
+        photoURL: this.user?.photoURL || '',
+      },
+      event,
+      cssClass: 'profile-popover',
+      alignment: 'start',
+    });
+    await popover.present();
+
+    const { data } = await popover.onWillDismiss();
+    if (data?.action === 'profile') {
+      this.openProfile();
+    } else if (data?.action === 'logout') {
+      this.authSrv.logOut();
     }
   }
 
-  openSideBar() {
-    this.menuCtrl.open('end');
+  // ── Modal de perfil (ver / editar) ────────────────────────────────────
+  async openProfile() {
+    const modal = await this.modalCtrl.create({
+      component: ProfileModalComponent,
+      componentProps: { user: this.user },
+      cssClass: 'profile-modal',
+      breakpoints: [0, 0.75, 1],
+      initialBreakpoint: 0.75,
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data?.updated && data?.user) {
+      this.user = data.user;
+      this.initials = this.buildInitials(this.user!.name, this.user!.lastName);
+    }
   }
 
-  async logout() {
-    await this.authSrv.logOut();
-    window.location.href = '/login';
+  // ── Menú hamburguesa ──────────────────────────────────────────────────
+  async openMenu() {
+    await this.menuCtrl.open('main-menu');
+  }
+
+  // ── Búsqueda ──────────────────────────────────────────────────────────
+  toggleSearch() {
+    this.isSearchOpen = !this.isSearchOpen;
+    if (!this.isSearchOpen) {
+      this.searchQuery = '';
+      this.searchResults = [];
+    }
+  }
+
+  onSearch(query: string) {
+    this.searchQuery = query;
+    if (!query.trim()) { this.searchResults = []; return; }
+    const q = query.toLowerCase();
+    this.searchResults = this.allEvents
+      .filter(e =>
+        e.title?.toLowerCase().includes(q) ||
+        e.department?.toLowerCase().includes(q) ||
+        e.responsible?.toLowerCase().includes(q)
+      )
+      .slice(0, 6);
+  }
+
+  async selectEvent(event: any) {
+    this.isSearchOpen = false;
+    this.searchQuery = '';
+    this.searchResults = [];
+    const modal = await this.modalCtrl.create({
+      component: ModalComponent,
+      breakpoints: [0, 0.5, 0.75],
+      initialBreakpoint: 0.5,
+      handle: true,
+      cssClass: 'custom-modal',
+      componentProps: { events: [event] },
+    });
+    await modal.present();
   }
 }

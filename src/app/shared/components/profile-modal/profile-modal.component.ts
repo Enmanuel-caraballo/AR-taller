@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { AlertService } from 'src/app/core/providers/alert/alert.service';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 import { IUser } from 'src/app/interfaces/user.interface';
 
@@ -27,7 +28,7 @@ export class ProfileModalComponent implements OnInit {
   constructor(
     private readonly modalCtrl: ModalController,
     private readonly crudSrv: Crud,
-    private readonly toastCtrl: ToastController
+    private readonly alertSrv: AlertService
   ) {}
 
   ngOnInit() {
@@ -113,23 +114,13 @@ export class ProfileModalComponent implements OnInit {
       this.initials = this.getInitials(this.user.name, this.user.lastName);
       this.isEditing = false;
       this.previewPhoto = null;
-      await this.showToast('Perfil actualizado correctamente', 'success');
+      this.alertSrv.toast('Perfil actualizado correctamente');
       this.dismiss({ updated: true, user: this.user });
     } catch (err) {
-      await this.showToast('Error al guardar. Intenta de nuevo.', 'danger');
+      this.alertSrv.error('Error', 'No se pudo guardar el perfil. Inténtalo de nuevo.');
     } finally {
       this.isSaving = false;
     }
   }
 
-  private async showToast(message: string, color: string) {
-    const toast = await this.toastCtrl.create({
-      message,
-      duration: 2500,
-      color,
-      position: 'top',
-      cssClass: 'custom-toast',
-    });
-    await toast.present();
-  }
 }

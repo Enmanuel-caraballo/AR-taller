@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Task } from '../../shared/services/task/task';
 import { NavController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
+import { AlertService } from 'src/app/core/providers/alert/alert.service';
 
 @Component({
   selector: 'app-add-task',
@@ -22,7 +23,11 @@ export class AddTaskPage implements OnInit {
 
   minDate!: string;
 
-  constructor(private readonly taskSrv: Task, private readonly navSrv: NavController) {
+  constructor(
+    private readonly taskSrv: Task,
+    private readonly navSrv: NavController,
+    private readonly alertSrv: AlertService
+  ) {
     this.initForm()
   }
 
@@ -53,20 +58,21 @@ export class AddTaskPage implements OnInit {
     })
   }
 
-  public async addTask(){
-
-    if (this.limitDate.value< this.minDate) {
-      alert('La fecha de finalización no puede ser menor a la actual')
-    }else{
-
-      await this.taskSrv.createTask(this.FormTask.value).then((resolve) =>{
-       this.navSrv.navigateRoot('home');
-      }).catch((error) =>{
-       console.log(error);
-      })
-
+  public async addTask() {
+    if (this.limitDate.value < this.minDate) {
+      this.alertSrv.warning('Fecha inválida', 'La fecha de finalización no puede ser menor a la actual');
+      return;
     }
 
+    await this.taskSrv.createTask(this.FormTask.value)
+      .then(() => {
+        this.alertSrv.toast('Tarea creada exitosamente');
+        this.navSrv.navigateRoot('home');
+      })
+      .catch((error) => {
+        console.log(error);
+        this.alertSrv.error('Error', 'No se pudo crear la tarea. Inténtalo de nuevo.');
+      });
   }
 
 }

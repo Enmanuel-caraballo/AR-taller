@@ -1,19 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { MenuController, NavController } from '@ionic/angular';
 import { Auth } from 'src/app/core/providers/auth/auth';
 
 @Component({
   selector: 'app-side-menu',
   templateUrl: './side-menu.component.html',
   styleUrls: ['./side-menu.component.scss'],
-  standalone: false
+  standalone: false,
 })
-export class SideMenuComponent  implements OnInit {
+export class SideMenuComponent {
+  constructor(
+    private readonly menuCtrl: MenuController,
+    private readonly navCtrl: NavController,
+    private readonly authSrv: Auth
+  ) {}
 
-  constructor(private readonly authSrv: Auth) { }
+  async navigate(route: string) {
+    await this.menuCtrl.close('main-menu');
+    this.navCtrl.navigateRoot(route);
+  }
 
-  ngOnInit() {}
+  async closeMenu() {
+    await this.menuCtrl.close('main-menu');
+  }
 
-  signOut(){
+  async signOut() {
+    await this.menuCtrl.close('main-menu');
     this.authSrv.logOut();
   }
 }
