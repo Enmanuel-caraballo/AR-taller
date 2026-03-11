@@ -95,8 +95,11 @@ full-calendar {
 ::ng-deep .fc-toolbar-title {
   color: #3b281f !important; /* El mismo tono marrón oscuro de los números */
   display: inline-block;
+  max-width: 250px !important;
+  min-width: 200px !important;
 }
 
 ::ng-deep .fc-toolbar-title::first-letter {
   text-transform: uppercase !important;
+  // font-size: 5px !important;
 }
