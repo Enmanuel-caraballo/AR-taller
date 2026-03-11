@@ -25,6 +25,7 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 import { CreateEventModalComponent } from './components/create-event-modal/create-event-modal.component';
 import { ProfileModalComponent } from './components/profile-modal/profile-modal.component';
 import { OptionsPopoverComponent } from './components/options-popover/options-popover.component';
+import { ProfilePopoverComponent } from './components/profile-popover/profile-popover.component';
 
 registerLocaleData(localeEsCo);
 registerSwiperElement();
@@ -59,6 +60,7 @@ const modules = [
     CreateEventModalComponent,
     ProfileModalComponent,
     OptionsPopoverComponent,
+    ProfilePopoverComponent,
   ],
   imports: [
     CommonModule,
@@ -73,6 +75,7 @@ const modules = [
     CreateEventModalComponent,
     ProfileModalComponent,
     OptionsPopoverComponent,
+    ProfilePopoverComponent,
   ]
 })
 export class SharedModule { }

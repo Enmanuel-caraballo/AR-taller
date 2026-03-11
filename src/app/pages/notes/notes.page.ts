@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { Event } from 'src/app/shared/services/event/event';
+import { AlertService } from 'src/app/core/providers/alert/alert.service';
 
 @Component({
   selector: 'app-notes',
@@ -22,7 +23,11 @@ registerForm!: FormGroup;
 
 minDate!: string;
 
-  constructor(private readonly eventSrv: Event, private readonly navSrv: NavController) {
+  constructor(
+    private readonly eventSrv: Event,
+    private readonly navSrv: NavController,
+    private readonly alertSrv: AlertService
+  ) {
     this.initForm();
    }
 
@@ -63,24 +68,21 @@ console.log(now);
   });
 }
 
-public async doSchedule(){
-
+public async doSchedule() {
   if (this.end.value <= this.start.value) {
-    alert('El evento no puede terminar antes de la fecha inicial');
-  }else{
-
-    console.log(this.registerForm.value);
-
-    await this.eventSrv.createEvent(this.registerForm.value).then((result) =>{
-      this.navSrv.navigateRoot('home')
-    }).catch((error) =>{
-      console.log(error);
-    })
+    this.alertSrv.warning('Fechas inválidas', 'El evento no puede terminar antes de la fecha inicial');
+    return;
   }
 
-
-
-
+  await this.eventSrv.createEvent(this.registerForm.value)
+    .then(() => {
+      this.alertSrv.toast('Evento creado exitosamente');
+      this.navSrv.navigateRoot('home');
+    })
+    .catch((error) => {
+      console.log(error);
+      this.alertSrv.error('Error', 'No se pudo crear el evento. Inténtalo de nuevo.');
+    });
 }
 
 }
