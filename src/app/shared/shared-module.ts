@@ -41,6 +41,7 @@ const components = [
   TextAreaComponent,
   SelectComponent,
   DateComponent,
+  OptionsPopoverComponent
 ];
 
 const modules = [

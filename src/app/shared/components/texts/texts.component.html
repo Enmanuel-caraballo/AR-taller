@@ -4,10 +4,10 @@
   <div class="section-header">
     <div class="section-title-group">
       <ion-icon name="calendar-outline" class="section-icon"></ion-icon>
-      <span class="section-title">Próximos eventos</span>
+      <span class="section-title">Mis tareas</span>
     </div>
-    <button class="see-all-btn" routerLink="/notes" aria-label="Ver todos los eventos">
-      Ver todos
+    <button class="see-all-btn" routerLink="/notes" aria-label="Ver todas mis tareas">
+      Ver todo
       <ion-icon name="chevron-forward-outline"></ion-icon>
     </button>
   </div>
@@ -19,10 +19,12 @@
 
   <!-- Carrusel de eventos -->
   <swiper-container
+  *ngIf="!isLoading && events.length > 0"
     class="events-swiper"
-    slides-per-view="1.18"
-    space-between="12"
-    *ngIf="!isLoading && events.length > 0"
+    slides-per-view="1"
+    loop="true"
+    centered-slides="false"
+    autoplay='true'
   >
     <swiper-slide *ngFor="let event of events; let i = index">
       <div class="event-card">

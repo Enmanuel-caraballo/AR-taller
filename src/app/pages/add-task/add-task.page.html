@@ -7,7 +7,7 @@
 </app-side-menu>
 
 <ion-content [fullscreen]="true">
- <form [formGroup]="FormTask">
+ <form [formGroup]="FormTask" (ngSubmit)="addTask()">
   <ion-card>
     <ion-card-content>
 
@@ -20,7 +20,10 @@
         <ion-datetime-button datetime="limitDate"></ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
-            <ion-datetime id="limitDate" formControlName="limitTime"></ion-datetime>
+            <ion-datetime
+            [min]="minDate"
+            id="limitDate"
+            formControlName="limitDate"></ion-datetime>
           </ng-template>
         </ion-modal>
       </ion-item>

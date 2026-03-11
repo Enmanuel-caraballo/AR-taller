@@ -65,9 +65,6 @@ console.log(now);
 
 public async doSchedule(){
 
-  // console.log(this.start.value, this.end.value);
-
-
   if (this.end.value <= this.start.value) {
     alert('El evento no puede terminar antes de la fecha inicial');
   }else{

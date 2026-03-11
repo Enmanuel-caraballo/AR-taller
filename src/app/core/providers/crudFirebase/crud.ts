@@ -24,7 +24,7 @@ export class Crud {
   async add(collectionName: string, data:any,){
     try {
       const docRef = collection(this.fireSt, collectionName);
-      return await addDoc(docRef,data)
+      return await addDoc(docRef,data);
     } catch (error) {
       throw error;
     }

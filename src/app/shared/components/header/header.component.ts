@@ -35,7 +35,7 @@ export class HeaderComponent implements OnInit {
          // Fallback if userName is missing in the returned object (though logic in Auth says it returns it)
          const userData = await this.crudSrv.getByUid('users', this.userUid);
          if (userData && userData[0]) {
-            this.name = `${userData[0].name} ${userData[0].lastName}`;
+            this.name = `${userData[0].name}`;
             this.setInitial();
          }
       }
@@ -54,8 +54,6 @@ export class HeaderComponent implements OnInit {
 
   async logout() {
     await this.authSrv.logOut();
-    // Redirect handled by auth guard or we might need to nav to login
-    // Assuming auth service or app logic handles redirect, but let's be safe
     window.location.href = '/login';
   }
 }

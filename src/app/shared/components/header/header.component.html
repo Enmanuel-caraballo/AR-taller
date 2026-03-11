@@ -1,13 +1,12 @@
 <ion-header class="app-header">
   <div class="header-content">
     <!-- Left Section: Avatar & Greeting -->
-    <div class="start-section">
-      <div class="avatar-circle">
+    <div class="start-section" >
+      <div class="avatar-circle" id="options-trigger">
         {{ initial }}
       </div>
       <div class="user-greeting">
-        <span class="welcome-label">Bienvenido,</span>
-        <span class="user-name">{{ name }}</span>
+        <span class="user-name">Hello, {{ name }}</span>
       </div>
     </div>
 
@@ -19,12 +18,12 @@
 
       <div class="separator"></div>
 
-      <button id="options-trigger" class="options-btn">
+      <button (click)="openSideBar()" class="options-btn">
         <span>Opciones</span>
         <ion-icon name="chevron-down-outline"></ion-icon>
       </button>
 
-      <ion-popover trigger="options-trigger" triggerAction="click" [dismissOnSelect]="true" class="custom-popover">
+      <ion-popover button (click)="openSideBar()" trigger="options-trigger" triggerAction="click" [dismissOnSelect]="true" class="custom-popover">
         <ng-template>
           <ion-content class="popover-menu">
             <ion-list lines="none">

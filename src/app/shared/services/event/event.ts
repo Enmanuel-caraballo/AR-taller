@@ -16,7 +16,6 @@ export class Event {
       console.log(user);
 
        const uid = user?.userUid;
-      // const uid = 'hola123';
 
      console.log(user?.userName, '||', user?.userUid);
 

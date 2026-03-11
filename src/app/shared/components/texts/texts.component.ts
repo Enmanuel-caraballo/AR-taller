@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
+import { Categories } from '../../services/jsonsProviders';
 
 @Component({
   selector: 'app-texts',
@@ -15,18 +16,19 @@ export class TextsComponent implements OnInit {
     '#6B4E3D', '#5A6B4E', '#4E5A6B', '#6B5A4E', '#7C6B4E', '#4E6B6B',
   ];
 
-  constructor(private readonly crudSrv: Crud) {}
+  constructor(private readonly crudSrv: Crud, private readonly providerJsonSrv: Categories) {}
 
   async ngOnInit() {
+
     try {
       const data = await this.crudSrv.getAll('events');
       if (data) {
         const now = new Date();
         now.setHours(0, 0, 0, 0);
         this.events = data
-          .filter(e => new Date(e.start) >= now)
-          .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
-          .slice(0, 10);
+        // .filter(e => new Date(e.start) >= now)
+        //   .sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime())
+        //   .slice(0, 10); 
       }
     } catch (err) {
       console.error('Error loading events:', err);
