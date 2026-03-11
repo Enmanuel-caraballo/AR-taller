@@ -68,6 +68,7 @@ swiper-slide {
 // ─── Tarjeta de evento ────────────────────────────────────────────────────
 .event-card {
   display: flex;
+  margin: 10px;
   background: #FFFFFF;
   border-radius: 16px;
   box-shadow:
@@ -79,7 +80,7 @@ swiper-slide {
 
   &:active {
     transform: scale(0.98);
-    box-shadow: 0 1px 6px rgba(107, 78, 61, 0.08);
+    --box-shadow: 0 1px 6px rgba(107, 78, 61, 0.08);
   }
 }
 
