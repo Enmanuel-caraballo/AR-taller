@@ -85,3 +85,34 @@ body {
   width: 0;
   height: 0;
 }
+
+// ─── Profile Modal ─────────────────────────────────────────────────────────
+.profile-modal {
+  --border-radius: 24px 24px 0 0;
+  --box-shadow: 0 -4px 32px rgba(107, 78, 61, 0.18);
+  --background: #FEFAF4;
+
+  ion-modal {
+    --border-radius: 24px 24px 0 0;
+  }
+}
+
+// ─── Options Popover ───────────────────────────────────────────────────────
+.options-popover {
+  --background: #FFFFFF;
+  --border-radius: 14px;
+  --box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 2px 8px rgba(0, 0, 0, 0.08);
+  --width: 220px;
+
+  .popover-content {
+    border-radius: 14px;
+    overflow: hidden;
+  }
+}
+
+// ─── Custom Toast ──────────────────────────────────────────────────────────
+.custom-toast {
+  --border-radius: 12px;
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  font-weight: 500;
+}

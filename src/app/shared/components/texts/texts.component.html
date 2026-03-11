@@ -1,30 +1,75 @@
-<swiper-container class="s"
-slides-per-view="1"
-loop="true"
-centered-slides="false"
-autoplay='
-{
-  "delay": 4000,
-  "disableOnInteraction": false
-}'
->
-  <swiper-slide
-  class="label-container" *ngFor="let item of events">
+<div class="upcoming-section">
 
-  <ion-card class="card">
-  <ion-card-header>
-    <ion-card-title class="title">{{item.title}}</ion-card-title>
-    <ion-card-subtitle class="subtitle">{{item.start}}</ion-card-subtitle>
-  </ion-card-header>
+  <!-- Encabezado de sección -->
+  <div class="section-header">
+    <div class="section-title-group">
+      <ion-icon name="calendar-outline" class="section-icon"></ion-icon>
+      <span class="section-title">Próximos eventos</span>
+    </div>
+    <button class="see-all-btn" routerLink="/notes" aria-label="Ver todos los eventos">
+      Ver todos
+      <ion-icon name="chevron-forward-outline"></ion-icon>
+    </button>
+  </div>
 
-  <!-- <ion-card-content>
-    Here's a small text description for the card content. Nothing more, nothing less.
-  </ion-card-content> -->
-</ion-card>
+  <!-- Skeleton de carga -->
+  <div class="skeleton-row" *ngIf="isLoading">
+    <div class="skeleton-card" *ngFor="let s of skeletons"></div>
+  </div>
 
+  <!-- Carrusel de eventos -->
+  <swiper-container
+    class="events-swiper"
+    slides-per-view="1.18"
+    space-between="12"
+    *ngIf="!isLoading && events.length > 0"
+  >
+    <swiper-slide *ngFor="let event of events; let i = index">
+      <div class="event-card">
 
+        <!-- Badge de fecha -->
+        <div class="date-badge" [style.background]="getAccentColor(i)">
+          <span class="badge-tag" *ngIf="getDayLabel(event.start)">
+            {{ getDayLabel(event.start) }}
+          </span>
+          <span class="badge-day">{{ getDayOfMonth(event.start) }}</span>
+          <span class="badge-month">{{ getMonthShort(event.start) }}</span>
+        </div>
 
-<!-- <ion-text class="label-h">{{item.title}}</ion-text> -->
-<!-- <ion-text class="label-h">{{item.start}}</ion-text> -->
- </swiper-slide>
-</swiper-container>
+        <!-- Contenido del evento -->
+        <div class="event-body">
+          <p class="event-title">{{ event.title }}</p>
+
+          <div class="event-meta">
+            <div class="meta-item" *ngIf="event.department">
+              <ion-icon name="business-outline"></ion-icon>
+              <span>{{ event.department }}</span>
+            </div>
+            <div class="meta-item" *ngIf="event.responsible">
+              <ion-icon name="person-outline"></ion-icon>
+              <span>{{ event.responsible }}</span>
+            </div>
+          </div>
+
+          <div class="event-time" *ngIf="event.start">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{ event.start | date:'HH:mm' }}
+              <ng-container *ngIf="event.end"> – {{ event.end | date:'HH:mm' }}</ng-container>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </swiper-slide>
+  </swiper-container>
+
+  <!-- Estado vacío -->
+  <div class="empty-state" *ngIf="!isLoading && events.length === 0">
+    <div class="empty-icon-wrap">
+      <ion-icon name="calendar-clear-outline"></ion-icon>
+    </div>
+    <p class="empty-title">Sin eventos próximos</p>
+    <p class="empty-sub">Los nuevos eventos aparecerán aquí</p>
+  </div>
+
+</div>

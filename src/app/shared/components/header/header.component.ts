@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { IonText } from "@ionic/angular/standalone";
-import { IonicModule, MenuController } from "@ionic/angular";
+import { MenuController } from "@ionic/angular";
 import { Auth } from 'src/app/core/providers/auth/auth';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
-import { IUser, IUserCreate } from 'src/app/interfaces/user.interface';
-import { GlobalEvent } from 'src/app/shared/services/global-event';
-
+import { IUser } from 'src/app/interfaces/user.interface';
 
 @Component({
   selector: 'app-header',
@@ -13,37 +10,52 @@ import { GlobalEvent } from 'src/app/shared/services/global-event';
   styleUrls: ['./header.component.scss'],
   standalone: false,
 })
-export class HeaderComponent  implements OnInit {
+export class HeaderComponent implements OnInit {
   name: string = '';
+  initial: string = '';
+  userUid: string = '';
 
-  openSideBar(){
-    this.menuCtrl.open('end');
-  }
-  constructor(private readonly menuCtrl: MenuController, private readonly crudSrv: Crud, private readonly authSrv: Auth ) { }
+  constructor(
+    private readonly menuCtrl: MenuController,
+    private readonly crudSrv: Crud,
+    private readonly authSrv: Auth
+  ) { }
 
   async ngOnInit() {
-
-   const user= await this.authSrv.getCurrentUser();
-
-   const uid = user?.userUid;
-
-   if (uid) {
-   const user = await this.crudSrv.getByUid('users', uid);
-
-    if(user){
-      const mappedUser: IUser = user[0]
-
-      this.name = mappedUser.name
-
+    const user = await this.authSrv.getCurrentUser();
+    if (user) {
+      this.userUid = user.userUid;
+      // Fetch fresh data if needed, or use what's returned
+      // user.userName might already be there, but let's double check with crud if needed
+      // The authSrv.getCurrentUser already fetches from crud, so user.userName should be correct
+      if (user.userName) {
+         this.name = user.userName;
+         this.setInitial();
+      } else {
+         // Fallback if userName is missing in the returned object (though logic in Auth says it returns it)
+         const userData = await this.crudSrv.getByUid('users', this.userUid);
+         if (userData && userData[0]) {
+            this.name = `${userData[0].name} ${userData[0].lastName}`;
+            this.setInitial();
+         }
+      }
     }
+  }
 
-   console.log(this.name);
+  setInitial() {
+    if (this.name) {
+      this.initial = this.name.charAt(0).toUpperCase();
+    }
+  }
 
-   }else{
-    console.log('No se recupero el usuario');
+  openSideBar() {
+    this.menuCtrl.open('end');
+  }
 
-   }
-
-
+  async logout() {
+    await this.authSrv.logOut();
+    // Redirect handled by auth guard or we might need to nav to login
+    // Assuming auth service or app logic handles redirect, but let's be safe
+    window.location.href = '/login';
   }
 }
