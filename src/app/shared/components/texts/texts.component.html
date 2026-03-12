@@ -31,11 +31,11 @@
 
         <!-- Badge de fecha -->
         <div class="date-badge" [style.background]="getAccentColor(i)">
-          <span class="badge-tag" *ngIf="getDayLabel(event.start)">
-            {{ getDayLabel(event.start) }}
+          <span class="badge-tag" *ngIf="getDayLabel(event.limitDate)">
+            {{ getDayLabel(event.limitDate) }}
           </span>
-          <span class="badge-day">{{ getDayOfMonth(event.start) }}</span>
-          <span class="badge-month">{{ getMonthShort(event.start) }}</span>
+          <span class="badge-day">{{ getDayOfMonth(event.limitDate) }}</span>
+          <span class="badge-month">{{ getMonthShort(event.limitDate) }}</span>
         </div>
 
         <!-- Contenido del evento -->
@@ -43,20 +43,20 @@
           <p class="event-title">{{ event.title }}</p>
 
           <div class="event-meta">
-            <div class="meta-item" *ngIf="event.department">
-              <ion-icon name="business-outline"></ion-icon>
-              <span>{{ event.department }}</span>
+            <div class="meta-item" *ngIf="event.link">
+              <ion-icon name="arrow-redo-outline"></ion-icon>
+              <a [href]="event.link">{{ event.link }}</a>
             </div>
-            <div class="meta-item" *ngIf="event.responsible">
-              <ion-icon name="person-outline"></ion-icon>
-              <span>{{ event.responsible }}</span>
+            <div class="meta-item" *ngIf="event.limitDate">
+              <ion-icon name="today-outline"></ion-icon>
+              <span>Fecha limite: {{ event.limitDate | date:'dd/MM/yyyy'}}</span>
             </div>
           </div>
 
           <div class="event-time" *ngIf="event.start">
             <ion-icon name="time-outline"></ion-icon>
             <span>{{ event.start | date:'HH:mm' }}
-              <ng-container *ngIf="event.end"> – {{ event.end | date:'HH:mm' }}</ng-container>
+              <ng-container *ngIf="event.end">  {{ event.end | date:'HH:mm' }}</ng-container>
             </span>
           </div>
         </div>
@@ -70,8 +70,8 @@
     <div class="empty-icon-wrap">
       <ion-icon name="calendar-clear-outline"></ion-icon>
     </div>
-    <p class="empty-title">Sin eventos próximos</p>
-    <p class="empty-sub">Los nuevos eventos aparecerán aquí</p>
+    <p class="empty-title">Sin tareas pendientes</p>
+    <p class="empty-sub">Tus tareas pendientes aparecerán aquí</p>
   </div>
 
 </div>

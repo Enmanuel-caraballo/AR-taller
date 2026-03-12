@@ -6,6 +6,7 @@ import { IUser } from 'src/app/interfaces/user.interface';
 import { ModalComponent } from '../modal/modal.component';
 import { ProfileModalComponent } from '../profile-modal/profile-modal.component';
 import { ProfilePopoverComponent } from '../profile-popover/profile-popover.component';
+import { IEvents } from 'src/app/interfaces/events.interface';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +21,7 @@ export class HeaderComponent implements OnInit {
   isSearchOpen = false;
   searchQuery = '';
   searchResults: any[] = [];
-  private allEvents: any[] = [];
+  private allEvents: IEvents[] = [];
 
   constructor(
     private readonly authSrv: Auth,
@@ -110,7 +111,8 @@ export class HeaderComponent implements OnInit {
       .filter(e =>
         e.title?.toLowerCase().includes(q) ||
         e.department?.toLowerCase().includes(q) ||
-        e.responsible?.toLowerCase().includes(q)
+        e.responsible?.toLowerCase().includes(q) ||
+        e.pdv?.toLowerCase().includes(q)
       )
       .slice(0, 6);
   }

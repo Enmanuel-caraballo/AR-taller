@@ -83,7 +83,7 @@ export class CalendarComponent implements OnInit {
 
   }
 
-  constructor(private readonly providerJsonSrv: Categories, private readonly modalCtrl: ModalController, private readonly globaEventSrv: GlobalEvent, private readonly crudSrv: Crud) { }
+  constructor(private readonly modalCtrl: ModalController, private readonly globaEventSrv: GlobalEvent, private readonly crudSrv: Crud) { }
 
   async ngOnInit() {
 
