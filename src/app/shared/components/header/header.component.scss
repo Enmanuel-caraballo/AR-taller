@@ -105,6 +105,30 @@ $bg: #FDFBF7;
 
 .hamburger-btn ion-icon { font-size: 1.55rem; }
 
+// ── Botón notificaciones + badge ─────────────────────────────────────────
+.notif-btn { position: relative; }
+
+.notif-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  background: #e53935;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  border: 1.5px solid #fff;
+  line-height: 1;
+  box-shadow: 0 1px 4px rgba(229, 57, 53, .45);
+}
+
 .icon-btn {
   background: transparent;
   border: none;
@@ -153,6 +177,93 @@ $bg: #FDFBF7;
   }
   &::-webkit-search-cancel-button,
   &::-webkit-search-decoration { display: none; }
+}
+
+// ── Fila de filtros ──────────────────────────────────────────────────────
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 6px 14px 0;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba($primary, .12);
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,.04);
+}
+
+.filter-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  min-width: 0;
+  height: 38px;
+}
+
+.filter-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba($primary, .12);
+  flex-shrink: 0;
+}
+
+.filter-icon {
+  font-size: 15px;
+  color: rgba($primary, .55);
+  flex-shrink: 0;
+}
+
+.filter-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: .82rem;
+  color: #334155;
+  font-family: inherit;
+  min-width: 0;
+  height: 100%;
+
+  &::placeholder { color: rgba($primary, .38); }
+
+  // iOS date input fix
+  &[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    color: #334155;
+
+    &::-webkit-date-and-time-value { text-align: left; }
+    &::-webkit-calendar-picker-indicator {
+      opacity: 0.5;
+      cursor: pointer;
+    }
+  }
+
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration { display: none; }
+}
+
+.filter-clear-x {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: rgba($primary, .45);
+  font-size: 15px;
+  line-height: 0;
+  transition: color .15s;
+
+  &:active { color: $primary; }
+}
+
+.result-pdv {
+  color: rgba($primary, .7);
+  font-weight: 500;
 }
 
 .search-dropdown {

@@ -82,8 +82,40 @@ export class Crud {
     console.log('Error al obtener', error);
     return;
   }
-
-
  }
+
+ async getNotifications(uid: string) {
+  try {
+    const ref = collection(this.fireSt, 'notifications');
+    const q = query(ref, where('to', '==', uid));
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) return [];
+    return snapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() }))
+      .sort((a: any, b: any) => new Date(b['date']).getTime() - new Date(a['date']).getTime());
+  } catch (error) {
+    console.error('Error getting notifications', error);
+    return [];
+  }
+ }
+
+ async getByPdv(collectionName: string, pdv: string) {
+  try {
+    const ref = collection(this.fireSt, collectionName);
+    const q = query(ref, where("pdv", "==", pdv));
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      return [];
+    }
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...(doc.data() as IEvents)
+    }));
+  } catch (error) {
+    console.log('Error getting events by pdv', error);
+    return [];
+  }
+}
 
 }

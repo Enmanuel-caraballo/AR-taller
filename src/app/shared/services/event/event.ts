@@ -21,6 +21,12 @@ export class Event {
 
 
       if (uid != null) {
+        
+        // Check for conflicts before creating
+        const conflictingEvent = await this.checkConflict(event);
+        if (conflictingEvent) {
+          throw { code: 'conflict', event: conflictingEvent };
+        }
 
         await this.crudSrv.add('events', {
           uid,
@@ -41,7 +47,54 @@ export class Event {
 
     } catch (error) {
       console.log(error);
+      throw error; // Re-throw to handle in component
+    }
+  }
 
+  async checkConflict(newEvent: IEvents): Promise<IEvents | null> {
+    try {
+      const existingEvents: any[] = await this.crudSrv.getByPdv('events', newEvent.pdv);
+      
+      const newStart = new Date(newEvent.start).getTime();
+      const newEnd = new Date(newEvent.end).getTime();
+
+      for (const existingEvent of existingEvents) {
+        const existingStart = new Date(existingEvent.start).getTime();
+        const existingEnd = new Date(existingEvent.end).getTime();
+
+        // Check if ranges overlap
+        // Overlap if (StartA <= EndB) and (EndA >= StartB)
+        // But strict inequality for open intervals? Usually [Start, End) or [Start, End].
+        // "coincide in the database" implies any overlap.
+        // Assuming [Start, End) for events usually.
+        // (StartA < EndB) && (EndA > StartB) covers all overlap cases.
+        if (newStart < existingEnd && newEnd > existingStart) {
+          return existingEvent;
+        }
+      }
+      return null;
+    } catch (error) {
+      console.error('Error checking conflict', error);
+      return null;
+    }
+  }
+
+  async sendNotification(targetUid: string, message: string): Promise<void> {
+    try {
+      const user = await this.AuthSrv.getCurrentUser();
+      if (user && user.userUid) {
+        await this.crudSrv.add('notifications', {
+          to: targetUid,
+          from: user.userUid,
+          message: message,
+          date: new Date().toISOString(),
+          read: false
+        });
+        console.log('Notification sent to', targetUid);
+      }
+    } catch (error) {
+      console.error('Error sending notification', error);
+      throw error;
     }
   }
 }
