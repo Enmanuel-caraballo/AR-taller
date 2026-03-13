@@ -98,6 +98,7 @@ public async doSchedule() {
         }
       } else {
         console.log(error);
+        //nada
         this.alertSrv.error('Error', 'No se pudo crear el evento. Inténtalo de nuevo.');
       }
     }
