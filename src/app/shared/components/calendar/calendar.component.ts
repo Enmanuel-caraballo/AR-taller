@@ -33,8 +33,6 @@ export class CalendarComponent implements OnInit {
     locale: esLocale,
     dayMaxEvents: 1,
 
-    // height: 'auto',
-    // contentHeight: 'auto',
 
     eventDisplay: 'block',
 
@@ -88,6 +86,8 @@ export class CalendarComponent implements OnInit {
   async ngOnInit() {
 
     const eventsData = await this.crudSrv.getAll('events');
+   eventsData ? this.globaEventSrv.setEvents(eventsData) : console.log('Sin Eventos');
+
 
   if (eventsData) {
     // Mapeamos los eventos a la interfaz

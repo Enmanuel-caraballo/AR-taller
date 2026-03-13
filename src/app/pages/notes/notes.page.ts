@@ -32,9 +32,7 @@ minDate!: string;
    }
 
   ngOnInit() {
-    // const hoy = new Date();
 
-    // this.minDate = hoy.setDate(hoy.getDate()-1);
 
     // console.log(this.minDate);
     const now = new Date().toISOString()
@@ -81,7 +79,7 @@ public async doSchedule() {
     })
     .catch((error) => {
       console.log(error);
-      this.alertSrv.error('Error', 'No se pudo crear el evento. Inténtalo de nuevo.');
+      this.alertSrv.error('Error ', 'No se pudo crear el evento. Inténtalo de nuevo.');
     });
 }
 
