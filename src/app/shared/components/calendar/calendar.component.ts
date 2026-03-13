@@ -11,6 +11,7 @@ import { Categories } from '../../services/jsonsProviders';
 import { IEvents } from 'src/app/interfaces/events.interface';
 import { ModalController } from '@ionic/angular';
 import { ModalComponent } from '../modal/modal.component';
+import { DetailModalComponent } from '../detail-modal/detail-modal.component';
 import { GlobalEvent } from '../../services/global-event';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 
@@ -59,28 +60,25 @@ export class CalendarComponent implements OnInit {
     const mappedEvents = events.map(ev => ({
       id: ev.id,
       title: ev.title,
-      start: ev.start,
-      end: ev.end,
+      start: ev.start instanceof Date ? ev.start.toISOString() : ev.start,
+      end: ev.end instanceof Date ? ev.end.toISOString() : ev.end,
       allDay: ev.allDay,
       ...ev.extendedProps
     }));
 
-    console.log(mappedEvents);
-
     const modal = await this.modalCtrl.create({
-      component: ModalComponent,
-      breakpoints: [0, 0.25, 0.5, 0.75],
-      initialBreakpoint: 0.75,
-      handle: true,
+      component: DetailModalComponent,
+      breakpoints: [0, 0.5, 0.75, 1],
+      initialBreakpoint: mappedEvents.length === 1 ? 0.75 : 1,
+      handle: false,
       cssClass: 'custom-modal',
       componentProps: {
-        events: mappedEvents
+        items: mappedEvents,
+        type: 'evento'
       }
-
     });
 
     await modal.present();
-
   }
 
   constructor(private readonly modalCtrl: ModalController, private readonly globaEventSrv: GlobalEvent, private readonly crudSrv: Crud) { }

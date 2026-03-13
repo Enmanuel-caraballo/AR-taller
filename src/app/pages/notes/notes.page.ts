@@ -69,21 +69,41 @@ console.log(now);
 }
 
 public async doSchedule() {
-  if (this.end.value <= this.start.value) {
-    this.alertSrv.warning('Fechas inválidas', 'El evento no puede terminar antes de la fecha inicial');
-    return;
-  }
+    if (new Date(this.end.value) <= new Date(this.start.value)) {
+      this.alertSrv.warning('Fechas inválidas', 'El evento no puede terminar antes de la fecha inicial');
+      return;
+    }
 
-  await this.eventSrv.createEvent(this.registerForm.value)
-    .then(() => {
+    try {
+      await this.eventSrv.createEvent(this.registerForm.value);
       this.alertSrv.toast('Evento creado exitosamente');
       this.navSrv.navigateRoot('home');
-    })
-    .catch((error) => {
-      console.log(error);
-      this.alertSrv.error('Error', 'No se pudo crear el evento. Inténtalo de nuevo.');
-    });
-}
+    } catch (error: any) {
+      if (error.code === 'conflict') {
+        const conflictingEvent = error.event;
+        const result = await this.alertSrv.showConflictDialog(conflictingEvent.responsible || 'Desconocido');
+
+        if (result.isConfirmed) {
+          if (conflictingEvent.uid) {
+            try {
+              await this.eventSrv.sendNotification(
+                conflictingEvent.uid,
+                `Conflicto de horario en PDV ${this.pdv.value}. Intento de agendar evento: ${this.title.value} (${this.start.value} - ${this.end.value})`
+              );
+              this.alertSrv.success('Notificación enviada', 'El responsable ha sido notificado.');
+            } catch (e) {
+              this.alertSrv.error('Error', 'No se pudo enviar la notificación.');
+            }
+          } else {
+            this.alertSrv.warning('Error', 'No se puede notificar al usuario (UID no encontrado).');
+          }
+        }
+      } else {
+        console.log(error);
+        this.alertSrv.error('Error', 'No se pudo crear el evento. Inténtalo de nuevo.');
+      }
+    }
+  }
 
 }
 

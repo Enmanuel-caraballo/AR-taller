@@ -16,10 +16,15 @@
       </div>
     </div>
 
-    <!-- Derecha: búsqueda + hamburguesa -->
+    <!-- Derecha: búsqueda + notificaciones + hamburguesa -->
     <div class="end-section">
       <button class="icon-btn" (click)="toggleSearch()" aria-label="Buscar eventos">
         <ion-icon name="search-outline"></ion-icon>
+      </button>
+
+      <button class="icon-btn notif-btn" (click)="openNotifications()" aria-label="Notificaciones">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span class="notif-badge" *ngIf="unreadCount > 0">{{ unreadCount > 9 ? '9+' : unreadCount }}</span>
       </button>
 
       <div class="separator"></div>
@@ -41,13 +46,51 @@
       type="search"
       [(ngModel)]="searchQuery"
       (input)="onSearch(searchQuery)"
-      placeholder="Buscar eventos, áreas..."
+      placeholder="Título, área, responsable..."
       autofocus
     />
 
-    <button class="icon-btn" (click)="searchQuery = ''; searchResults = []" *ngIf="searchQuery">
+    <button class="icon-btn" (click)="searchQuery = ''; onSearch('')" *ngIf="searchQuery">
       <ion-icon name="close-outline"></ion-icon>
     </button>
+  </div>
+
+  <!-- ─── Fila de filtros ──────────────────────────────────────────────── -->
+  <div class="filter-row" *ngIf="isSearchOpen">
+    <div class="filter-item">
+      <ion-icon name="calendar-outline" class="filter-icon"></ion-icon>
+      <input
+        class="filter-input"
+        type="date"
+        [(ngModel)]="filterDate"
+        (ngModelChange)="onFilterDate($event)"
+        aria-label="Filtrar por fecha"
+      />
+      <button class="filter-clear-x" *ngIf="filterDate" (click)="filterDate = ''; onFilterDate('')" aria-label="Limpiar fecha">
+        <ion-icon name="close-circle"></ion-icon>
+      </button>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <div class="filter-item">
+      <ion-icon name="location-outline" class="filter-icon"></ion-icon>
+      <input
+        class="filter-input"
+        type="search"
+        list="pdv-list"
+        [(ngModel)]="filterPdv"
+        (ngModelChange)="onFilterPdv($event)"
+        placeholder="Punto de venta"
+        aria-label="Filtrar por PDV"
+      />
+      <datalist id="pdv-list">
+        <option *ngFor="let pdv of uniquePdvs" [value]="pdv"></option>
+      </datalist>
+      <button class="filter-clear-x" *ngIf="filterPdv" (click)="filterPdv = ''; onFilterPdv('')" aria-label="Limpiar PDV">
+        <ion-icon name="close-circle"></ion-icon>
+      </button>
+    </div>
   </div>
 
   <!-- ─── Resultados ───────────────────────────────────────────────────── -->
@@ -58,15 +101,18 @@
       </div>
       <div class="result-info">
         <span class="result-title">{{ event.title }}</span>
-        <span class="result-meta">{{ event.start | date:'dd MMM yyyy' }} · {{ event.department }}</span>
+        <span class="result-meta">
+          {{ event.start | date:'dd MMM yyyy' }}
+          <span class="result-pdv" *ngIf="event.pdv"> · {{ event.pdv }}</span>
+        </span>
       </div>
       <ion-icon name="chevron-forward-outline" class="result-arrow"></ion-icon>
     </button>
   </div>
 
-  <div class="search-empty" *ngIf="isSearchOpen && searchQuery && searchResults.length === 0">
+  <div class="search-empty" *ngIf="isSearchOpen && (searchQuery || hasActiveFilters) && searchResults.length === 0">
     <ion-icon name="search-outline"></ion-icon>
-    <span>Sin resultados para <strong>"{{ searchQuery }}"</strong></span>
+    <span>Sin resultados para los filtros aplicados</span>
   </div>
 
 </ion-header>

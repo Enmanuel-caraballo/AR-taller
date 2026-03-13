@@ -6,7 +6,9 @@ import { IUser } from 'src/app/interfaces/user.interface';
 import { ModalComponent } from '../modal/modal.component';
 import { ProfileModalComponent } from '../profile-modal/profile-modal.component';
 import { ProfilePopoverComponent } from '../profile-popover/profile-popover.component';
+import { NotificationsModalComponent } from '../notifications-modal/notifications-modal.component';
 import { IEvents } from 'src/app/interfaces/events.interface';
+import { NotificationService } from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -20,15 +22,20 @@ export class HeaderComponent implements OnInit {
 
   isSearchOpen = false;
   searchQuery = '';
+  filterDate = '';
+  filterPdv = '';
   searchResults: any[] = [];
   private allEvents: IEvents[] = [];
+
+  unreadCount = 0;
 
   constructor(
     private readonly authSrv: Auth,
     private readonly crudSrv: Crud,
     private readonly modalCtrl: ModalController,
     private readonly popoverCtrl: PopoverController,
-    private readonly menuCtrl: MenuController
+    private readonly menuCtrl: MenuController,
+    private readonly notifSrv: NotificationService
   ) {}
 
   async ngOnInit() {
@@ -42,6 +49,13 @@ export class HeaderComponent implements OnInit {
     }
     const eventsData = await this.crudSrv.getAll('events');
     if (eventsData) this.allEvents = eventsData;
+
+    await this.refreshUnreadCount();
+  }
+
+  async refreshUnreadCount() {
+    const notifs = await this.notifSrv.getMyNotifications();
+    this.unreadCount = notifs.filter(n => !n.read).length;
   }
 
   buildInitials(name: string, lastName: string): string {
@@ -89,6 +103,22 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  // ── Notificaciones ────────────────────────────────────────────────────
+  async openNotifications() {
+    const modal = await this.modalCtrl.create({
+      component: NotificationsModalComponent,
+      breakpoints: [0, 0.5, 0.85, 1],
+      initialBreakpoint: 0.85,
+      handle: false,
+      cssClass: 'custom-modal',
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data?.unreadCount !== undefined) {
+      this.unreadCount = data.unreadCount;
+    }
+  }
+
   // ── Menú hamburguesa ──────────────────────────────────────────────────
   async openMenu() {
     await this.menuCtrl.open('main-menu');
@@ -99,22 +129,80 @@ export class HeaderComponent implements OnInit {
     this.isSearchOpen = !this.isSearchOpen;
     if (!this.isSearchOpen) {
       this.searchQuery = '';
+      this.filterDate = '';
+      this.filterPdv = '';
       this.searchResults = [];
     }
   }
 
   onSearch(query: string) {
     this.searchQuery = query;
-    if (!query.trim()) { this.searchResults = []; return; }
-    const q = query.toLowerCase();
+    this.applyFilters();
+  }
+
+  onFilterDate(date: string) {
+    this.filterDate = date;
+    this.applyFilters();
+  }
+
+  onFilterPdv(pdv: string) {
+    this.filterPdv = pdv;
+    this.applyFilters();
+  }
+
+  clearFilters() {
+    this.filterDate = '';
+    this.filterPdv = '';
+    this.applyFilters();
+  }
+
+  get hasActiveFilters(): boolean {
+    return !!this.filterDate || !!this.filterPdv.trim();
+  }
+
+  get uniquePdvs(): string[] {
+    return [...new Set(this.allEvents.map(e => e.pdv).filter(Boolean))].sort();
+  }
+
+  private toLocalDateStr(isoStr: string): string {
+    if (!isoStr) return '';
+    const d = new Date(isoStr);
+    if (isNaN(d.getTime())) return '';
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  private applyFilters() {
+    const hasText = !!this.searchQuery.trim();
+    const hasDate = !!this.filterDate;
+    const hasPdv = !!this.filterPdv.trim();
+
+    if (!hasText && !hasDate && !hasPdv) {
+      this.searchResults = [];
+      return;
+    }
+
+    const q = this.searchQuery.toLowerCase().trim();
+    const pdvQ = this.filterPdv.toLowerCase().trim();
+
     this.searchResults = this.allEvents
-      .filter(e =>
-        e.title?.toLowerCase().includes(q) ||
-        e.department?.toLowerCase().includes(q) ||
-        e.responsible?.toLowerCase().includes(q) ||
-        e.pdv?.toLowerCase().includes(q)
-      )
-      .slice(0, 6);
+      .filter(e => {
+        const matchesText = !hasText || (
+          e.title?.toLowerCase().includes(q) ||
+          e.department?.toLowerCase().includes(q) ||
+          e.responsible?.toLowerCase().includes(q) ||
+          e.pdv?.toLowerCase().includes(q)
+        );
+        const matchesDate = !hasDate ||
+          this.toLocalDateStr(e.start) === this.filterDate;
+        const matchesPdv = !hasPdv ||
+          e.pdv?.toLowerCase().includes(pdvQ);
+
+        return matchesText && matchesDate && matchesPdv;
+      })
+      .slice(0, 8);
   }
 
   async selectEvent(event: any) {

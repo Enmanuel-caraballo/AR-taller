@@ -7,5 +7,6 @@ export interface IEvents{
   department: string;
   responsible: string;
   pdv: string;
+  uid?: string;
 }
 
