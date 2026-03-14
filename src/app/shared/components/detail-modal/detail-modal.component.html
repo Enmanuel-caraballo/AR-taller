@@ -42,8 +42,18 @@
               <ion-icon name="calendar-outline"></ion-icon>
             </span>
             <div>
-              <span class="dm-row-label">Fecha</span>
+              <span class="dm-row-label">Fecha Inicio</span>
               <span class="dm-row-val">{{ asEvent(firstItem).start | date:'EEEE d \'de\' MMMM yyyy' }}</span>
+            </div>
+          </div>
+
+          <div class="dm-row">
+            <span class="dm-row-icon">
+              <ion-icon name="calendar-outline"></ion-icon>
+            </span>
+            <div>
+              <span class="dm-row-label">Fecha Final</span>
+              <span class="dm-row-val">{{ asEvent(firstItem).end | date:'EEEE d \'de\' MMMM yyyy' }}</span>
             </div>
           </div>
 
@@ -54,7 +64,7 @@
             <div>
               <span class="dm-row-label">Horario</span>
               <span class="dm-row-val">
-                {{ asEvent(firstItem).start | date:'HH:mm' }} – {{ asEvent(firstItem).end | date:'HH:mm' }}
+                {{ asEvent(firstItem).start | date:'HH:mm' }} - {{ asEvent(firstItem).end | date:'HH:mm' }}
               </span>
             </div>
           </div>
@@ -152,7 +162,7 @@
 
     <!-- ══ VISTA LISTA (múltiples ítems) ══ -->
     <ng-container *ngIf="!isSingle">
-      <div class="dm-list-card" *ngFor="let item of items">
+      <div class="dm-list-card" *ngFor="let item of items" (click)="selectItem(item)">
 
         <div class="dm-list-head">
           <span class="dm-list-title">{{ item.title }}</span>

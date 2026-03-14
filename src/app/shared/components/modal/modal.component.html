@@ -12,7 +12,7 @@
 
 <ion-content class="modal-content">
   <div class="events-wrapper">
-    <div class="modal-card" *ngFor="let item of events">
+    <div class="modal-card" *ngFor="let item of events" (click)="openDetail(item)">
 
       <div class="card-header">
         <ion-text class="card-title">{{ item.title }}</ion-text>
@@ -30,7 +30,7 @@
           Horario:
           <strong>
             {{ item.start | date:'HH:mm' }}
-            –
+            -
             {{ item.end   | date:'HH:mm' }}
           </strong>
         </ion-text>

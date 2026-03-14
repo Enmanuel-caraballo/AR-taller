@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { IonModal, ModalController } from '@ionic/angular';
 import { GlobalEvent } from '../../services/global-event';
 import { IEvents } from 'src/app/interfaces/events.interface';
+import { DetailModalComponent } from '../detail-modal/detail-modal.component';
 
 @Component({
   selector: 'app-modal',
@@ -19,6 +20,22 @@ export class ModalComponent  implements OnInit {
 
   closeModal(){
     this.modalCtrl.dismiss();
+  }
+
+  async openDetail(item: IEvents) {
+    const modal = await this.modalCtrl.create({
+      component: DetailModalComponent,
+      breakpoints: [0, 0.5, 0.75, 1],
+      initialBreakpoint: 0.75,
+      handle: false,
+      cssClass: 'custom-modal',
+      componentProps: {
+        items: [item],
+        type: 'evento'
+      }
+    });
+
+    await modal.present();
   }
 
   ngOnInit() {

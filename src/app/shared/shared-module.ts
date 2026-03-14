@@ -1,7 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { TabComponentComponent } from './components/tab-component/tab-component.component';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { ChipComponent } from './components/chip/chip.component';
@@ -33,7 +32,6 @@ registerLocaleData(localeEsCo);
 registerSwiperElement();
 
 const components = [
-  TabComponentComponent,
   HeaderComponent,
   ChipComponent,
   TextsComponent,
@@ -44,7 +42,8 @@ const components = [
   TextAreaComponent,
   SelectComponent,
   DateComponent,
-  OptionsPopoverComponent
+  OptionsPopoverComponent,
+  DetailModalComponent
 ];
 
 const modules = [
@@ -61,9 +60,7 @@ const modules = [
     CalendarComponent,
     CreateEventModalComponent,
     ProfileModalComponent,
-    OptionsPopoverComponent,
     ProfilePopoverComponent,
-    DetailModalComponent,
     NotificationsModalComponent,
   ],
   imports: [
@@ -73,14 +70,13 @@ const modules = [
 
   ],
   exports: [
+    CommonModule,
     ...components,
     ...modules,
     CalendarComponent,
     CreateEventModalComponent,
     ProfileModalComponent,
-    OptionsPopoverComponent,
     ProfilePopoverComponent,
-    DetailModalComponent,
     NotificationsModalComponent,
   ]
 })

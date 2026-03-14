@@ -22,6 +22,10 @@ export class DetailModalComponent {
   asEvent(item: IEvents | ITask): IEvents { return item as IEvents; }
   asTask(item: IEvents | ITask): ITask { return item as ITask; }
 
+  selectItem(item: IEvents | ITask) {
+    this.items = [item];
+  }
+
   closeModal() {
     this.modalCtrl.dismiss();
   }
