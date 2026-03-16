@@ -49,9 +49,13 @@ export class NotifyDetailsPage implements OnInit {
     }
   }
 
-  onReject() {
-    console.log('No compartir espacio:', this.selectedItem);
-    // Aquí iría la lógica para rechazar
+   async onReject() {
+    const evVerification = this.selectedItem.event;
+    if(evVerification?.uid){
+     this.eventSrv.sendMessage(evVerification.uid, 'Lo siento no compartir espacio contigo en esta ocación.')
+      await this.router.navigate(['/home']);
+      this.alertSrv.toast('Notificación enviada', 'success');
+     }
   }
 
 }

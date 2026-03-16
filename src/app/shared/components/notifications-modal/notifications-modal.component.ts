@@ -18,7 +18,6 @@ export class NotificationsModalComponent implements OnInit {
     private readonly modalCtrl: ModalController,
     private readonly notifSrv: NotificationService,
     private readonly navSrv: NavController,
-    private readonly globalSrv: GlobalEvent
   ) {}
 
   async ngOnInit() {
@@ -40,9 +39,11 @@ export class NotificationsModalComponent implements OnInit {
     await this.notifSrv.markAsRead(notif.id);
     notif.read = true;
     await this.modalCtrl.dismiss({ unreadCount: this.unreadCount });
-    this.navSrv.navigateRoot('notify-details', {
-      state: { data: notif }
-    });
+    if (notif.type == 'ev') {
+      this.navSrv.navigateRoot('notify-details', {
+        state: { data: notif }
+      });
+    }
 
   }
 

@@ -87,6 +87,7 @@ export class Event {
       const user = await this.AuthSrv.getCurrentUser();
       if (user && user.userUid) {
         await this.crudSrv.add('notifications', {
+          type: 'ev',
           to: targetUid,
           from: user.userUid,
           message: message,
@@ -116,6 +117,7 @@ export class Event {
       const user = await this.AuthSrv.getCurrentUser();
       if (user && user.userUid) {
         await this.crudSrv.add('notifications', {
+          type: 'me',
           to: targetUid,
           from: user.userUid,
           message: message,

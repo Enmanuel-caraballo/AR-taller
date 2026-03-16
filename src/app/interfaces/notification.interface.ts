@@ -1,4 +1,5 @@
 export interface INotification {
+  type?: string
   id?: string;
   to: string;
   from: string;
