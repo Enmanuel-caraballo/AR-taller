@@ -107,7 +107,8 @@ export class NotesPage implements OnInit {
 
           const userConfirm = await this.alertSrv.showConflictDialog(this.savedEvent.responsible);
           if (userConfirm.isConfirmed) {
-           await this.eventSrv.sendNotification(this.savedEvent.uid, `Solicitar compartir espacio a: ${this.savedEvent.responsible}`);
+            const ev: IEvents = this.registerForm.value;
+           await this.eventSrv.sendNotification(this.savedEvent.uid, `Solicitar compartir espacio a: ${this.savedEvent.responsible}`, ev);
             await this.navSrv.navigateRoot('home');
             this.alertSrv.toast('Notificación enviada', 'success');
           }else{
@@ -122,35 +123,10 @@ export class NotesPage implements OnInit {
         this.navSrv.navigateRoot('home');
       }
 
-      // await this.eventSrv.createEvent(this.registerForm.value);
-      // this.alertSrv.toast('Evento creado exitosamente');
-      // this.navSrv.navigateRoot('home');
 
-    } catch (error: any) {
-      if (error.code === 'conflict') {
-        const conflictingEvent = error.event;
-        const result = await this.alertSrv.showConflictDialog(conflictingEvent.responsible || 'Desconocido');
-
-        if (result.isConfirmed) {
-          if (conflictingEvent.uid) {
-            try {
-              await this.eventSrv.sendNotification(
-                conflictingEvent.uid,
-                `Conflicto de horario en PDV ${this.pdv.value}. Intento de agendar evento: ${this.title.value} (${this.start.value} - ${this.end.value})`
-              );
-              this.alertSrv.success('Notificación enviada', 'El responsable ha sido notificado.');
-            } catch (e) {
-              this.alertSrv.error('Error', 'No se pudo enviar la notificación.');
-            }
-          } else {
-            this.alertSrv.warning('Error', 'No se puede notificar al usuario (UID no encontrado).');
-          }
-        }
-      } else {
-        console.log(error);
-        //nada
-        this.alertSrv.error('Error', 'No se pudo crear el evento. Inténtalo de nuevo.');
-      }
+    } catch (error) {
+      console.error('Error al intentar agendar el evento:', error);
+      this.alertSrv.error('Error', 'No se pudo crear el evento. Inténtalo de nuevo.');
     }
   }
 

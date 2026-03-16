@@ -24,6 +24,7 @@ export class DetailModalComponent {
 
   selectItem(item: IEvents | ITask) {
     this.items = [item];
+    
   }
 
   closeModal() {

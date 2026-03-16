@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { INotification } from 'src/app/interfaces/notification.interface';
 import { NotificationService } from '../../services/notification/notification.service';
+import { GlobalEvent } from '../../services/global-event';
 
 @Component({
   selector: 'app-notifications-modal',
@@ -15,7 +16,9 @@ export class NotificationsModalComponent implements OnInit {
 
   constructor(
     private readonly modalCtrl: ModalController,
-    private readonly notifSrv: NotificationService
+    private readonly notifSrv: NotificationService,
+    private readonly navSrv: NavController,
+    private readonly globalSrv: GlobalEvent
   ) {}
 
   async ngOnInit() {
@@ -33,9 +36,14 @@ export class NotificationsModalComponent implements OnInit {
   }
 
   async onNotifTap(notif: INotification) {
-    if (notif.read || !notif.id) return;
+    if (!notif.id) return;
     await this.notifSrv.markAsRead(notif.id);
     notif.read = true;
+    await this.modalCtrl.dismiss({ unreadCount: this.unreadCount });
+    this.navSrv.navigateRoot('notify-details', {
+      state: { data: notif }
+    });
+
   }
 
   async markAllAsRead() {

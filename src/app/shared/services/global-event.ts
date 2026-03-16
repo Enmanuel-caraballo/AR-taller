@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { IEvents } from 'src/app/interfaces/events.interface';
+import { INotification } from 'src/app/interfaces/notification.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GlobalEvent {
   private uid: string = '';
+
 
   private events: IEvents[] = [];
 
@@ -24,6 +26,7 @@ export class GlobalEvent {
   getEvents(): IEvents[]{
     return this.events;
   }
+
 
   // private id: string = '';
   // private title: string = '';

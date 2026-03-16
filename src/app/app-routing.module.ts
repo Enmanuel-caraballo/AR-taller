@@ -32,10 +32,15 @@ const routes: Routes = [
     ...canActivate(redirectToLogin)
   },
   {
+    path: 'notify-details',
+    loadChildren: () => import('./pages/notify-details/notify-details/notify-details.module').then( m => m.NotifyDetailsPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'
   },
+
 
 ];
 

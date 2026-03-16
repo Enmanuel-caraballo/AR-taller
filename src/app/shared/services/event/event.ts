@@ -8,16 +8,16 @@ import { IEvents } from 'src/app/interfaces/events.interface';
   providedIn: 'root',
 })
 export class Event {
-  constructor(private readonly crudSrv: Crud, private readonly AuthSrv: Auth){}
+  constructor(private readonly crudSrv: Crud, private readonly AuthSrv: Auth) { }
 
   async createEvent(event: IEvents): Promise<void> {
     try {
-       const user = await this.AuthSrv.getCurrentUser();
+      const user = await this.AuthSrv.getCurrentUser();
       console.log(user);
 
-       const uid = user?.userUid;
+      const uid = user?.userUid;
 
-     console.log(user?.userName, '||', user?.userUid);
+      console.log(user?.userName, '||', user?.userUid);
 
 
       if (uid != null) {
@@ -38,10 +38,10 @@ export class Event {
           department: event.department,
           responsible: user?.userName,
           pdv: event.pdv
-        }, );
+        },);
         console.log('Funciona');
 
-      }else{
+      } else {
         console.log("No uid no se agrega");
       }
 
@@ -82,7 +82,7 @@ export class Event {
   //   }
   // }
 
-  async sendNotification(targetUid: string, message: string): Promise<void> {
+  async sendNotification(targetUid: string, message: string, event:IEvents): Promise<void> {
     try {
       const user = await this.AuthSrv.getCurrentUser();
       if (user && user.userUid) {
@@ -91,7 +91,36 @@ export class Event {
           from: user.userUid,
           message: message,
           date: new Date().toISOString(),
-          read: false
+          read: false,
+          event: {
+            title: event.title,
+            start: event.start,
+            end: event.end,
+            description: event.description,
+            department: event.department,
+            responsible: user.userName,
+            pdv: event.pdv,
+            uid: user.userUid
+          }
+        });
+        console.log('Notification sent to', targetUid);
+      }
+    } catch (error) {
+      console.error('Error sending notification', error);
+      throw error;
+    }
+  }
+
+  async sendMessage(targetUid: string, message: string): Promise<void> {
+    try {
+      const user = await this.AuthSrv.getCurrentUser();
+      if (user && user.userUid) {
+        await this.crudSrv.add('notifications', {
+          to: targetUid,
+          from: user.userUid,
+          message: message,
+          date: new Date().toISOString(),
+          read: false,
         });
         console.log('Notification sent to', targetUid);
       }
