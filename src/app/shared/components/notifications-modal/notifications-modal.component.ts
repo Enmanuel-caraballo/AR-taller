@@ -38,8 +38,8 @@ export class NotificationsModalComponent implements OnInit {
     if (!notif.id) return;
     await this.notifSrv.markAsRead(notif.id);
     notif.read = true;
-    await this.modalCtrl.dismiss({ unreadCount: this.unreadCount });
     if (notif.type == 'ev') {
+      await this.modalCtrl.dismiss({ unreadCount: this.unreadCount });
       this.navSrv.navigateRoot('notify-details', {
         state: { data: notif }
       });

@@ -6,6 +6,7 @@ import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 import { IEvents } from 'src/app/interfaces/events.interface';
 import { Event } from 'src/app/shared/services/event/event';
 import { AlertService } from 'src/app/core/providers/alert/alert.service';
+import { Auth } from 'src/app/core/providers/auth/auth';
 
 @Component({
   selector: 'app-notify-details',
@@ -15,7 +16,11 @@ import { AlertService } from 'src/app/core/providers/alert/alert.service';
 })
 export class NotifyDetailsPage implements OnInit {
   selectedItem!: INotification
-  constructor(private readonly router: Router, private readonly crudSrv: Crud, private readonly eventSrv: Event, private readonly alertSrv: AlertService) {
+  constructor(private readonly router: Router,
+    private readonly crudSrv: Crud,
+    private readonly eventSrv: Event,
+    private readonly alertSrv: AlertService,
+    private readonly authSrv: Auth) {
     const navigation = this.router.getCurrentNavigation();
 
     if (navigation?.extras?.state) {
@@ -24,7 +29,7 @@ export class NotifyDetailsPage implements OnInit {
     }
   }
 
-  ngOnInit() {
+   ngOnInit() {
 
   }
 
@@ -35,9 +40,10 @@ export class NotifyDetailsPage implements OnInit {
   async onAccept() {
 
     try {
+      const user = await this.authSrv.getCurrentUser();
       const evVerification = this.selectedItem.event;
       if(evVerification?.uid){
-        this.eventSrv.sendMessage(evVerification.uid, 'He aceptado compartir espacio contigo')
+        this.eventSrv.sendMessage(evVerification.uid, `${user?.userName}, Ha aceptado compartir espacio contigo.`)
         this.crudSrv.add('events', this.selectedItem.event);
         await this.router.navigate(['/home']);
         this.alertSrv.toast('Notificación enviada', 'success');
@@ -50,9 +56,10 @@ export class NotifyDetailsPage implements OnInit {
   }
 
    async onReject() {
+   const user = await this.authSrv.getCurrentUser();
     const evVerification = this.selectedItem.event;
     if(evVerification?.uid){
-     this.eventSrv.sendMessage(evVerification.uid, 'Lo siento no compartir espacio contigo en esta ocación.')
+     this.eventSrv.sendMessage(evVerification.uid, `${user?.userName}, no puede compartir el espacio contigo.`)
       await this.router.navigate(['/home']);
       this.alertSrv.toast('Notificación enviada', 'success');
      }
