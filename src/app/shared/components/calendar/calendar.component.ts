@@ -9,11 +9,13 @@ import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
 import { Categories } from '../../services/jsonsProviders';
 import { IEvents } from 'src/app/interfaces/events.interface';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { ModalComponent } from '../modal/modal.component';
 import { DetailModalComponent } from '../detail-modal/detail-modal.component';
 import { GlobalEvent } from '../../services/global-event';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
+import { AlertService } from 'src/app/core/providers/alert/alert.service';
+import { Event as EventService } from '../../services/event/event';
 
 //npm run start -- --host=0.0.0.0 --port:8100
 
@@ -77,9 +79,58 @@ export class CalendarComponent implements OnInit {
     });
 
     await modal.present();
+
+    const { data, role } = await modal.onDidDismiss();
+    if (role === 'edit' && data) {
+      this.navSrv.navigateRoot('/notes', {
+        state: { editMode: true, docId: data.docId, event: data.item }
+      });
+    } else if (role === 'delete' && data?.docId) {
+      try {
+        await this.eventSrv.deleteEvent(data.docId);
+        this.alertSrv.toast('Evento eliminado');
+        await this.reloadEvents();
+      } catch {
+        this.alertSrv.error('Error', 'No se pudo eliminar el evento.');
+      }
+    }
   }
 
-  constructor(private readonly modalCtrl: ModalController, private readonly globaEventSrv: GlobalEvent, private readonly crudSrv: Crud) { }
+  private async reloadEvents() {
+    const eventsData = await this.crudSrv.getAll('events');
+    eventsData ? this.globaEventSrv.setEvents(eventsData) : null;
+
+    if (eventsData) {
+      this.events = eventsData.map(event => ({
+        id: (event as any).id,
+        title: event.title || 'Sin título',
+        start: event.start,
+        end: event.end,
+        description: event.description || '',
+        department: event.department || '',
+        pdv: event.pdv || '',
+        responsible: event.responsible || '',
+        extendedProps: {
+          pdv: event.pdv,
+          description: event.description,
+          department: event.department,
+          responsible: event.responsible,
+          uid: event.uid,
+          docId: (event as any).id
+        }
+      }));
+      this.calendarOptions = { ...this.calendarOptions, events: this.events };
+    }
+  }
+
+  constructor(
+    private readonly modalCtrl: ModalController,
+    private readonly globaEventSrv: GlobalEvent,
+    private readonly crudSrv: Crud,
+    private readonly navSrv: NavController,
+    private readonly alertSrv: AlertService,
+    private readonly eventSrv: EventService
+  ) { }
 
   async ngOnInit() {
 
@@ -90,6 +141,7 @@ export class CalendarComponent implements OnInit {
   if (eventsData) {
     // Mapeamos los eventos a la interfaz
 this.events = eventsData.map(event => ({
+  id: (event as any).id,
   title: event.title || 'Sin título',
   start: event.start,
   end: event.end,
@@ -103,7 +155,9 @@ this.events = eventsData.map(event => ({
     pdv: event.pdv,
     description: event.description,
     department: event.department,
-    responsible: event.responsible
+    responsible: event.responsible,
+    uid: event.uid,
+    docId: (event as any).id
   }
 }));
     this.calendarOptions = {

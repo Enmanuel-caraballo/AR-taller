@@ -11,6 +11,14 @@ export class Task {
   constructor(private readonly crudSrv: Crud, private readonly authSrv: Auth){}
 
 
+  async updateTask(docId: string, task: Partial<ITask>): Promise<void> {
+    await this.crudSrv.update('tasks', docId, task);
+  }
+
+  async deleteTask(docId: string): Promise<void> {
+    await this.crudSrv.delete('tasks', docId);
+  }
+
   async createTask(task: ITask): Promise<void>{
     try {
       const user = await this.authSrv.getCurrentUser();

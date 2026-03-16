@@ -27,6 +27,9 @@ export class NotesPage implements OnInit {
 
   savedEvent!: IEvents;
 
+  editMode = false;
+  editDocId = '';
+
   constructor(
     private readonly eventSrv: Event,
     private readonly navSrv: NavController,
@@ -37,13 +40,22 @@ export class NotesPage implements OnInit {
   }
 
   ngOnInit() {
-
-
-    // console.log(this.minDate);
     const now = new Date().toISOString()
-
     const nowCol = formatDate(now, "yyyy-MM-ddTHH:mm:ss", 'es-CO', '-0500');
     this.minDate = nowCol;
+
+    const state = history.state;
+    if (state?.editMode && state?.event) {
+      this.editMode = true;
+      this.editDocId = state.docId || '';
+      const ev: IEvents = state.event;
+      this.title.setValue(ev.title);
+      this.description.setValue(ev.description);
+      this.pdv.setValue(ev.pdv);
+      this.start.setValue(ev.start);
+      this.end.setValue(ev.end);
+      this.department.setValue(ev.department);
+    }
   }
 
   private initForm() {
@@ -74,6 +86,17 @@ export class NotesPage implements OnInit {
   public async doSchedule() {
     if (new Date(this.end.value) <= new Date(this.start.value)) {
       this.alertSrv.warning('Fechas inválidas', 'El evento no puede terminar antes de la fecha inicial');
+      return;
+    }
+
+    if (this.editMode && this.editDocId) {
+      try {
+        await this.eventSrv.updateEvent(this.editDocId, this.registerForm.value);
+        this.alertSrv.toast('Evento actualizado exitosamente');
+        this.navSrv.navigateRoot('home');
+      } catch (error) {
+        this.alertSrv.error('Error', 'No se pudo actualizar el evento. Inténtalo de nuevo.');
+      }
       return;
     }
 
