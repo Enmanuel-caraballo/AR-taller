@@ -46,8 +46,8 @@ export class AddTaskPage implements OnInit {
     this.title = new FormControl('', [Validators.required]);
     this.limitDate = new FormControl(nowCol, [Validators.required]);
     this.description = new FormControl('', [Validators.required]);
-    this.link = new FormControl();
-    this.important = new FormControl();
+    this.link = new FormControl('');
+    this.important = new FormControl('no');
 
     this.FormTask = new FormGroup({
       title: this.title,

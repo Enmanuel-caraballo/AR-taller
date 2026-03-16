@@ -3,7 +3,7 @@
   [label]="label"
   [value]="control.value || ''"
   labelPlacement="floating"
-  (keyup)="onType($event)">
+  (ionInput)="onType($event)">
 
   <ion-input-password-toggle
     *ngIf="type === 'password'"

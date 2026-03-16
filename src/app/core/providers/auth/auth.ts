@@ -145,6 +145,7 @@ export class Auth {
   async logOut() {
     try {
       await signOut(this.authFirebase);
+      await this.navSrv.navigateRoot('login');
     } catch (error) {
       throw error;
     }
