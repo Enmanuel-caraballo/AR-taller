@@ -45,7 +45,7 @@
           <div class="event-meta">
             <div class="meta-item" *ngIf="event.link">
               <ion-icon name="arrow-redo-outline"></ion-icon>
-              <a [href]="event.link">{{ event.link }}</a>
+              <a [href]="event.link" target="_blank" rel="noopener noreferrer">{{ event.link }}</a>
             </div>
             <div class="meta-item" *ngIf="event.limitDate">
               <ion-icon name="today-outline"></ion-icon>
