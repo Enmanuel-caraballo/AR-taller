@@ -6,6 +6,8 @@ export interface ITask{
   description: string;
   link: string;
   important: string;
+  docId?: string;
+  id?: string;
 }
 
 

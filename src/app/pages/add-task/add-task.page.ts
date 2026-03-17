@@ -4,6 +4,7 @@ import { Task } from '../../shared/services/task/task';
 import { NavController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { AlertService } from 'src/app/core/providers/alert/alert.service';
+import { ITask } from 'src/app/interfaces/task.interface';
 
 @Component({
   selector: 'app-add-task',
@@ -23,6 +24,9 @@ export class AddTaskPage implements OnInit {
 
   minDate!: string;
 
+  editMode = false;
+  editDocId = '';
+
   constructor(
     private readonly taskSrv: Task,
     private readonly navSrv: NavController,
@@ -33,9 +37,20 @@ export class AddTaskPage implements OnInit {
 
   ngOnInit() {
     const now = new Date().toISOString()
-
     const nowCol = formatDate(now, "yyyy-MM-ddTHH:mm:ss", 'es-CO', '-0500');
     this.minDate = nowCol;
+
+    const state = history.state;
+    if (state?.editMode && state?.task) {
+      this.editMode = true;
+      this.editDocId = state.docId || '';
+      const task: ITask = state.task;
+      this.title.setValue(task.title);
+      this.limitDate.setValue(task.limitDate);
+      this.description.setValue(task.description);
+      this.link.setValue(task.link || '');
+      this.important.setValue(task.important);
+    }
   }
 
   private initForm(){
@@ -61,6 +76,17 @@ export class AddTaskPage implements OnInit {
   public async addTask() {
     if (this.limitDate.value < this.minDate) {
       this.alertSrv.warning('Fecha inválida', 'La fecha de finalización no puede ser menor a la actual');
+      return;
+    }
+
+    if (this.editMode && this.editDocId) {
+      try {
+        await this.taskSrv.updateTask(this.editDocId, this.FormTask.value);
+        this.alertSrv.toast('Tarea actualizada exitosamente');
+        this.navSrv.navigateRoot('home');
+      } catch (error) {
+        this.alertSrv.error('Error', 'No se pudo actualizar la tarea. Inténtalo de nuevo.');
+      }
       return;
     }
 

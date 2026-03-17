@@ -82,6 +82,14 @@ export class Event {
   //   }
   // }
 
+  async updateEvent(docId: string, event: Partial<IEvents>): Promise<void> {
+    await this.crudSrv.update('events', docId, event);
+  }
+
+  async deleteEvent(docId: string): Promise<void> {
+    await this.crudSrv.delete('events', docId);
+  }
+
   async sendNotification(targetUid: string, message: string, event:IEvents): Promise<void> {
     try {
       const user = await this.AuthSrv.getCurrentUser();
