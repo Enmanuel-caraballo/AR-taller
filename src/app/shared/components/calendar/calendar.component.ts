@@ -97,7 +97,7 @@ export class CalendarComponent implements OnInit {
   }
 
   private async reloadEvents() {
-    const eventsData = await this.crudSrv.getAll('events');
+    const eventsData = await this.crudSrv.getAll<IEvents>('events');
     eventsData ? this.globaEventSrv.setEvents(eventsData) : null;
 
     if (eventsData) {
