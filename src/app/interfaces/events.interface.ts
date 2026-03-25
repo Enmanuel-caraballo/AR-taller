@@ -8,5 +8,7 @@ export interface IEvents{
   responsible: string;
   pdv: string;
   uid?: string;
+  id?: string;
+  docId?: string;
 }
 

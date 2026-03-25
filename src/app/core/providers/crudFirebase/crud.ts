@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, doc, Firestore, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, deleteDoc, doc, Firestore, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { IEvents } from 'src/app/interfaces/events.interface';
 import { IUserCreate } from 'src/app/interfaces/user.interface';
 
@@ -53,6 +53,15 @@ export class Crud {
  }
 
 
+ async delete(collectionName: string, docId: string): Promise<void> {
+  try {
+    const docRef = doc(this.fireSt, collectionName, docId);
+    await deleteDoc(docRef);
+  } catch (error) {
+    throw error;
+  }
+ }
+
  async update(collectionName: string, uid: string, data: Partial<any>) {
   try {
     const docRef = doc(this.fireSt, collectionName, uid);
@@ -74,6 +83,7 @@ export class Crud {
     }else{
       return snapshot.docs.map(doc => ({
         uid: doc.id,
+        docId: doc.id,
         ...(doc.data() as IUserCreate)
       }));
     }

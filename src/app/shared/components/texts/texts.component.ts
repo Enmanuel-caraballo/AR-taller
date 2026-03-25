@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController, NavController } from '@ionic/angular';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 import { Categories } from '../../services/jsonsProviders';
 import { Auth } from 'src/app/core/providers/auth/auth';
+import { AlertService } from 'src/app/core/providers/alert/alert.service';
+import { Task as TaskService } from '../../services/task/task';
+import { DetailModalComponent } from '../detail-modal/detail-modal.component';
 
 @Component({
   selector: 'app-texts',
@@ -17,7 +21,14 @@ export class TextsComponent implements OnInit {
     '#6B4E3D', '#5A6B4E', '#4E5A6B', '#6B5A4E', '#7C6B4E', '#4E6B6B',
   ];
 
-  constructor(private readonly crudSrv: Crud, private readonly authSrv: Auth) {}
+  constructor(
+    private readonly crudSrv: Crud,
+    private readonly authSrv: Auth,
+    private readonly modalCtrl: ModalController,
+    private readonly navSrv: NavController,
+    private readonly alertSrv: AlertService,
+    private readonly taskSrv: TaskService
+  ) {}
 
   async ngOnInit() {
 
@@ -100,4 +111,32 @@ export class TextsComponent implements OnInit {
   }
 
   readonly skeletons = [1, 2, 3];
+
+  async openTaskDetail(task: any) {
+    const modal = await this.modalCtrl.create({
+      component: DetailModalComponent,
+      breakpoints: [0, 0.5, 0.75, 1],
+      initialBreakpoint: 0.75,
+      handle: false,
+      cssClass: 'custom-modal',
+      componentProps: { items: [task], type: 'tarea' }
+    });
+
+    await modal.present();
+
+    const { data, role } = await modal.onDidDismiss();
+    if (role === 'edit' && data) {
+      this.navSrv.navigateRoot('/add-task', {
+        state: { editMode: true, docId: data.docId, task: data.item }
+      });
+    } else if (role === 'delete' && data?.docId) {
+      try {
+        await this.taskSrv.deleteTask(data.docId);
+        this.alertSrv.toast('Tarea eliminada');
+        this.events = this.events.filter((t: any) => (t.docId || t.id) !== data.docId);
+      } catch {
+        this.alertSrv.error('Error', 'No se pudo eliminar la tarea.');
+      }
+    }
+  }
 }

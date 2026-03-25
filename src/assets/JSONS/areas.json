@@ -10,5 +10,26 @@
   {
     "area": "recursos-humanos",
     "areaF": "Recursos humanos"
-  }
+  },
+  {
+    "area": "mantenimiento",
+    "areaF": "Mantenimiento"
+  },
+  {
+      "area": "sst",
+      "areaF": "SST"
+  },
+  {
+    "area": "nomina",
+    "areaF": "Nomina"
+  },
+  {
+    "area": "servicio",
+    "areaF": "Servicio"
+  },
+  {
+    "area": "psicologia",
+    "areaF": "Psicologia"
+   }
+
 ]

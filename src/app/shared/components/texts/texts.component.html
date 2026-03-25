@@ -27,7 +27,7 @@
     autoplay='true'
   >
     <swiper-slide *ngFor="let event of events; let i = index">
-      <div class="event-card">
+      <div class="event-card" (click)="openTaskDetail(event)" style="cursor:pointer">
 
         <!-- Badge de fecha -->
         <div class="date-badge" [style.background]="getAccentColor(i)">

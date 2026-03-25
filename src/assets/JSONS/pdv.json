@@ -30,5 +30,21 @@
   {
     "pdv": "caribe-plaza",
     "pdvF": "Caribe plaza"
+  },
+  {
+    "pdv": "oficinas-administrativas",
+    "pdvF": "Oficinas administrivas"
+  },
+  {
+    "pdv": "zazue",
+    "pdvF": "Zazue"
+   },
+   {
+    "pdv": "casacentro",
+    "pdvF": "Casacentro"
+  },
+  {
+    "pdv": "buena-vista",
+    "pdvF": "Buena vista"
   }
 ]

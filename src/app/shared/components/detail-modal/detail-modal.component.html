@@ -19,7 +19,19 @@
       <p class="dm-greeting">
         {{ isEvent ? 'Este es tu evento' : 'Esta es tu tarea' }}
       </p>
-      <h1 class="dm-title">{{ firstItem.title }}</h1>
+      <div class="dm-title-row">
+        <h1 class="dm-title">{{ firstItem.title }}</h1>
+        <div class="dm-actions" *ngIf="isOwner">
+          <ion-button fill="solid" size="small" class="dm-edit-btn" (click)="editItem()">
+            <ion-icon name="pencil-outline" slot="start"></ion-icon>
+            Editar
+          </ion-button>
+          <ion-button fill="solid" size="small" class="dm-delete-btn" (click)="deleteItem()">
+            <ion-icon name="trash-outline" slot="start"></ion-icon>
+            Eliminar
+          </ion-button>
+        </div>
+      </div>
     </ng-container>
 
     <!-- Modo lista -->
