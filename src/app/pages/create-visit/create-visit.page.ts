@@ -1,0 +1,192 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { PDFDocument } from 'pdf-lib';
+import { FORMATOS_VISITA } from 'src/app/core/models/formatos.data';
+import { supabase } from 'src/app/database/supabase';
+
+@Component({
+  selector: 'app-create-visit',
+  templateUrl: './create-visit.page.html',
+  styleUrls: ['./create-visit.page.scss'],
+  standalone: false
+})
+export class CreateVisitPage implements OnInit {
+
+  dinamicForm!: FormGroup;
+  itemsEvaluacion: any[] = [];
+  pdfBytesOriginal!: ArrayBuffer;
+  cargando: boolean = false;
+
+  formatoActivo: any;
+
+
+  constructor(private fb: FormBuilder) {
+    this.dinamicForm = this.fb.group({});
+  }
+
+  ngOnInit() {
+    this.startVisitProcces('chequeo_estandarizado');
+  }
+
+  async startVisitProcces(formatoKey: string) {
+    this.cargando = true;
+
+    try {
+
+      this.formatoActivo = FORMATOS_VISITA[formatoKey];
+
+      if (!this.formatoActivo) {
+        throw new Error('El formato seleccionado no existe en la configuración.');
+      }
+
+      const { data } = supabase.storage.from('PdfFiles').getPublicUrl(this.formatoActivo.nombreArchivoPdf);
+      const urlPdf = data.publicUrl;
+      console.log('URL PDF cargada:', urlPdf);
+
+      await this.loadStructurePDF(urlPdf);
+
+    } catch (error) {
+      console.log('Error al procesar la visita:', error);
+    } finally {
+      this.cargando = false;
+    }
+  }
+
+  async loadStructurePDF(url: string) {
+    this.pdfBytesOriginal = await fetch(url).then(res => res.arrayBuffer());
+
+
+    const totalItems = this.formatoActivo.totalItems;
+    const diccionario = this.formatoActivo.diccionario;
+
+    this.itemsEvaluacion = [];
+
+    for (let i = 1; i <= totalItems; i++) {
+      const nombreCumple = `item_cumple_${i}`;
+      const nombreNoCumple = `item_no_cumple_${i}`;
+
+
+      const controlCumple = new FormControl(false);
+      const controlNoCumple = new FormControl(false);
+
+      this.dinamicForm.addControl(nombreCumple, controlCumple);
+      this.dinamicForm.addControl(nombreNoCumple, controlNoCumple);
+
+      controlCumple.valueChanges.subscribe(marcado => {
+        if (marcado) {
+
+          controlNoCumple.setValue(false, { emitEvent: false });
+        }
+      });
+
+
+      controlNoCumple.valueChanges.subscribe(marcado => {
+        if (marcado) {
+          controlCumple.setValue(false, { emitEvent: false });
+        }
+      });
+
+
+      this.itemsEvaluacion.push({
+        id: i,
+        descripcion: diccionario[i] || `Descripción pendiente para el ítem ${i}`,
+        controlCumple: nombreCumple,
+        controlNoCumple: nombreNoCumple
+      });
+    }
+
+    console.log('Estructura lista para la vista:', this.itemsEvaluacion);
+  }
+
+  async generarPDF() {
+    this.cargando = true;
+
+    try {
+      const pdfDoc = await PDFDocument.load(this.pdfBytesOriginal);
+      const form = pdfDoc.getForm();
+
+      const respuestas = this.dinamicForm.value;
+      const totalItems = this.formatoActivo.totalItems;
+      let puntajeCumple = 0;
+
+      // 1. Obtener nombres de campos para depuración (ayuda a ver si coinciden con el PDF)
+      const camposEnPdf = form.getFields().map(f => f.getName());
+      console.log('Campos detectados en el PDF:', camposEnPdf);
+
+      // 2. Llenar los campos del formulario dinámicamente
+      for (let i = 1; i <= totalItems; i++) {
+        const nombreCumple = `item_cumple_${i}`;
+        const nombreNoCumple = `item_no_cumple_${i}`;
+
+        try {
+          if (respuestas[nombreCumple] === true) {
+            const checkbox = form.getCheckBox(nombreCumple);
+            checkbox.check();
+            puntajeCumple++;
+          }
+
+          if (respuestas[nombreNoCumple] === true) {
+            const checkbox = form.getCheckBox(nombreNoCumple);
+            checkbox.check();
+          }
+        } catch (e) {
+          // Si el campo no existe en el PDF, se registra un aviso pero continúa el proceso
+          console.warn(`Aviso: El campo ${nombreCumple} o ${nombreNoCumple} no existe en este formato PDF.`);
+        }
+      }
+
+      // 3. Llenar campos de totales (si existen)
+      try {
+        const porcentaje = (puntajeCumple / totalItems) * 100;
+
+        // Verificamos existencia antes de intentar acceder para evitar errores
+        if (camposEnPdf.includes('total_cumplimiento_num')) {
+          form.getTextField('total_cumplimiento_num').setText(puntajeCumple.toString());
+        }
+
+        if (camposEnPdf.includes('total_cumplimiento_percent')) {
+          form.getTextField('total_cumplimiento_percent').setText(`${porcentaje.toFixed(2)} %`);
+        }
+      } catch (e) {
+        console.warn('Error al llenar los campos de totales:', e);
+      }
+
+      const todosLosCampos = form.getFields();
+      todosLosCampos.forEach(campo => {
+        campo.enableReadOnly(); 
+      });
+
+      const pdfBytesLleno = await pdfDoc.save();
+
+      const nombreArchivoFinal = `Visita_Auditoria_${new Date().getTime()}.pdf`;
+      this.descargarEnNavegador(pdfBytesLleno, nombreArchivoFinal);
+
+    } catch (error) {
+      console.error('Error al generar el documento PDF:', error);
+    } finally {
+      this.cargando = false;
+    }
+  }
+
+
+  descargarEnNavegador(pdfBytes: Uint8Array, nombreArchivo: string) {
+
+    const blob = new Blob([pdfBytes as BlobPart], { type: 'application/pdf' });
+
+
+    const url = window.URL.createObjectURL(blob);
+
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = nombreArchivo;
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }
+
+
+}

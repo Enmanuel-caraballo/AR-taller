@@ -5,17 +5,12 @@
     --color: #ffffff;
     --border-width: 0;
 
-    ion-title {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-      justify-self: center;
-    }
-
     ion-button {
       --color: #ffffff;
     }
   }
+
+  margin-bottom: 6px;
 }
 
 /* Fondo del contenido */
@@ -96,4 +91,15 @@
   --border-radius: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
+}
+
+$primary: #6B4E3D;
+
+.logo-photo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba($primary, .15);
+  box-shadow: 0 2px 6px rgba($primary, .25);
 }

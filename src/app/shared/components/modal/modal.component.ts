@@ -16,7 +16,7 @@ export class ModalComponent  implements OnInit {
 
   eventsDate = '';
 
-  constructor(private readonly modalCtrl: ModalController, private readonly globalEventSrv: GlobalEvent) { }
+  constructor(private readonly modalCtrl: ModalController) { }
 
   closeModal(){
     this.modalCtrl.dismiss();
@@ -41,15 +41,6 @@ export class ModalComponent  implements OnInit {
   ngOnInit() {
 
     console.log(this.events);
-
-  // const events = this.globalEventSrv.getEvents();
-    // const mappedEvents = events.map(ev => ({
-    //   id: ev.id,
-    //   title: ev.title,
-    //   start: ev.start,
-    //   end: ev.end,
-    //   allDay: ev.allDay,
-    // }));
 
   if (this.events.length) {
     this.eventsDate = this.events[0].start;

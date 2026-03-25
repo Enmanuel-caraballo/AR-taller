@@ -47,7 +47,7 @@ export class HeaderComponent implements OnInit {
         this.initials = this.buildInitials(this.user.name, this.user.lastName);
       }
     }
-    const eventsData = await this.crudSrv.getAll('events');
+    const eventsData = await this.crudSrv.getAll<IEvents>('events');
     if (eventsData) this.allEvents = eventsData;
 
     await this.refreshUnreadCount();

@@ -83,7 +83,7 @@ export class CalendarComponent implements OnInit {
 
   async ngOnInit() {
 
-    const eventsData = await this.crudSrv.getAll('events');
+    const eventsData = await this.crudSrv.getAll<IEvents>('events');
    eventsData ? this.globaEventSrv.setEvents(eventsData) : console.log('Sin Eventos');
 
 

@@ -31,7 +31,7 @@ export class Crud {
   }
 
 
-   async getAll(collectionName: string){
+   async getAll<T>(collectionName: string){
   try {
     const ref = collection(this.fireSt, collectionName);
     // const q = query(ref, where("uid", "==", id));
@@ -44,7 +44,7 @@ export class Crud {
 
     return snapshot.docs.map(doc =>({
       id: doc.id,
-      ...(doc.data() as IEvents)
+      ...(doc.data() as T)
     }));
   } catch (error) {
     console.log("Error en getById",error);

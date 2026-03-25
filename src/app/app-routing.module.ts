@@ -36,11 +36,21 @@ const routes: Routes = [
     loadChildren: () => import('./pages/notify-details/notify-details/notify-details.module').then( m => m.NotifyDetailsPageModule)
   },
   {
+    path: 'pdv',
+    loadChildren: () => import('./pages/pdv/pdv.module').then( m => m.PdvPageModule)
+  },
+  {
+    path: 'create-visit',
+    loadChildren: () => import('./pages/create-visit/create-visit.module').then( m => m.CreateVisitPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'
+  },  {
+    path: 'admin',
+    loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
   },
-
 
 ];
 

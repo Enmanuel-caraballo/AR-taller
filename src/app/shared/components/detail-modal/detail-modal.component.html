@@ -152,7 +152,7 @@
 
     <!-- ══ VISTA LISTA (múltiples ítems) ══ -->
     <ng-container *ngIf="!isSingle">
-      <div class="dm-list-card" *ngFor="let item of items">
+      <div class="dm-list-card" *ngFor="let item of items" (click)="selectItem(item)">
 
         <div class="dm-list-head">
           <span class="dm-list-title">{{ item.title }}</span>

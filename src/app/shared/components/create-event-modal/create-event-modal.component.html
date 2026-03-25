@@ -1,6 +1,6 @@
 <ion-header class="modal-header">
   <ion-toolbar>
-    <ion-title>Crear: {{ dateStr | date:'dd/MM/yyyy' }}</ion-title>
+    <img class="logo-photo" src="../../../assets/imgPrueba/crepesLogo.png" alt="Foto logo" />
 
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="closeModal()">
@@ -20,7 +20,7 @@
     </div>
 
     <ion-text class="card-description">
-      Crear un evento para esta fecha.
+      Agenga un evento en el calendadrio publico, para informar a todas las areas.
     </ion-text>
 
     <div class="card-footer">
@@ -42,7 +42,7 @@
     </div>
 
     <ion-text class="card-description">
-      Crear una tarea para esta fecha.
+      Crea una tarea privada para evitar olvidarla.
     </ion-text>
 
     <div class="card-footer">
@@ -51,6 +51,28 @@
       </ion-text>
       <ion-button expand="block" class="action-button" (click)="selectType('tarea')">
         Crear tarea
+      </ion-button>
+    </div>
+  </div>
+
+  <div class="modal-card" role="button" tabindex="0" (click)="selectType('visit')">
+    <div class="card-header">
+      <ion-text class="card-title">Visita</ion-text>
+      <ion-text class="card-date">
+        {{ dateStr | date:'dd MMM yyyy' }}
+      </ion-text>
+    </div>
+
+    <ion-text class="card-description">
+      Gestiona una visita si eres un usuario autorizado.
+    </ion-text>
+
+    <div class="card-footer">
+      <ion-text class="card-author">
+        Tipo: <strong>Visita</strong>
+      </ion-text>
+      <ion-button expand="block" class="action-button" (click)="selectType('visit')">
+        Gestionar visita
       </ion-button>
     </div>
   </div>

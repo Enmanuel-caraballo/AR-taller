@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Chequeo de Visita</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <form [formGroup]="dinamicForm" (ngSubmit)="generarPDF()">
+    
+    <ion-list-header>
+      <ion-label>Datos de la Visita</ion-label>
+    </ion-list-header>
+
+    <ion-list>
+      </ion-list>
+
+    <ion-list-header class="ion-margin-top">
+      <ion-label>Evaluación Estandarizada</ion-label>
+    </ion-list-header>
+
+    <div *ngIf="cargando" class="ion-text-center ion-padding">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando formato...</p>
+    </div>
+
+    <div *ngIf="!cargando">
+      <ion-card *ngFor="let item of itemsEvaluacion" class="ion-margin-bottom">
+        <ion-card-content>
+          <p class="ion-text-wrap" style="color: black; font-size: 16px;">
+            <strong>{{ item.id }}.</strong> {{ item.descripcion }}
+          </p>
+
+          <ion-row class="ion-margin-top">
+            <ion-col size="6">
+              <ion-checkbox labelPlacement="end" justify="start" [formControlName]="item.controlCumple">
+                Cumple
+              </ion-checkbox>
+            </ion-col>
+            
+            <ion-col size="6">
+              <ion-checkbox labelPlacement="end" justify="start" [formControlName]="item.controlNoCumple" color="danger">
+                No Cumple
+              </ion-checkbox>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <ion-button expand="block" type="submit" [disabled]="!dinamicForm.valid" class="ion-margin-top">
+      Generar PDF y Registrar Visita
+    </ion-button>
+
+  </form>
+
+</ion-content>

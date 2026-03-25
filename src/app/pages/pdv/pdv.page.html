@@ -1,0 +1,24 @@
+<ion-card (click)="goTo()" *ngFor="let item of pdvs" class="dm-card-limpia">
+  <div class="dm-list-card">
+
+    <div class="dm-list-head">
+      <span class="dm-list-title">{{ item.name }}</span>
+
+      <span class="dm-status-badge" [ngClass]="{
+          'is-abierto': item.status === 'abierto',
+          'is-cerrado': item.status === 'cerrado',
+          'is-extraordinario': item.status === 'extraordinario'
+        }">
+        {{ item.status }}
+      </span>
+    </div>
+
+    <div class="dm-list-meta">
+      <span class="dm-schedule-chip">
+        <ion-icon name="time-outline"></ion-icon>
+        Horario: {{ item.opened }} - {{ item.closed }}
+      </span>
+    </div>
+
+  </div>
+</ion-card>

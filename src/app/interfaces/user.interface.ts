@@ -6,6 +6,7 @@ export interface IUser{
   email: string;
   password: string;
   photoURL?: string;
+  rol?: string;
 }
 
-export interface IUserCreate extends Omit<IUser, 'uid' > {};
+export interface IUserCreate extends Omit<IUser, 'uid'> {};
