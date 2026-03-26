@@ -17,8 +17,6 @@ import { environment } from 'src/environments/environment.prod';
     provideFirebaseApp(() => initializeApp(environment.FIREBASE_CONFIG)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
-
-
   ],
 })
 export class CoreModule {

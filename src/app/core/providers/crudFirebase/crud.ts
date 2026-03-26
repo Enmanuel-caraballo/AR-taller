@@ -128,4 +128,23 @@ export class Crud {
   }
 }
 
+ async getByDoc(collectionName: string, doc: string) {
+  try {
+    const ref = collection(this.fireSt, collectionName);
+    const q = query(ref, where("doc", "==", doc));
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      return [];
+    }
+    return snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...(doc.data() as IUserCreate)
+    }));
+  } catch (error) {
+    console.log('Error getting user dy doc', error);
+    return [];
+  }
+}
+
 }

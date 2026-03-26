@@ -12,7 +12,7 @@ import { Categories } from '../../services/jsonsProviders';
 
 export class CardComponent  implements OnInit {
 
-  cards: {src: "", title: "", description: "", direction: ""}[]=[]
+cards: { icon: string, title: string, description: string, direction: string }[] = [];
 
   constructor(private readonly jsonSrv: Categories) { }
 

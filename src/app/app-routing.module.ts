@@ -44,13 +44,19 @@ const routes: Routes = [
     loadChildren: () => import('./pages/create-visit/create-visit.module').then( m => m.CreateVisitPageModule)
   },
   {
-    path: '**',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },  {
     path: 'admin',
     loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
   },
+  {
+    path: 'manage-user',
+    loadChildren: () => import('./pages/manage-user/manage-user.module').then( m => m.ManageUserPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+
 
 ];
 

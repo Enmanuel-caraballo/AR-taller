@@ -1,0 +1,64 @@
+<ion-header class="app-header ion-no-border">
+
+  <div class="header-title-wrap">
+    <ion-title color="primary" class="ion-no-padding">Búsqueda de usuarios</ion-title>
+  </div>
+
+  <div class="header-content">
+    <ion-searchbar
+      class="custom-ionic-search"
+      placeholder="Buscar usuarios"
+      searchIcon="search-outline"
+      animated="true"
+      mode="md"
+      [(ngModel)]="doc"
+      (search)="serchByDoc(doc)"
+      >
+    </ion-searchbar>
+  </div>
+
+</ion-header>
+
+
+<ion-content class="ion-padding">
+
+  <ion-card *ngIf="savedUser">
+    <ion-card-header>
+      <ion-card-subtitle>Departamento: {{ savedUser.department }}</ion-card-subtitle>
+      <ion-card-title>{{ savedUser.name }} {{ savedUser.lastName }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p><strong>Documento:</strong> {{ savedUser.doc }}</p>
+      <p><strong>Email:</strong> {{ savedUser.email }}</p>
+
+      <ion-grid class="ion-no-padding ion-margin-top">
+        <ion-row>
+          <ion-col size="4">
+            <ion-button expand="block" color="danger" size="small" (click)="deleteUser(savedUser.email)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col size="4">
+            <ion-button expand="block" color="success" size="small" (click)="promoteUser(savedUser.email)">
+              <ion-icon slot="icon-only" name="arrow-up-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col size="4">
+            <ion-button expand="block" color="warning" size="small" (click)="disableUser(savedUser.email)">
+              <ion-icon slot="icon-only" name="ban-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-text-center" style="font-size: 0.75rem;">
+          <ion-col size="4">Eliminar</ion-col>
+          <ion-col size="4">Promover</ion-col>
+          <ion-col size="4">Inhabilitar</ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

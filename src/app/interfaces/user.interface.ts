@@ -1,4 +1,5 @@
 export interface IUser{
+  doc?:string;
   uid: string;
   name: string;
   lastName: string;

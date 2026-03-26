@@ -20,6 +20,7 @@ export class ProfileModalComponent implements OnInit {
   previewPhoto: string | null = null;
 
   editForm = {
+    doc: '',
     name: '',
     lastName: '',
     department: '',
@@ -35,6 +36,7 @@ export class ProfileModalComponent implements OnInit {
     if (this.user) {
       this.initials = this.getInitials(this.user.name, this.user.lastName);
       this.editForm = {
+        doc: this.user.doc || '',
         name: this.user.name || '',
         lastName: this.user.lastName || '',
         department: this.user.department || '',
@@ -53,6 +55,7 @@ export class ProfileModalComponent implements OnInit {
   toggleEdit() {
     this.isEditing = true;
     this.editForm = {
+      doc: this.user?.doc || '',
       name: this.user?.name || '',
       lastName: this.user?.lastName || '',
       department: this.user?.department || '',
@@ -102,6 +105,7 @@ export class ProfileModalComponent implements OnInit {
     this.isSaving = true;
     try {
       const updated: Partial<IUser> = {
+        doc: this.editForm.doc.trim(),
         name: this.editForm.name.trim(),
         lastName: this.editForm.lastName.trim(),
         department: this.editForm.department.trim(),

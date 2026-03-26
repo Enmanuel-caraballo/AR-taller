@@ -1,0 +1,54 @@
+$primary: #6B4E3D;
+$bg: #FDFBF7;
+
+.app-header {
+  --background: transparent;
+  background-color: $bg;
+  padding: 10px 14px 16px;
+  box-shadow: none;
+}
+
+.header-title-wrap {
+  padding: 0 8px 12px;
+
+  ion-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $primary;
+  }
+}
+
+// Tu contenedor blanco intacto
+.header-content {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 8px 10px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,.05), 0 2px 4px -1px rgba(0,0,0,.03);
+  border: 1px solid rgba($primary, .08);
+}
+
+// ── Modificadores para el <ion-searchbar> nativo ──────────────────
+.custom-ionic-search {
+  padding: 0;
+
+  // Variables nativas de Ionic
+  --background: rgba(107, 78, 61, 0.05); // Equivalente a rgba($primary, .05)
+  --border-radius: 20px;
+  --color: #334155;
+  --placeholder-color: rgba(107, 78, 61, 0.4);
+  --icon-color: rgba(107, 78, 61, 0.6);
+  --clear-button-color: rgba(107, 78, 61, 0.6);
+  --box-shadow: none;
+
+  // Simulamos tu borde sólido de 1.5px
+  border: 1.5px solid rgba($primary, 0.18);
+  border-radius: 22px;
+  height: 40px;
+  transition: all 0.2s ease;
+
+  // Efecto cuando el usuario hace tap/focus para escribir
+  &.searchbar-has-focus {
+    border-color: rgba($primary, 0.5);
+    box-shadow: 0 0 0 3px rgba($primary, 0.07);
+  }
+}
