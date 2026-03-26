@@ -8,6 +8,7 @@ export interface IUser{
   password: string;
   photoURL?: string;
   rol?: string;
+  state?: string;
 }
 
 export interface IUserCreate extends Omit<IUser, 'uid'> {};

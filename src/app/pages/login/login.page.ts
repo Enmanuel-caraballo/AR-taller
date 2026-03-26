@@ -80,8 +80,6 @@ export class LoginPage implements OnInit {
 
   //  MICROSOFT
   async loginWithMicrosoft(): Promise<void> {
-    /* this.isLoading = true;
-    this.errorMessage = ''; */
 
     const uid = await this.authSrv.loginWithMicrosoft();
 

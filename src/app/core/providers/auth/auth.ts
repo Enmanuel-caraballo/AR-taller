@@ -160,6 +160,8 @@ export class Auth {
         const nameParts = user.displayName ? user.displayName.split(' ') : ['', ''];
         await this.crudSrv.register('users', {
           uid: user.uid,
+          state: 'active',
+          rol: 'user',
           name: nameParts[0] || '',
           lastName: nameParts.slice(1).join(' ') || '',
           email: user.email || '',
