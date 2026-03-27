@@ -9,11 +9,23 @@ import { Auth } from 'src/app/core/providers/auth/auth';
   standalone: false,
 })
 export class SideMenuComponent {
+  userRole: string = '';
+
   constructor(
     private readonly menuCtrl: MenuController,
     private readonly navCtrl: NavController,
     private readonly authSrv: Auth
-  ) {}
+  ) {
+    this.checkUserRole();
+  }
+
+  async checkUserRole() {
+    const user = await this.authSrv.getCurrentUser();
+    if (user) {
+      this.userRole = user.rol || 'user';
+      console.log('SideMenu - Rol detectado:', this.userRole);
+    }
+  }
 
   async navigate(route: string) {
     await this.menuCtrl.close('main-menu');
