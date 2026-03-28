@@ -5,16 +5,19 @@
   </div>
 
   <div class="header-content">
-    <ion-searchbar
-      class="custom-ionic-search"
-      placeholder="Buscar usuarios"
-      searchIcon="search-outline"
-      animated="true"
-      mode="md"
-      [(ngModel)]="doc"
-      (search)="serchByDoc(doc)"
-      >
-    </ion-searchbar>
+<form (ngSubmit)="serchByDoc(doc); $event.preventDefault()">
+      <ion-searchbar
+        class="custom-ionic-search"
+        type="search"
+        placeholder="Buscar usuarios"
+        searchIcon="search-outline"
+        animated="true"
+        mode="md"
+        name="searchDoc"
+        [(ngModel)]="doc"
+        >
+      </ion-searchbar>
+    </form>
   </div>
 
 </ion-header>
