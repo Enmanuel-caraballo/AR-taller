@@ -14,6 +14,7 @@ const BASE_CONFIG = {
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
+  public Swal = Swal;
 
   success(title: string, text?: string) {
     return Swal.fire({
