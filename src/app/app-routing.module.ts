@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
 
+import { RoleGuard } from './core/guards/role.guard';
+
 const redirectToLogin = () => redirectUnauthorizedTo(['/login']);
 const redirectToHome = () => redirectLoggedInTo(['/home']);
 
@@ -41,22 +43,33 @@ const routes: Routes = [
   },
   {
     path: 'create-visit',
-    loadChildren: () => import('./pages/create-visit/create-visit.module').then( m => m.CreateVisitPageModule)
+    loadChildren: () => import('./pages/create-visit/create-visit.module').then( m => m.CreateVisitPageModule),
+    canActivate: [RoleGuard],
+    data: { roles: ['admin', 'super-admin'] }
   },
   {
     path: 'admin',
-    loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
+    loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule),
+    canActivate: [RoleGuard],
+    data: { roles: ['super-admin'] }
   },
   {
     path: 'manage-user',
-    loadChildren: () => import('./pages/manage-user/manage-user.module').then( m => m.ManageUserPageModule)
+    loadChildren: () => import('./pages/manage-user/manage-user.module').then( m => m.ManageUserPageModule),
+    canActivate: [RoleGuard],
+    data: { roles: ['super-admin'] }
+  },
+  {
+    path: 'start-visit',
+    loadChildren: () => import('./pages/start-visit/start-visit.module').then( m => m.StartVisitPageModule),
+    canActivate: [RoleGuard],
+    data: { roles: ['admin', 'super-admin'] }
   },
   {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'
   },
-
 
 ];
 

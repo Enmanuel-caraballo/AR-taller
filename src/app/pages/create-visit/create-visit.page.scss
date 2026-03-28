@@ -1,0 +1,109 @@
+/* Variables de color de la marca */
+:host {
+  --bg-color: #FAFAFA;
+  --text-dark: #3B231D;
+  --text-gray: #7A7A7A;
+  --accent-pink: #FCECE4;
+  --accent-brown: #4A2C26;
+  --danger-red: #D9534F; /* Rojo suave para el "No Cumple" */
+}
+
+/* Fondo general y tipografía */
+ion-content {
+  --background: var(--bg-color);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header y Toolbar */
+ion-toolbar {
+  --background: var(--bg-color);
+  --color: var(--text-dark);
+  --border-width: 0 !important; /* Quita la línea inferior por defecto */
+
+  ion-title {
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+}
+
+/* Títulos de las secciones */
+ion-list-header {
+  padding-left: 0;
+  margin-bottom: 10px;
+
+  ion-label {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+  }
+}
+
+/* Estilo de las tarjetas de evaluación */
+ion-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  margin: 0 0 16px 0;
+
+  ion-card-content {
+    padding: 20px;
+
+    /* Texto de la pregunta */
+    p {
+      color: var(--text-dark) !important;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 15px;
+    }
+  }
+}
+
+/* Personalización de los Checkboxes */
+ion-checkbox {
+  --size: 22px;
+  --checkbox-background-checked: var(--accent-brown);
+  --border-color-checked: var(--accent-brown);
+  --border-radius: 6px;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-gray);
+
+  /* Si el checkbox tiene el color danger, usa el rojo en lugar del café */
+  &[color="danger"] {
+    --checkbox-background-checked: var(--danger-red);
+    --border-color-checked: var(--danger-red);
+  }
+}
+
+/* Botón principal (Generar PDF) */
+ion-button[type="submit"] {
+  --background: var(--accent-brown);
+  --background-activated: #341e1a;
+  --border-radius: 14px;
+  --box-shadow: none;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 30px;
+  margin-bottom: 20px;
+
+  /* Da más altura al botón para que se vea premium */
+  &::part(native) {
+    padding: 20px 0;
+  }
+}
+
+/* Spinner de carga */
+ion-spinner {
+  color: var(--accent-brown);
+  transform: scale(1.5);
+  margin-bottom: 15px;
+}
+
+/* Texto de "Cargando formato..." */
+.ion-text-center p {
+  color: var(--text-gray);
+  font-weight: 500;
+  margin-top: 15px;
+}

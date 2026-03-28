@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { PDFDocument } from 'pdf-lib';
 import { FORMATOS_VISITA } from 'src/app/core/models/formatos.data';
 import { supabase } from 'src/app/database/supabase';
@@ -12,6 +13,8 @@ import { supabase } from 'src/app/database/supabase';
 })
 export class CreateVisitPage implements OnInit {
 
+  pdfName: string = '';
+
   dinamicForm!: FormGroup;
   itemsEvaluacion: any[] = [];
   pdfBytesOriginal!: ArrayBuffer;
@@ -20,12 +23,17 @@ export class CreateVisitPage implements OnInit {
   formatoActivo: any;
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private readonly router: Router) {
+    const navigation = this.router.getCurrentNavigation();
+
+    if(navigation?.extras?.state){
+      this.pdfName = navigation.extras.state['data'];
+    }
     this.dinamicForm = this.fb.group({});
   }
 
   ngOnInit() {
-    this.startVisitProcces('chequeo_estandarizado');
+    this.startVisitProcces(this.pdfName);
   }
 
   async startVisitProcces(formatoKey: string) {
@@ -153,7 +161,7 @@ export class CreateVisitPage implements OnInit {
 
       const todosLosCampos = form.getFields();
       todosLosCampos.forEach(campo => {
-        campo.enableReadOnly(); 
+        campo.enableReadOnly();
       });
 
       const pdfBytesLleno = await pdfDoc.save();

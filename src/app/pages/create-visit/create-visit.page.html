@@ -1,13 +1,13 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <ion-title>Chequeo de Visita</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  
+
   <form [formGroup]="dinamicForm" (ngSubmit)="generarPDF()">
-    
+
     <ion-list-header>
       <ion-label>Datos de la Visita</ion-label>
     </ion-list-header>
@@ -37,7 +37,7 @@
                 Cumple
               </ion-checkbox>
             </ion-col>
-            
+
             <ion-col size="6">
               <ion-checkbox labelPlacement="end" justify="start" [formControlName]="item.controlNoCumple" color="danger">
                 No Cumple

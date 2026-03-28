@@ -1,5 +1,6 @@
-export interface IUser{
-  doc?:string;
+export type userRoles = 'admin' | 'super-admin' | 'user';
+export interface IUser {
+  doc?: string;
   uid: string;
   name: string;
   lastName: string;
@@ -7,8 +8,9 @@ export interface IUser{
   email: string;
   password: string;
   photoURL?: string;
-  rol?: string;
+  rol?: userRoles
   state?: string;
+  active?: boolean;
 }
 
-export interface IUserCreate extends Omit<IUser, 'uid'> {};
+export interface IUserCreate extends Omit<IUser, 'uid'> { };

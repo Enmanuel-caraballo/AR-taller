@@ -33,5 +33,9 @@ export class Categories {
     return this.http.get('/assets/JSONS/areas.json')
   }
 
+  getFormats(): Observable<any>{
+    return this.http.get('/assets/JSONS/formats.json')
+  }
+
 
 }
