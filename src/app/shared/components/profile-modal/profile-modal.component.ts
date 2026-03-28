@@ -12,6 +12,7 @@ import { IUser } from 'src/app/interfaces/user.interface';
 })
 export class ProfileModalComponent implements OnInit {
   @Input() user: IUser | null = null;
+  @Input() forceEdit = false;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   isEditing = false;
@@ -41,6 +42,10 @@ export class ProfileModalComponent implements OnInit {
         lastName: this.user.lastName || '',
         department: this.user.department || '',
       };
+      
+      if (this.forceEdit) {
+        this.isEditing = true;
+      }
     }
   }
 
