@@ -41,15 +41,6 @@ export class Auth {
          console.error('Error al obtener datos del usuario:', error);
       }
     }
-
-    // if (user) {
-    //   return {
-    //     userUid: user.uid,
-    //     userName: user.displayName
-    //   }
-
-    // }
-
     return null;
   }
 
@@ -160,6 +151,7 @@ export class Auth {
         const nameParts = user.displayName ? user.displayName.split(' ') : ['', ''];
         await this.crudSrv.register('users', {
           uid: user.uid,
+          doc: '',
           state: 'active',
           rol: 'user',
           name: nameParts[0] || '',

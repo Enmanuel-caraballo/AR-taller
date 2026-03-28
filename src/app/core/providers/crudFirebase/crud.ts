@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { addDoc, collection, deleteDoc, doc, Firestore, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { IEvents } from 'src/app/interfaces/events.interface';
-import { IUserCreate } from 'src/app/interfaces/user.interface';
+import { IUser, IUserCreate } from 'src/app/interfaces/user.interface';
 
 
 @Injectable({
@@ -139,7 +139,7 @@ export class Crud {
     }
     return snapshot.docs.map(doc => ({
       id: doc.id,
-      ...(doc.data() as IUserCreate)
+      ...(doc.data() as IUser)
     }));
   } catch (error) {
     console.log('Error getting user dy doc', error);

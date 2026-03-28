@@ -31,16 +31,19 @@
     <ion-card-content>
       <p><strong>Documento:</strong> {{ savedUser.doc }}</p>
       <p><strong>Email:</strong> {{ savedUser.email }}</p>
+      <p><strong>Rol:</strong> {{ savedUser.rol }}</p>
+      <p><strong>Estado:</strong> {{ savedUser.state}}</p>
+
 
       <ion-grid class="ion-no-padding ion-margin-top">
         <ion-row>
           <ion-col size="4">
-            <ion-button expand="block" color="danger" size="small" (click)="deleteUser(savedUser.email)">
+            <ion-button expand="block" color="danger" size="small" (click)="deleteUser()">
               <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
             </ion-button>
           </ion-col>
           <ion-col size="4">
-            <ion-button expand="block" color="success" size="small" (click)="promoteUser(savedUser.email)">
+            <ion-button expand="block" color="success" size="small" (click)="promoteUser(savedUser.rol)">
               <ion-icon slot="icon-only" name="arrow-up-circle-outline"></ion-icon>
             </ion-button>
           </ion-col>
@@ -53,7 +56,7 @@
 
         <ion-row class="ion-text-center" style="font-size: 0.75rem;">
           <ion-col size="4">Eliminar</ion-col>
-          <ion-col size="4">Promover</ion-col>
+          <ion-col size="4">Cambiar rol</ion-col>
           <ion-col size="4">Inhabilitar</ion-col>
         </ion-row>
       </ion-grid>

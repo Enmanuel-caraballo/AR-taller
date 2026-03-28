@@ -22,11 +22,14 @@ export class User {
 
       await this.crudSrv.register('users', {
         uid,
+        doc: '',
         name: user.name,
         lastName: user.lastName,
         department: user.department,
         email: user.email,
         password: user.password,
+        rol: 'user',
+        state: 'active'
       }, uid)
       console.log('Funciono');
 
