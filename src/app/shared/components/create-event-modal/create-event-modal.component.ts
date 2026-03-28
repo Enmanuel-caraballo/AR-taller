@@ -10,35 +10,18 @@ import { ModalController, NavController } from '@ionic/angular';
 export class CreateEventModalComponent {
   @Input() dateStr = '';
 
-  constructor(private readonly modalCtrl: ModalController, private readonly navSrv: NavController) {}
+  constructor(private readonly modalCtrl: ModalController, private readonly navSrv: NavController) { }
 
   closeModal() {
     this.modalCtrl.dismiss(null, 'cancel');
   }
 
-  selectType(type: 'evento' | 'tarea' | 'visit') {
+  selectType(type: 'evento' | 'tarea') {
 
-//  switch (type){
-
-//   case 'evento':
-//   this.navSrv.navigateRoot('notes');
-//   break;
-
-//   case 'tarea':
-//   this.navSrv.navigateRoot('add-task')
-//   break;
-
-//   case 'visit':
-//   console.log('Visita');
-//   break;
-
-//  }
     if (type == 'evento') {
       this.navSrv.navigateRoot('notes')
-    }else if(type == 'tarea'){
+    } else if (type == 'tarea') {
       this.navSrv.navigateRoot('add-task')
-    }else if(type == 'visit'){
-      console.log('visita');
     }
     this.modalCtrl.dismiss({ type, date: this.dateStr }, 'confirm');
   }

@@ -20,37 +20,34 @@ export class Auth {
 
   }
 
-  async getCurrentUser() {
-    const user =  this.authFirebase.currentUser;
-
-    if (user) {
-      try {
-        const userData = await this.crudSrv.getByUid('users', user.uid);
-
-
-        console.log(userData);
-
-
-        if (userData && Array.isArray(userData) && userData.length > 0) {
-        return {
-          userUid: user.uid,
-          userName: userData[0].name + ' ' + userData[0].lastName
-        };
+  async getCurrentUser(): Promise<{ userUid: string; userName: string; rol: string } | null> {
+    return new Promise((resolve) => {
+      const unsubscribe = this.authFirebase.onAuthStateChanged(async (user) => {
+        unsubscribe(); // Dejar de escuchar después de obtener el primer estado
+        
+        if (user) {
+          try {
+            const userData: any = await this.crudSrv.getByUid('users', user.uid);
+            if (userData && Array.isArray(userData) && userData.length > 0) {
+              const userDoc = userData[0];
+              resolve({
+                userUid: userDoc.uid || user.uid,
+                userName: (userDoc.name || '') + ' ' + (userDoc.lastName || ''),
+                rol: userDoc.rol || 'user'
+              });
+              return;
+            }
+            // Si no hay datos en Firestore pero sí en Auth
+            resolve({ userUid: user.uid, userName: user.displayName || '', rol: 'user' });
+          } catch (error) {
+            console.error('Error al obtener datos del usuario:', error);
+            resolve({ userUid: user.uid, userName: user.displayName || '', rol: 'user' });
+          }
+        } else {
+          resolve(null);
         }
-      } catch (error) {
-         console.error('Error al obtener datos del usuario:', error);
-      }
-    }
-
-    // if (user) {
-    //   return {
-    //     userUid: user.uid,
-    //     userName: user.displayName
-    //   }
-
-    // }
-
-    return null;
+      });
+    });
   }
 
   async create(email: string, password: string): Promise<string | null> {
