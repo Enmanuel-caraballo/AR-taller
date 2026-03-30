@@ -1,6 +1,6 @@
 export type userRoles = 'admin' | 'super-admin' | 'user';
 export interface IUser {
-  doc?: string;
+  doc: string | '';
   uid: string;
   name: string;
   lastName: string;

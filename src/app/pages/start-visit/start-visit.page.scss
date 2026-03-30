@@ -9,7 +9,8 @@
 
 .custom-bg {
   --background: var(--bg-color);
-  font-family: 'Inter', sans-serif; /* O la fuente principal que uses */
+  font-family: 'Inter', sans-serif;
+  /* O la fuente principal que uses */
 }
 
 /* Header */
@@ -214,8 +215,12 @@
 
     .circle-bg {
       fill: none;
-      stroke: #F4F4F4;
+      stroke: var(--accent-brown);
       stroke-width: 2.5;
+      stroke-linecap: round;
+
+      /* Quitamos la animación estática y ponemos una transición suave */
+      transition: stroke-dasharray 1.2s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .circle {
@@ -272,6 +277,7 @@
         font-weight: 600;
         color: var(--text-dark);
       }
+
       p {
         margin: 0;
         font-size: 0.8rem;
@@ -345,8 +351,13 @@
         margin-top: 6px;
         flex-shrink: 0;
 
-        &.dark { background: var(--text-dark); }
-        &.light { background: #D1D1D1; }
+        &.dark {
+          background: var(--text-dark);
+        }
+
+        &.light {
+          background: #D1D1D1;
+        }
       }
 
       .content {
@@ -367,6 +378,8 @@
   }
 }
 
-@keyframes progress {
-  0% { stroke-dasharray: 0 100; }
-}
+// @keyframes progress {
+//   0% {
+//     stroke-dasharray: 0 100;
+//   }
+// }

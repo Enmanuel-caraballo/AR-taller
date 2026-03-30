@@ -14,6 +14,8 @@ export class InputComponent {
   @Input() placeholder = '';
   @Input() control!: FormControl;
 
+  @Input() isReadonly: boolean = false;
+
   public onType(event: any){
     this.control.setValue(event.target.value);
   }

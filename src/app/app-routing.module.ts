@@ -3,6 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
 
 import { RoleGuard } from './core/guards/role.guard';
+import { originGuard } from './core/guards/origin-guard';
 
 const redirectToLogin = () => redirectUnauthorizedTo(['/login']);
 const redirectToHome = () => redirectLoggedInTo(['/home']);
@@ -44,7 +45,7 @@ const routes: Routes = [
   {
     path: 'create-visit',
     loadChildren: () => import('./pages/create-visit/create-visit.module').then( m => m.CreateVisitPageModule),
-    canActivate: [RoleGuard],
+    canActivate: [RoleGuard, originGuard],
     data: { roles: ['admin', 'super-admin'] }
   },
   {
@@ -62,7 +63,7 @@ const routes: Routes = [
   {
     path: 'start-visit',
     loadChildren: () => import('./pages/start-visit/start-visit.module').then( m => m.StartVisitPageModule),
-    canActivate: [RoleGuard],
+    canActivate: [RoleGuard], 
     data: { roles: ['admin', 'super-admin'] }
   },
   {

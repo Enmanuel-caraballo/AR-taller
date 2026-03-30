@@ -21,8 +21,8 @@
   </div>
 
   <div class="document-cards">
-    <div  *ngFor="let item of finalFormats"
-    (click)="goToCreateVisit(item.name)"
+    <div *ngFor="let item of finalFormats"
+    (click)="goToCreateVisit(item.name, item.title)"
     class="custom-card doc-card">
       <div class="card-top">
         <div class="icon-wrapper">
@@ -58,41 +58,42 @@
   </div>
 
   <div class="custom-card visits-card">
-    <div class="chart-container">
-      <svg viewBox="0 0 36 36" class="circular-chart">
-        <path class="circle-bg"
-          d="M18 2.0845
-            a 15.9155 15.9155 0 0 1 0 31.831
-            a 15.9155 15.9155 0 0 1 0 -31.831"
-        />
-        <path class="circle"
-          stroke-dasharray="80, 100"
-          d="M18 2.0845
-            a 15.9155 15.9155 0 0 1 0 31.831
-            a 15.9155 15.9155 0 0 1 0 -31.831"
-        />
-      </svg>
-      <div class="chart-content">
-        <span class="number">24</span>
-        <span class="label">VISITAS</span>
-      </div>
-    </div>
-
-    <div class="goal-info">
-      <div class="goal-icon">
-        <ion-icon name="checkmark-circle"></ion-icon>
-      </div>
-      <div class="goal-text">
-        <h4>Meta Mensual Alcanzada al 80%</h4>
-        <p>Has completado 24 de las 30 visitas programadas para este periodo.</p>
-      </div>
-    </div>
-
-    <div class="action-buttons">
-      <button class="btn-primary">Ver Reporte Detallado</button>
-      <button class="btn-secondary">Historial</button>
+  <div class="chart-container">
+    <svg viewBox="0 0 36 36" class="circular-chart">
+      <path class="circle"
+      [style.strokeDasharray]="porcentajeMeta + ', 100'"
+       d="M18 2.0845
+       a 15.9155 15.9155 0 0 1 0 31.831
+      a 15.9155 15.9155 0 0 1 0 -31.831"
+      />
+      <path class="circle"
+        [attr.stroke-dasharray]="dashArrayDinamico"
+        d="M18 2.0845
+          a 15.9155 15.9155 0 0 1 0 31.831
+          a 15.9155 15.9155 0 0 1 0 -31.831"
+      />
+    </svg>
+    <div class="chart-content">
+      <span class="number">{{ visitLength }}</span>
+      <span class="label">VISITAS</span>
     </div>
   </div>
+
+  <div class="goal-info">
+    <div class="goal-icon">
+      <ion-icon name="checkmark-circle"></ion-icon>
+    </div>
+    <div class="goal-text">
+      <h4>Meta Mensual Alcanzada al {{ porcentajeMeta }}%</h4>
+      <p>Has completado {{ visitLength }} de las {{ visitasTotales }} visitas programadas para este periodo.</p>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button class="btn-primary">Ver Reporte Detallado</button>
+    <button class="btn-secondary">Historial</button>
+  </div>
+</div>
 
   <!-- <div class="activity-section">
     <h3>Actividad Reciente</h3>

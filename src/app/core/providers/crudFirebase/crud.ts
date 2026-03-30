@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { addDoc, collection, deleteDoc, doc, Firestore, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { IEvents } from 'src/app/interfaces/events.interface';
+import { IGoal } from 'src/app/interfaces/goal.interface';
 import { IUser, IUserCreate } from 'src/app/interfaces/user.interface';
+import { IVisit } from 'src/app/interfaces/visit.interface';
 
 
 @Injectable({
@@ -146,5 +148,46 @@ export class Crud {
     return [];
   }
 }
+
+
+async getGoalByDocAndMonth(collectionName: string, document: string, month: string){
+    try {
+      const ref = collection(this.fireSt, collectionName);
+      const q = query(ref, where("doc", "==", document), where("month", "==", month))
+      const snapshot = await getDocs(q);
+
+      if(snapshot.empty){
+        return [];
+      }
+
+      return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as IGoal)
+      }));
+    } catch (error) {
+      console.log('Error getting visits', error);
+      return[];
+    }
+ }
+ async getVisitsByDocAndMonth(collectionName: string, document: string, month: string){
+    try {
+      const ref = collection(this.fireSt, collectionName);
+      const q = query(ref, where("doc", "==", document), where("month", "==", month))
+      const snapshot = await getDocs(q);
+
+      if(snapshot.empty){
+        return [];
+      }
+
+      return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as IVisit)
+      }));
+    } catch (error) {
+      console.log('Error getting visits', error);
+      return[];
+    }
+ }
+
 
 }

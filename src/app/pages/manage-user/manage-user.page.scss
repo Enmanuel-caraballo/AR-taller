@@ -52,3 +52,119 @@ $bg: #FDFBF7;
     box-shadow: 0 0 0 3px rgba($primary, 0.07);
   }
 }
+
+
+$primary: #6B4E3D;
+$bg: #FDFBF7;
+
+.app-header {
+  --background: transparent;
+  background-color: $bg;
+  padding: 10px 14px 16px;
+  box-shadow: none;
+}
+
+.header-title-wrap {
+  padding: 0 8px 12px;
+
+  ion-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $primary;
+  }
+}
+
+.header-content {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 8px 10px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,.05), 0 2px 4px -1px rgba(0,0,0,.03);
+  border: 1px solid rgba($primary, .08);
+}
+
+// ── Novedad: Contenedor Flex para el formulario ──────────────────
+.search-form-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre el buscador y el botón */
+  width: 100%;
+}
+
+.custom-ionic-search {
+  padding: 0;
+  flex: 1; /* Hace que el buscador tome todo el espacio sobrante */
+
+  --background: rgba(107, 78, 61, 0.05);
+  --border-radius: 20px;
+  --color: #334155;
+  --placeholder-color: rgba(107, 78, 61, 0.4);
+  --icon-color: rgba(107, 78, 61, 0.6);
+  --clear-button-color: rgba(107, 78, 61, 0.6);
+  --box-shadow: none;
+
+  border: 1.5px solid rgba($primary, 0.18);
+  border-radius: 22px;
+  height: 40px;
+  transition: all 0.2s ease;
+
+  &.searchbar-has-focus {
+    border-color: rgba($primary, 0.5);
+    box-shadow: 0 0 0 3px rgba($primary, 0.07);
+  }
+}
+
+// ── Novedad: Estilos del Botón de Búsqueda ───────────────────────
+
+// ── Contenedor Flex para alinear perfectamente en la misma línea ──
+.search-flex-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px; /* Separación entre input y botón */
+  width: 100%;
+}
+
+// ── Modificadores para el <ion-searchbar> ─────────────────────────
+.custom-ionic-search {
+  padding: 0;
+  flex: 1 1 auto; /* Permite que el buscador tome el espacio sobrante */
+  width: auto !important; /* Fuerza a Ionic a ignorar su 100% por defecto */
+
+  --background: rgba(107, 78, 61, 0.05);
+  --border-radius: 20px;
+  --color: #334155;
+  --placeholder-color: rgba(107, 78, 61, 0.4);
+  --icon-color: rgba(107, 78, 61, 0.6);
+  --clear-button-color: rgba(107, 78, 61, 0.6);
+  --box-shadow: none;
+
+  border: 1.5px solid rgba($primary, 0.18);
+  border-radius: 22px;
+  height: 40px;
+  transition: all 0.2s ease;
+
+  &.searchbar-has-focus {
+    border-color: rgba($primary, 0.5);
+    box-shadow: 0 0 0 3px rgba($primary, 0.07);
+  }
+}
+
+// ── Estilos del Botón de Búsqueda ─────────────────────────────────
+.search-action-btn {
+  margin: 0;
+  height: 40px;
+  width: 44px;
+  flex-shrink: 0; /* CRÍTICO: Evita que el botón se aplaste por culpa del buscador */
+
+  --background: #6B4E3D;
+  --background-hover: #5A4133;
+  --background-activated: #4A352A;
+  --border-radius: 14px;
+  --box-shadow: 0 4px 6px -1px rgba(107, 78, 61, 0.25);
+
+  ion-icon {
+    font-size: 1.2rem;
+    color: #FFFFFF;
+  }
+}

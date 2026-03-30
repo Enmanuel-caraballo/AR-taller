@@ -1,22 +1,68 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Chequeo de Visita</ion-title>
+    <ion-title>Formato de Visita</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
 
+  <ion-list-header>
+    <ion-label>Datos de la Visita</ion-label>
+  </ion-list-header>
+
+  <ion-card>
+
+    <ion-card-content>
+
+      <form class="formVisit" [formGroup]="formVisit" >
+        <ion-item>
+          <app-input
+          label="Responsable"
+          type="text"
+          [control]="responsible"
+          [isReadonly]="data.responsible ? true : false">
+          </app-input>
+        </ion-item>
+
+
+        <ion-item>
+          <app-select
+            label="Lugar"
+            id="pdvs"
+            [control]="pdv">
+          </app-select>
+        </ion-item>
+
+
+        <ion-item>
+          <app-input
+          label="Hora de creación"
+          type="text"
+          [control]="madeAt"
+          [isReadonly]="data.responsible ? true : false">
+          </app-input>
+        </ion-item>
+
+
+        <ion-item>
+          <app-input
+          label="Formato utilizado"
+          type="text"
+          [control]="usedPdf"
+          [isReadonly]="data.responsible ? true : false">
+          </app-input>
+        </ion-item>
+
+      </form>
+    </ion-card-content>
+
+  </ion-card>
+
   <form [formGroup]="dinamicForm" (ngSubmit)="generarPDF()">
 
-    <ion-list-header>
-      <ion-label>Datos de la Visita</ion-label>
-    </ion-list-header>
-
-    <ion-list>
-      </ion-list>
 
     <ion-list-header class="ion-margin-top">
-      <ion-label>Evaluación Estandarizada</ion-label>
+      <ion-label>{{title}}</ion-label>
     </ion-list-header>
 
     <div *ngIf="cargando" class="ion-text-center ion-padding">
@@ -48,7 +94,7 @@
       </ion-card>
     </div>
 
-    <ion-button expand="block" type="submit" [disabled]="!dinamicForm.valid" class="ion-margin-top">
+    <ion-button expand="block" type="submit" [disabled]="!dinamicForm.valid || !formVisit.valid" class="ion-margin-top">
       Generar PDF y Registrar Visita
     </ion-button>
 

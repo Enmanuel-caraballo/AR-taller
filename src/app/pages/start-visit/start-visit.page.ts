@@ -4,6 +4,7 @@ import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 import { IFormat } from 'src/app/interfaces/formats.interface';
 import { Categories } from 'src/app/shared/services/jsonsProviders';
 import { NavController } from '@ionic/angular';
+import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-start-visit',
@@ -14,10 +15,14 @@ import { NavController } from '@ionic/angular';
 export class StartVisitPage implements OnInit, OnDestroy {
   firstName!: string;
 
+  user!: {userUid: string; userName: string; rol: string};
+
   formatsArray: IFormat[] = [];
 
   finalFormats: IFormat[] = [];
 
+  doc!: string;
+  visitLength!: number;
   department!: string;
 
   greeting: 'Buenos días' | 'Buenas tardes' | 'Buenas noches' = 'Buenos días';
@@ -40,20 +45,31 @@ export class StartVisitPage implements OnInit, OnDestroy {
 
     const user = await this.authSrv.getCurrentUser();
 
+   user != undefined ? this.user = user: console.log('No user');
+
+
     user != undefined ? this.firstName = user?.userName.split(' ')[0] : console.log('Sin usuario');
 
     if (user?.userUid) {
       const savedUser = await this.crudSrv.getByUid('users', user.userUid)
 
       if (savedUser) {
+        const month = new Date().toISOString().slice(0, 7);
         this.department = savedUser[0].department;
+        this.doc = savedUser[0].doc;
+
+
+        
+       const visitsLengt = await this.crudSrv.getVisitsByDocAndMonth('visits', this.doc, month);
+       
+       this.visitLength = visitsLengt.length
       }
     }
 
     this.jsonPrv.getFormats().subscribe(formats => {
       this.formatsArray = formats
 
-      this.finalFormats = this.formatsArray.filter(format => format.department.trim().toLowerCase() == this.department.trim().toLowerCase());
+      this.finalFormats =  this.formatsArray.filter(format => format.department.trim().toLowerCase() == this.department.trim().toLowerCase());
       console.log(this.finalFormats);
 
     })
@@ -72,9 +88,26 @@ export class StartVisitPage implements OnInit, OnDestroy {
     }
   }
 
-  goToCreateVisit(pdfName: string){
+  goToCreateVisit(pdfName: string, title:string){
+    const fecha = this.currentTime.toLocaleDateString('es-CO', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    const hora = this.currentTime.toLocaleTimeString('es-CO', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
      this.navSrv.navigateRoot('create-visit', {
-     state: { data: pdfName }
+     state: { data:{
+      pdfName: pdfName,
+      responsible: this.user.userName,
+      madeTime: `${fecha}, ${hora}`,
+      title: title,
+      doc: this.doc
+     }}
     });
   }
 
@@ -92,6 +125,27 @@ export class StartVisitPage implements OnInit, OnDestroy {
       this.greeting = 'Buenos días';
     }
   }
+
+
+
+
+visitasTotales: number = 30;
+
+// Este "getter" calcula el porcentaje automáticamente
+get porcentajeMeta(): number {
+  if (this.visitasTotales === 0) return 0;
+
+  if (this.visitLength === undefined || this.visitasTotales === 0) {
+    return 0;
+  }
+
+
+  return Math.round((this.visitLength / this.visitasTotales) * 100);
+}
+get dashArrayDinamico(): string {
+
+  return `${this.porcentajeMeta}, 100`;
+}
 
 
 }

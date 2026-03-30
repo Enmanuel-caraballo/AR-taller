@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PDFDocument } from 'pdf-lib';
 import { FORMATOS_VISITA } from 'src/app/core/models/formatos.data';
 import { supabase } from 'src/app/database/supabase';
+import { IVisit } from 'src/app/interfaces/visit.interface';
+import { Visit } from 'src/app/shared/services/visit/visit';
 
 @Component({
   selector: 'app-create-visit',
@@ -13,7 +15,21 @@ import { supabase } from 'src/app/database/supabase';
 })
 export class CreateVisitPage implements OnInit {
 
+  responsible!: FormControl;
+  pdv!: FormControl;
+  usedPdf!: FormControl;
+  madeAt!: FormControl;
+  doc!: FormControl;
+  month!: FormControl;
+  formVisit!: FormGroup;
+
+
+  monthToSave!: string;
   pdfName: string = '';
+  title: string = '';
+
+  data!: { madeTime: string, pdfName: string, responsible:string, title: string, doc: string}
+
 
   dinamicForm!: FormGroup;
   itemsEvaluacion: any[] = [];
@@ -23,18 +39,30 @@ export class CreateVisitPage implements OnInit {
   formatoActivo: any;
 
 
-  constructor(private fb: FormBuilder, private readonly router: Router) {
+  constructor(private fb: FormBuilder, private readonly router: Router, private readonly visitSrv: Visit ) {
+
+    this.monthToSave = new Date().toISOString().slice(0, 7);
+    
     const navigation = this.router.getCurrentNavigation();
 
     if(navigation?.extras?.state){
-      this.pdfName = navigation.extras.state['data'];
+      this.data = navigation.extras.state['data'];
+      console.log(this.data);
+
+      this.pdfName = this.data.pdfName;
+      this.title = this.data.title;
+
+
     }
     this.dinamicForm = this.fb.group({});
-  }
+  };
 
-  ngOnInit() {
-    this.startVisitProcces(this.pdfName);
-  }
+ async ngOnInit() {
+
+    this.initForm();
+
+   await this.startVisitProcces(this.pdfName);
+  };
 
   async startVisitProcces(formatoKey: string) {
     this.cargando = true;
@@ -58,7 +86,7 @@ export class CreateVisitPage implements OnInit {
     } finally {
       this.cargando = false;
     }
-  }
+  };
 
   async loadStructurePDF(url: string) {
     this.pdfBytesOriginal = await fetch(url).then(res => res.arrayBuffer());
@@ -104,12 +132,17 @@ export class CreateVisitPage implements OnInit {
     }
 
     console.log('Estructura lista para la vista:', this.itemsEvaluacion);
-  }
+  };
 
   async generarPDF() {
     this.cargando = true;
 
     try {
+
+      const datosDeLaVisita: IVisit = this.formVisit.getRawValue();
+
+      await this.visitSrv.createVisit(datosDeLaVisita)
+
       const pdfDoc = await PDFDocument.load(this.pdfBytesOriginal);
       const form = pdfDoc.getForm();
 
@@ -174,9 +207,8 @@ export class CreateVisitPage implements OnInit {
     } finally {
       this.cargando = false;
     }
-  }
-
-
+  };
+  //!Revisar solo muestra previsualizacion en Safari
   descargarEnNavegador(pdfBytes: Uint8Array, nombreArchivo: string) {
 
     const blob = new Blob([pdfBytes as BlobPart], { type: 'application/pdf' });
@@ -194,7 +226,26 @@ export class CreateVisitPage implements OnInit {
 
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
-  }
+  };
 
 
-}
+  private initForm(){
+    this.responsible = new FormControl(this.data.responsible, [Validators.required]);
+    this.pdv = new FormControl('', [Validators.required]);
+    this.usedPdf = new FormControl(this.data.pdfName, [Validators.required]);
+    this.madeAt =  new FormControl(this.data.madeTime, [Validators.required]);
+    this.doc = new FormControl(this.data.doc, [Validators.required]);
+    this.month = new FormControl(this.monthToSave, [Validators.required]);
+
+    this.formVisit = new FormGroup({
+      responsible: this.responsible,
+      pdv: this.pdv,
+      usedPdf: this.usedPdf,
+      madeAt: this.madeAt,
+      doc: this.doc,
+      month: this.month
+    });
+  };
+
+
+};

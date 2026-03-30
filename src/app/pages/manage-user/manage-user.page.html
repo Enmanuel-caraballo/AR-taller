@@ -6,18 +6,23 @@
 
   <div class="header-content">
 <form (ngSubmit)="serchByDoc(doc); $event.preventDefault()">
-      <ion-searchbar
-        class="custom-ionic-search"
-        type="search"
-        placeholder="Buscar usuarios"
-        searchIcon="search-outline"
-        animated="true"
-        mode="md"
-        name="searchDoc"
-        [(ngModel)]="doc"
-        >
-      </ion-searchbar>
-    </form>
+  <div class="search-flex-container">
+    <ion-searchbar
+      class="custom-ionic-search"
+      type="search"
+      placeholder="Buscar usuarios"
+      searchIcon="search-outline"
+      animated="true"
+      mode="md"
+      name="searchDoc"
+      [(ngModel)]="doc">
+    </ion-searchbar>
+
+    <ion-button type="submit" class="search-action-btn" mode="ios">
+      <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+    </ion-button>
+  </div>
+</form>
   </div>
 
 </ion-header>
