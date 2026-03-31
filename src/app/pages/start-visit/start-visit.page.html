@@ -79,13 +79,13 @@
     </div>
   </div>
 
-  <div class="goal-info">
+  <div *ngIf="goalLength !=0" class="goal-info">
     <div class="goal-icon">
       <ion-icon name="checkmark-circle"></ion-icon>
     </div>
     <div class="goal-text">
       <h4>Meta Mensual Alcanzada al {{ porcentajeMeta }}%</h4>
-      <p>Has completado {{ visitLength }} de las {{ visitasTotales }} visitas programadas para este periodo.</p>
+      <p>Has completado {{ visitLength }} de las {{ goalLength }} visitas programadas para este periodo.</p>
     </div>
   </div>
 

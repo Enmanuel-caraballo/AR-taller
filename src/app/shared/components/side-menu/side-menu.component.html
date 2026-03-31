@@ -44,7 +44,7 @@
       </button>
 
       <!-- BOTONES ADMINISTRATIVOS -->
-      <button class="nav-item admin-item" *ngIf="userRole === 'admin' || userRole === 'super-admin'" (click)="navigate('/start-visit')">
+      <button class="nav-item admin-item" *ngIf="userRole === 'admin' || userRole === 'super-admin' || userRole === 'jefe' " (click)="navigate('/start-visit')">
         <div class="nav-icon-wrap">
           <ion-icon name="calendar-number-outline"></ion-icon>
         </div>
@@ -54,11 +54,20 @@
 
       <button class="nav-item super-admin-item" *ngIf="userRole === 'super-admin'" (click)="navigate('/admin')">
         <div class="nav-icon-wrap">
+          <ion-icon name="briefcase-outline"></ion-icon>
+        </div>
+        <span class="nav-label">Panel administrativo</span>
+        <ion-icon name="chevron-forward-outline" class="nav-arrow"></ion-icon>
+      </button>
+
+      <button class="nav-item super-admin-item" *ngIf="userRole === 'super-admin'" (click)="navigate('/manage-user')">
+        <div class="nav-icon-wrap">
           <ion-icon name="people-outline"></ion-icon>
         </div>
         <span class="nav-label">Gestión Usuarios</span>
         <ion-icon name="chevron-forward-outline" class="nav-arrow"></ion-icon>
       </button>
+
     </div>
 
     <p class="section-label">Herramientas</p>

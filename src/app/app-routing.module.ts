@@ -46,13 +46,13 @@ const routes: Routes = [
     path: 'create-visit',
     loadChildren: () => import('./pages/create-visit/create-visit.module').then( m => m.CreateVisitPageModule),
     canActivate: [RoleGuard, originGuard],
-    data: { roles: ['admin', 'super-admin'] }
+    data: { roles: ['admin', 'super-admin', 'jefe'] }
   },
   {
     path: 'admin',
     loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule),
     canActivate: [RoleGuard],
-    data: { roles: ['super-admin'] }
+    data: { roles: ['super-admin', 'jefe'] }
   },
   {
     path: 'manage-user',
@@ -64,7 +64,7 @@ const routes: Routes = [
     path: 'start-visit',
     loadChildren: () => import('./pages/start-visit/start-visit.module').then( m => m.StartVisitPageModule),
     canActivate: [RoleGuard], 
-    data: { roles: ['admin', 'super-admin'] }
+    data: { roles: ['admin', 'super-admin', 'jefe'] }
   },
   {
     path: '**',
