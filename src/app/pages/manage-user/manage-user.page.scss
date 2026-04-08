@@ -4,132 +4,56 @@ $bg: #FDFBF7;
 .app-header {
   --background: transparent;
   background-color: $bg;
-  padding: 10px 14px 16px;
+
+  /* 1. FIX IOS SAFE AREA: Sumamos el espacio del "notch" al padding superior */
+  padding: calc(10px + var(--ion-safe-area-top, 0px)) 14px 16px;
   box-shadow: none;
-}
 
-.header-title-wrap {
-  padding: 0 8px 12px;
-
-  ion-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: $primary;
-  }
-}
-
-// Tu contenedor blanco intacto
-.header-content {
-  background: #FFFFFF;
-  border-radius: 16px;
-  padding: 8px 10px;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,.05), 0 2px 4px -1px rgba(0,0,0,.03);
-  border: 1px solid rgba($primary, .08);
-}
-
-// ── Modificadores para el <ion-searchbar> nativo ──────────────────
-.custom-ionic-search {
-  padding: 0;
-
-  // Variables nativas de Ionic
-  --background: rgba(107, 78, 61, 0.05); // Equivalente a rgba($primary, .05)
-  --border-radius: 20px;
-  --color: #334155;
-  --placeholder-color: rgba(107, 78, 61, 0.4);
-  --icon-color: rgba(107, 78, 61, 0.6);
-  --clear-button-color: rgba(107, 78, 61, 0.6);
-  --box-shadow: none;
-
-  // Simulamos tu borde sólido de 1.5px
-  border: 1.5px solid rgba($primary, 0.18);
-  border-radius: 22px;
-  height: 40px;
-  transition: all 0.2s ease;
-
-  // Efecto cuando el usuario hace tap/focus para escribir
-  &.searchbar-has-focus {
-    border-color: rgba($primary, 0.5);
-    box-shadow: 0 0 0 3px rgba($primary, 0.07);
-  }
-}
-
-
-$primary: #6B4E3D;
-$bg: #FDFBF7;
-
-.app-header {
-  --background: transparent;
-  background-color: $bg;
-  padding: 10px 14px 16px;
-  box-shadow: none;
-}
-
-.header-title-wrap {
-  padding: 0 8px 12px;
-
-  ion-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: $primary;
-  }
-}
-
-.header-content {
-  background: #FFFFFF;
-  border-radius: 16px;
-  padding: 8px 10px;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,.05), 0 2px 4px -1px rgba(0,0,0,.03);
-  border: 1px solid rgba($primary, .08);
-}
-
-// ── Novedad: Contenedor Flex para el formulario ──────────────────
-.search-form-container {
+  /* 2. FIX IOS FLEXBOX: Fuerzamos a que el título y la caja blanca se apilen verticalmente */
   display: flex;
-  align-items: center;
-  gap: 8px; /* Espacio entre el buscador y el botón */
+  flex-direction: column;
   width: 100%;
 }
 
-.custom-ionic-search {
-  padding: 0;
-  flex: 1; /* Hace que el buscador tome todo el espacio sobrante */
+.header-title-wrap {
+  padding: 0 8px 12px;
+  width: 100%;
 
-  --background: rgba(107, 78, 61, 0.05);
-  --border-radius: 20px;
-  --color: #334155;
-  --placeholder-color: rgba(107, 78, 61, 0.4);
-  --icon-color: rgba(107, 78, 61, 0.6);
-  --clear-button-color: rgba(107, 78, 61, 0.6);
-  --box-shadow: none;
-
-  border: 1.5px solid rgba($primary, 0.18);
-  border-radius: 22px;
-  height: 40px;
-  transition: all 0.2s ease;
-
-  &.searchbar-has-focus {
-    border-color: rgba($primary, 0.5);
-    box-shadow: 0 0 0 3px rgba($primary, 0.07);
+  ion-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $primary;
   }
 }
 
-// ── Novedad: Estilos del Botón de Búsqueda ───────────────────────
+.header-content {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 8px 10px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,.05), 0 2px 4px -1px rgba(0,0,0,.03);
+  border: 1px solid rgba($primary, .08);
+  width: 100%;
+}
 
-// ── Contenedor Flex para alinear perfectamente en la misma línea ──
+// ── Contenedor Flex (Input + Botón) ─────────────────────────────
 .search-flex-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 10px; /* Separación entre input y botón */
+  gap: 10px;
   width: 100%;
 }
 
-// ── Modificadores para el <ion-searchbar> ─────────────────────────
+// ── Buscador Ionic ──────────────────────────────────────────────
 .custom-ionic-search {
   padding: 0;
-  flex: 1 1 auto; /* Permite que el buscador tome el espacio sobrante */
-  width: auto !important; /* Fuerza a Ionic a ignorar su 100% por defecto */
+  flex: 1 1 auto;
+  width: auto !important;
+
+  /* 3. FIX IOS APPEARANCE: "Apagamos" el diseño nativo de Apple */
+  -webkit-appearance: none;
+  appearance: none;
 
   --background: rgba(107, 78, 61, 0.05);
   --border-radius: 20px;
@@ -148,14 +72,20 @@ $bg: #FDFBF7;
     border-color: rgba($primary, 0.5);
     box-shadow: 0 0 0 3px rgba($primary, 0.07);
   }
+
+  /* Como el ion-searchbar tiene un input escondido adentro, también lo reseteamos */
+  &::part(native) {
+    -webkit-appearance: none;
+    appearance: none;
+  }
 }
 
-// ── Estilos del Botón de Búsqueda ─────────────────────────────────
+// ── Botón de Búsqueda ───────────────────────────────────────────
 .search-action-btn {
   margin: 0;
   height: 40px;
   width: 44px;
-  flex-shrink: 0; /* CRÍTICO: Evita que el botón se aplaste por culpa del buscador */
+  flex-shrink: 0; /* CRÍTICO: Evita que el botón se aplaste */
 
   --background: #6B4E3D;
   --background-hover: #5A4133;
