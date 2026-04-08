@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { INotification } from 'src/app/interfaces/notification.interface';
 import { NotificationService } from '../../services/notification/notification.service';
-import { GlobalEvent } from '../../services/global-event';
 
 @Component({
   selector: 'app-notifications-modal',
@@ -10,9 +10,10 @@ import { GlobalEvent } from '../../services/global-event';
   styleUrls: ['./notifications-modal.component.scss'],
   standalone: false,
 })
-export class NotificationsModalComponent implements OnInit {
+export class NotificationsModalComponent implements OnInit, OnDestroy {
   notifications: INotification[] = [];
   isLoading = true;
+  private notifSub!: Subscription;
 
   constructor(
     private readonly modalCtrl: ModalController,
@@ -21,13 +22,16 @@ export class NotificationsModalComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.load();
+    this.isLoading = true;
+    // Suscripción en tiempo real: notificaciones nuevas aparecen sin recargar
+    this.notifSub = this.notifSrv.listenMyNotifications().subscribe(notifs => {
+      this.notifications = notifs;
+      this.isLoading = false;
+    });
   }
 
-  async load() {
-    this.isLoading = true;
-    this.notifications = await this.notifSrv.getMyNotifications();
-    this.isLoading = false;
+  ngOnDestroy() {
+    this.notifSub?.unsubscribe();
   }
 
   get unreadCount(): number {

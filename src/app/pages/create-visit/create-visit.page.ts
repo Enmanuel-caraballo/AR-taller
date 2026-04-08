@@ -42,7 +42,7 @@ export class CreateVisitPage implements OnInit {
   constructor(private fb: FormBuilder, private readonly router: Router, private readonly visitSrv: Visit ) {
 
     this.monthToSave = new Date().toISOString().slice(0, 7);
-    
+
     const navigation = this.router.getCurrentNavigation();
 
     if(navigation?.extras?.state){
@@ -91,6 +91,11 @@ export class CreateVisitPage implements OnInit {
   async loadStructurePDF(url: string) {
     this.pdfBytesOriginal = await fetch(url).then(res => res.arrayBuffer());
 
+    const pdfDocParaLeer = await PDFDocument.load(this.pdfBytesOriginal);
+    const todosLosCampos = pdfDocParaLeer.getForm().getFields();
+    const nombresDeCampos = todosLosCampos.map(campo => campo.getName());
+    console.log('NOMBRES EXACTOS EN EL PDF:', nombresDeCampos);
+
 
     const totalItems = this.formatoActivo.totalItems;
     const diccionario = this.formatoActivo.diccionario;
@@ -101,7 +106,6 @@ export class CreateVisitPage implements OnInit {
       const nombreCumple = `item_cumple_${i}`;
       const nombreNoCumple = `item_no_cumple_${i}`;
 
-
       const controlCumple = new FormControl(false);
       const controlNoCumple = new FormControl(false);
 
@@ -110,11 +114,9 @@ export class CreateVisitPage implements OnInit {
 
       controlCumple.valueChanges.subscribe(marcado => {
         if (marcado) {
-
           controlNoCumple.setValue(false, { emitEvent: false });
         }
       });
-
 
       controlNoCumple.valueChanges.subscribe(marcado => {
         if (marcado) {
@@ -122,13 +124,17 @@ export class CreateVisitPage implements OnInit {
         }
       });
 
-
       this.itemsEvaluacion.push({
         id: i,
         descripcion: diccionario[i] || `Descripción pendiente para el ítem ${i}`,
         controlCumple: nombreCumple,
         controlNoCumple: nombreNoCumple
       });
+    }
+
+    // Agregar campo de observaciones al formulario dinámico (si no existe aún)
+    if (!this.dinamicForm.contains('observaciones')) {
+      this.dinamicForm.addControl('observaciones', new FormControl(''));
     }
 
     console.log('Estructura lista para la vista:', this.itemsEvaluacion);
@@ -176,17 +182,22 @@ export class CreateVisitPage implements OnInit {
         }
       }
 
-      // 3. Llenar campos de totales (si existen)
+      // 3. Llenar campos de totales y observaciones (si existen)
       try {
         const porcentaje = (puntajeCumple / totalItems) * 100;
 
-        // Verificamos existencia antes de intentar acceder para evitar errores
         if (camposEnPdf.includes('total_cumplimiento_num')) {
           form.getTextField('total_cumplimiento_num').setText(puntajeCumple.toString());
         }
 
         if (camposEnPdf.includes('total_cumplimiento_percent')) {
           form.getTextField('total_cumplimiento_percent').setText(`${porcentaje.toFixed(2)} %`);
+        }
+
+        // Llenar observaciones de visita
+        const obsValue = this.dinamicForm.get('observaciones')?.value || '';
+        if (camposEnPdf.includes('observaciones') && obsValue) {
+          form.getTextField('observaciones').setText(obsValue);
         }
       } catch (e) {
         console.warn('Error al llenar los campos de totales:', e);

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MenuController, ModalController, PopoverController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Auth } from 'src/app/core/providers/auth/auth';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 import { IUser } from 'src/app/interfaces/user.interface';
@@ -16,7 +17,7 @@ import { NotificationService } from '../../services/notification/notification.se
   styleUrls: ['./header.component.scss'],
   standalone: false,
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   user: IUser | null = null;
   initials = '';
 
@@ -28,6 +29,7 @@ export class HeaderComponent implements OnInit {
   private allEvents: IEvents[] = [];
 
   unreadCount = 0;
+  private notifSub!: Subscription;
 
   constructor(
     private readonly authSrv: Auth,
@@ -50,12 +52,14 @@ export class HeaderComponent implements OnInit {
     const eventsData = await this.crudSrv.getAll<IEvents>('events');
     if (eventsData) this.allEvents = eventsData;
 
-    await this.refreshUnreadCount();
+    // Suscripción en tiempo real — el badge se actualiza automáticamente
+    this.notifSub = this.notifSrv.listenMyNotifications().subscribe(notifs => {
+      this.unreadCount = notifs.filter(n => !n.read).length;
+    });
   }
 
-  async refreshUnreadCount() {
-    const notifs = await this.notifSrv.getMyNotifications();
-    this.unreadCount = notifs.filter(n => !n.read).length;
+  ngOnDestroy() {
+    this.notifSub?.unsubscribe();
   }
 
   buildInitials(name: string, lastName: string): string {

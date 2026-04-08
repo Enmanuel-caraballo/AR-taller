@@ -94,6 +94,22 @@
       </ion-card>
     </div>
 
+    <!-- Campo de Observaciones de Visita -->
+    <ion-card *ngIf="!cargando" class="ion-margin-top">
+      <ion-card-header>
+        <ion-card-title style="font-size: 16px; color: black;">Observaciones de Visita</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-textarea
+          formControlName="observaciones"
+          placeholder="Escribe aquí las observaciones generales de la visita..."
+          [autoGrow]="true"
+          rows="4"
+          style="--background: #f9f9f9; --border-radius: 8px; --padding-start: 10px; --padding-top: 8px;">
+        </ion-textarea>
+      </ion-card-content>
+    </ion-card>
+
     <ion-button expand="block" type="submit" [disabled]="!dinamicForm.valid || !formVisit.valid" class="ion-margin-top">
       Generar PDF y Registrar Visita
     </ion-button>

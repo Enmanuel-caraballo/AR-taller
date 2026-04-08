@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, from, switchMap, of } from 'rxjs';
 import { Auth } from 'src/app/core/providers/auth/auth';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 import { INotification } from 'src/app/interfaces/notification.interface';
@@ -23,5 +24,15 @@ export class NotificationService {
   async markAllAsRead(notifications: INotification[]): Promise<void> {
     const unread = notifications.filter(n => !n.read && n.id);
     await Promise.all(unread.map(n => this.markAsRead(n.id!)));
+  }
+
+  /** Escucha notificaciones en tiempo real para el usuario actual */
+  listenMyNotifications(): Observable<INotification[]> {
+    return from(this.authSrv.getCurrentUser()).pipe(
+      switchMap(user => {
+        if (!user?.userUid) return of([] as INotification[]);
+        return this.crudSrv.listenNotifications(user.userUid) as Observable<INotification[]>;
+      })
+    );
   }
 }

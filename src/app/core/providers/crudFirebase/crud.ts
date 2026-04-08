@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, deleteDoc, doc, Firestore, getDocs, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, collection, deleteDoc, doc, Firestore, getDocs, onSnapshot, query, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { IEvents } from 'src/app/interfaces/events.interface';
 import { IGoal } from 'src/app/interfaces/goal.interface';
 import { IUser, IUserCreate } from 'src/app/interfaces/user.interface';
@@ -189,5 +190,44 @@ async getGoalByDocAndMonth(collectionName: string, document: string, month: stri
     }
  }
 
+  // ── Listeners en tiempo real (onSnapshot) ────────────────────────────────
+
+  listenNotifications(uid: string): Observable<any[]> {
+    return new Observable(observer => {
+      const ref = collection(this.fireSt, 'notifications');
+      const q = query(ref, where('to', '==', uid));
+      const unsub = onSnapshot(q, snapshot => {
+        const data = snapshot.docs
+          .map(d => ({ id: d.id, ...d.data() }))
+          .sort((a: any, b: any) => new Date(b['date']).getTime() - new Date(a['date']).getTime());
+        observer.next(data);
+      }, err => observer.error(err));
+      return () => unsub();
+    });
+  }
+
+  listenTasksByUid(uid: string): Observable<any[]> {
+    return new Observable(observer => {
+      const ref = collection(this.fireSt, 'tasks');
+      const q = query(ref, where('uid', '==', uid));
+      const unsub = onSnapshot(q, snapshot => {
+        const data = snapshot.docs.map(d => ({ id: d.id, docId: d.id, ...d.data() }));
+        observer.next(data);
+      }, err => observer.error(err));
+      return () => unsub();
+    });
+  }
+
+  listenEventsByUid(uid: string): Observable<any[]> {
+    return new Observable(observer => {
+      const ref = collection(this.fireSt, 'events');
+      const q = query(ref, where('uid', '==', uid));
+      const unsub = onSnapshot(q, snapshot => {
+        const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        observer.next(data);
+      }, err => observer.error(err));
+      return () => unsub();
+    });
+  }
 
 }

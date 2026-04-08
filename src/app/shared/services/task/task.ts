@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable, from, switchMap, of } from 'rxjs';
 import { Auth } from 'src/app/core/providers/auth/auth';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
 import { ITask } from 'src/app/interfaces/task.interface';
@@ -46,5 +47,15 @@ export class Task {
     } catch (error) {
       console.log('Error al guardar tarea', error);
     }
+  }
+
+  /** Escucha tareas en tiempo real para el usuario actual */
+  listenMyTasks(): Observable<ITask[]> {
+    return from(this.authSrv.getCurrentUser()).pipe(
+      switchMap(user => {
+        if (!user?.userUid) return of([] as ITask[]);
+        return this.crudSrv.listenTasksByUid(user.userUid) as Observable<ITask[]>;
+      })
+    );
   }
 }
