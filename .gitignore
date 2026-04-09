@@ -99,3 +99,5 @@ google-credentials*.json
 *proxy.conf.json
 *scripts
 *api
+.vercel
+.env*.local
