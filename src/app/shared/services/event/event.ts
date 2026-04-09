@@ -112,7 +112,20 @@ export class Event {
             uid: user.userUid
           }
         });
-        console.log('Notification sent to', targetUid);
+        console.log('Notification sent DB:', targetUid);
+
+        // ─── Trigger Native Push Notification ───
+        fetch('/api/send-push', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            targetUid,
+            title: 'Nuevo Evento Asignado',
+            body: message,
+            url: '/manage-user'
+          })
+        }).catch(err => console.warn('No se pudo enviar Push API', err));
+
       }
     } catch (error) {
       console.error('Error sending notification', error);
@@ -132,7 +145,20 @@ export class Event {
           date: new Date().toISOString(),
           read: false,
         });
-        console.log('Notification sent to', targetUid);
+        console.log('Notification message sent DB:', targetUid);
+
+        // ─── Trigger Native Push Notification ───
+        fetch('/api/send-push', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            targetUid,
+            title: 'Nueva Tarea Asignada',
+            body: message,
+            url: '/'
+          })
+        }).catch(err => console.warn('No se pudo enviar Push API', err));
+
       }
     } catch (error) {
       console.error('Error sending notification', error);

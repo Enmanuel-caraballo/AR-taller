@@ -43,3 +43,10 @@ self.addEventListener('notificationclick', (event) => {
     })
   );
 });
+
+// ─── PWA Installability Hack ───
+// Los navegadores requieren que el Service Worker tenga un handler de "fetch"
+// para habilitar el prompt nativo de "Agregar a la pantalla de inicio".
+self.addEventListener('fetch', (event) => {
+  // No interceptamos la red (passthrough pasivo) pero satisfacemos el requisito
+});

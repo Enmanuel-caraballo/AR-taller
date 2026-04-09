@@ -70,7 +70,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-<<<<<<< HEAD
 
 #Keys
 /secrets/
@@ -81,7 +80,6 @@ Thumbs.db
 /src/environments/environment.*.ts
 
 
-=======
 # Environment variables — NEVER commit these
 .env
 .env.local
@@ -101,4 +99,3 @@ google-credentials*.json
 *proxy.conf.json
 *scripts
 *api
->>>>>>> aa839fbd1c4f5754db1d8044bb94f770aa7ab1cc

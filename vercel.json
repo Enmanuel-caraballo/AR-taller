@@ -4,6 +4,7 @@
   "routes": [
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
     { "src": "/svg/(.*)", "dest": "/svg/$1" },
+    { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/firebase-messaging-sw.js", "dest": "/firebase-messaging-sw.js" },
     { "src": "/manifest.webmanifest", "dest": "/manifest.webmanifest" },
     { "src": "/(.*\\.js)", "dest": "/$1" },
