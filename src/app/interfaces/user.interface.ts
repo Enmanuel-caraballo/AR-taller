@@ -11,6 +11,9 @@ export interface IUser {
   rol?: userRoles
   state?: string;
   active?: boolean;
+  fcmToken?: string;
+  fcmTokenUpdatedAt?: string;
+  fcmPlatform?: string;
 }
 
 export interface IUserCreate extends Omit<IUser, 'uid'> { };

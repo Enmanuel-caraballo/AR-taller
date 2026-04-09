@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { Auth } from 'src/app/core/providers/auth/auth';
 import { User } from '../../shared/services/user/user';
+import { NotificationService } from 'src/app/shared/services/notification/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginPage implements OnInit {
   password!: FormControl;
   loginForm!: FormGroup;
 
-  constructor(private authSrv: Auth, private readonly navSrv: NavController) {
+  constructor(private authSrv: Auth, private readonly navSrv: NavController, private readonly notificationSrv: NotificationService) {
     this.initForm();
   }
 
@@ -37,6 +38,7 @@ export class LoginPage implements OnInit {
           this.emailF = user.email);
 
 
+          await this.notificationSrv.setupPushNotifications();
           this.navSrv.navigateRoot('home');
       }
     } catch (error) {
@@ -67,29 +69,25 @@ export class LoginPage implements OnInit {
     const request = await this.authSrv.login(this.email.value, this.password.value);
 
     if (request === 'signIn') {
+      await this.notificationSrv.setupPushNotifications();
       this.navSrv.navigateRoot('home');
     } else {
       console.log('nada');
     }
 
   }
-  //google
   async loginWithGoogle(): Promise<void> {
     this.authSrv.loginConGoogle();
   }
 
-  //  MICROSOFT
   async loginWithMicrosoft(): Promise<void> {
-
     const uid = await this.authSrv.loginWithMicrosoft();
 
-    /* this.isLoading = false; */
-
     if (uid) {
+      await this.notificationSrv.setupPushNotifications();
       this.navSrv.navigateRoot('home');
     } else {
       console.log('Error al iniciar sesión con Microsoft');
-      ;
     }
   }
 

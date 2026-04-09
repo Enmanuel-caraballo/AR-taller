@@ -3,6 +3,7 @@ import { Auth } from 'src/app/core/providers/auth/auth';
 import { AlertService } from 'src/app/core/providers/alert/alert.service';
 import { ModalController } from '@ionic/angular';
 import { ProfileModalComponent } from 'src/app/shared/components/profile-modal/profile-modal.component';
+import { FcmTokenService } from 'src/app/core/providers/fcm/fcm-token.service';
 
 @Component({
   selector: 'app-home',
@@ -12,15 +13,18 @@ import { ProfileModalComponent } from 'src/app/shared/components/profile-modal/p
 })
 export class HomePage implements OnInit {
 
+  showNotificationBanner = false;
 
   constructor(
     private readonly authSrv: Auth,
     private readonly alertSrv: AlertService,
-    private readonly modalCtrl: ModalController
+    private readonly modalCtrl: ModalController,
+    private readonly fcmTokenSrv: FcmTokenService
   ) { }
 
   async ngOnInit() {
     this.checkUserProfile();
+    this.checkNotificationStatus();
   }
 
   private async checkUserProfile() {
@@ -73,6 +77,22 @@ export class HomePage implements OnInit {
         }
       }
     }
+  }
+
+  private checkNotificationStatus(): void {
+    if (typeof Notification === 'undefined') return;
+    if (Notification.permission === 'default') {
+      this.showNotificationBanner = true;
+    }
+  }
+
+  async enableNotifications(): Promise<void> {
+    this.showNotificationBanner = false;
+    await this.fcmTokenSrv.requestPermissionAndRegister();
+  }
+
+  dismissBanner(): void {
+    this.showNotificationBanner = false;
   }
 
   private async openProfileModal(user: any) {

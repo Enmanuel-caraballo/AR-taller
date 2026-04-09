@@ -2,6 +2,12 @@
 </app-header>
 
 <ion-content>
+<div *ngIf="showNotificationBanner" class="fcm-banner">
+  <ion-icon name="notifications-outline"></ion-icon>
+  <span>Activa las notificaciones para estar al tanto de tus visitas y tareas.</span>
+  <ion-button size="small" fill="solid" (click)="enableNotifications()">Activar</ion-button>
+  <ion-button size="small" fill="clear" (click)="dismissBanner()">Ahora no</ion-button>
+</div>
 <div class="content-container">
 
 
