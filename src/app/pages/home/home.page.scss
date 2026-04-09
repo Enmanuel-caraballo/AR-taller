@@ -21,3 +21,25 @@ app-calendar {
     margin: 0 auto;
   }
 }
+
+.fcm-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--ion-color-primary-tint, #eef2ff);
+  border-bottom: 1px solid var(--ion-color-primary, #3880ff);
+  flex-wrap: wrap;
+
+  ion-icon {
+    font-size: 20px;
+    color: var(--ion-color-primary, #3880ff);
+    flex-shrink: 0;
+  }
+
+  span {
+    flex: 1;
+    font-size: 13px;
+    min-width: 160px;
+  }
+}

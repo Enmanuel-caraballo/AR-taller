@@ -70,6 +70,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
+<<<<<<< HEAD
 
 #Keys
 /secrets/
@@ -80,3 +81,24 @@ Thumbs.db
 /src/environments/environment.*.ts
 
 
+=======
+# Environment variables — NEVER commit these
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+
+# Firebase / API secrets
+*serviceAccount*.json
+*service-account*.json
+*firebase-adminsdk*.json
+firebase-key*.json
+google-credentials*.json
+
+# Claude Code session files
+.claude/
+*proxy.conf.json
+*scripts
+*api
+>>>>>>> aa839fbd1c4f5754db1d8044bb94f770aa7ab1cc
