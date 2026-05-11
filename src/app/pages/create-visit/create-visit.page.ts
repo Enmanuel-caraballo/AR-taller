@@ -76,6 +76,8 @@ export class CreateVisitPage implements OnInit {
       }
 
       const { data } = supabase.storage.from('PdfFiles').getPublicUrl(this.formatoActivo.nombreArchivoPdf);
+      console.log(data);
+
       const urlPdf = data.publicUrl;
       console.log('URL PDF cargada:', urlPdf);
 

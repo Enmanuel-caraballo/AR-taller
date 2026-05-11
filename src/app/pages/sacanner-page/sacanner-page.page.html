@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Escáner Profesional</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Selector de cámara (Se muestra solo si hay más de una cámara) -->
+  <ion-item *ngIf="availableDevice.length > 1">
+    <ion-label>Seleccionar Cámara</ion-label>
+    <ion-select [value]="currentDevice?.deviceId" (ionChange)="onDeviceSelectChange($event)">
+      <ion-select-option *ngFor="let device of availableDevice" [value]="device.deviceId">
+        {{ device.label || 'Cámara ' + device.deviceId }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <!-- El Escáner -->
+  <zxing-scanner
+    [device]="currentDevice"
+    (camerasFound)="onCameraFound($event)"
+    (scanSuccess)="onCodeResult($event)"
+    [formats]="allowedFormats"
+    >
+  </zxing-scanner>
+
+  <div *ngIf="!hasDevice" class="ion-text-center ion-padding">
+    <ion-text color="danger">
+      No se detectaron cámaras o falta permiso.
+    </ion-text>
+  </div>
+
+</ion-content>

@@ -63,14 +63,19 @@ const routes: Routes = [
   {
     path: 'start-visit',
     loadChildren: () => import('./pages/start-visit/start-visit.module').then( m => m.StartVisitPageModule),
-    canActivate: [RoleGuard], 
+    canActivate: [RoleGuard],
     data: { roles: ['admin', 'super-admin', 'jefe'] }
+  },
+  {
+    path: 'sacanner-page',
+    loadChildren: () => import('./pages/sacanner-page/sacanner-page.module').then( m => m.SacannerPagePageModule)
   },
   {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'
   },
+
 
 ];
 

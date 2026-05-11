@@ -27,6 +27,7 @@ import { OptionsPopoverComponent } from './components/options-popover/options-po
 import { ProfilePopoverComponent } from './components/profile-popover/profile-popover.component';
 import { DetailModalComponent } from './components/detail-modal/detail-modal.component';
 import { NotificationsModalComponent } from './components/notifications-modal/notifications-modal.component';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
 
 registerLocaleData(localeEsCo);
 registerSwiperElement();
@@ -50,7 +51,9 @@ const modules = [
   IonicModule,
   RouterModule,
   FormsModule,
-  ReactiveFormsModule
+  ReactiveFormsModule,
+  ZXingScannerModule
+
 ];
 
 @NgModule({

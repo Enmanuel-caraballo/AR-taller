@@ -61,12 +61,19 @@ export class StartVisitPage implements OnInit, OnDestroy {
         this.doc = savedUser[0].doc;
 
 
-        
+
        const visitsLengt = await this.crudSrv.getVisitsByDocAndMonth('visits', this.doc, month);
        const savedGoal: IGoal[] = await this.crudSrv.getGoalByDocAndMonth('goals', this.doc, month);
 
-       this.goalLength = savedGoal[0].monthlyGoal;
-       this.visitLength = visitsLengt.length
+       if (savedGoal.length > 0 ) {
+          this.goalLength = savedGoal[0].monthlyGoal;
+       }else{
+        this.goalLength = 0;
+       }
+
+
+       this.visitLength = visitsLengt.length;
+
       }
     }
 

@@ -64,5 +64,98 @@ export const FORMATOS_VISITA: any = {
     59: "Interacción de la líder con los clientes y el equipo de servicio.", // [cite: 97]
     60: "Solicitar a la líder del servicio que le muestre los indicadores de venta y evaluaciones realizadas al personal (relacione cifras relevantes)." // [cite: 98, 99, 100]
         }
+    },
+
+
+    "Evaluacion_PDV": {
+        nombreArchivoPdf: 'Evaluacion_Pdv.pdf',
+        tipoRespuesta: 'scale_1_5',
+        totalItems: 55,
+        diccionario: {
+            // OPERACIÓN / COSTO
+            1: "Organización y aseo de bodega",
+            2: "Stock de bodega",
+            3: "Cantidad de producto",
+            4: "Porcentaje de transacción promedio",
+            5: "Planes de desarrollo y estrategias",
+            6: "Labor de venta semanal",
+            7: "Buen pedido diario",
+
+            // CAPACITACIONES
+            8: "Briefings diarios",
+            9: "Capacitaciones semanales de producto",
+            10: "Capacitación de ventas",
+            11: "Retroalimentación sobre líneas a las meseras",
+
+            // SERVICIO
+            12: "Cliente oculto",
+            13: "Encuesta diurna y nocturna",
+            14: "Satisfacción con la comida",
+            15: "Calidad de atención de la mesera",
+            16: "Satisfacción con el servicio",
+            17: "Desempeño de la capitana",
+            18: "Cumplimiento de presupuesto en mesas",
+            19: "Seguimiento a meseras",
+            20: "Porcentaje de propina",
+            21: "Pasa cuentas en buen estado con QR",
+            22: "Pedidos completos y anunciados",
+            23: "Entrega completa del pedido a la mesa",
+            24: "Recomendación de productos",
+            25: "Mesa servida correctamente",
+            26: "Auxiliar recoge a tiempo y vende",
+            27: "Atención inmediata al cliente",
+            28: "Mesa despejada para cobro",
+            29: "Mesera se acerca oportunamente",
+            30: "Oferta de bebida, postre y café",
+            31: "Clientes no se levantan a pedir cuenta",
+            32: "Amabilidad de la cajera",
+            33: "Caja organizada sin publicidad no permitida",
+
+            // ASEO
+            34: "Uniforme limpio y planchado",
+            35: "Jardinería en buen estado",
+            36: "Espejos limpios",
+            37: "Sillas de bebés limpias",
+            38: "Vidrios limpios",
+            39: "Plancha organizada",
+            40: "Barra limpia y surtida",
+            41: "Caleidos limpios, surtidos y en buen estado",
+            42: "Piso brillante",
+            43: "Madera en buen estado",
+            44: "Iluminación adecuada",
+            45: "Estaciones en buen estado",
+            46: "Baños limpios y funcionando",
+
+            // PERSONAL
+            47: "Maquillaje, peinado y presentación personal",
+            48: "Escarapela con nombre",
+            49: "Labor de venta del personal",
+            50: "Actitud del personal",
+            51: "Recibimiento de clientes",
+            52: "Seguimiento a personal con falencias",
+
+            // COCINA
+            53: "Tiempos de entradas",
+            54: "Tiempo en plancha",
+            55: "Tiempos de postres",
+            56: "Plancha sin utensilios sucios",
+            57: "Crepes bien hechas",
+            58: "Uso de envases autorizados",
+
+            // LÍDER
+            59: "Líder bien presentada",
+            60: "Presencia activa en el servicio",
+            61: "Atención al cliente",
+            62: "Estrategias de venta y liderazgo",
+            63: "Correcta asignación de horarios",
+            64: "Horarios completos a inicio de semana",
+            65: "Uso de radios de comunicación",
+
+            // FINAL
+            66: "Observaciones",
+            67: "Calificación"
+        }
     }
+
+
 }

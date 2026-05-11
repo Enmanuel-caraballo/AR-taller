@@ -14,5 +14,13 @@
     "description": "Chequeo de calidad estandarizado",
     "version" : "V1.0",
     "size" : "141KB"
+  },
+  {
+    "title": "Evaluación de Punto de Venta (PDV)",
+    "name": "Evaluacion_PDV",
+    "department": "operaciones",
+    "description": "Evaluación integral del desempeño operativo, servicio, limpieza, personal, cocina y liderazgo en puntos de venta",
+    "version": "V1.0",
+    "size": "300KB"
   }
 ]
