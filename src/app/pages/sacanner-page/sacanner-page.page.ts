@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { BarcodeFormat } from '@zxing/library'
 
 @Component({
@@ -25,6 +26,15 @@ export class SacannerPagePage implements OnInit {
 
   onCodeResult(resultString: string){
     this.qrResultString = resultString;
+    if(this.qrResultString != '' && this.qrResultString != null){
+      this.navSrv.navigateRoot('item-management', {
+        state: {
+          data: {
+            code: this.qrResultString
+          }
+        }
+      })
+    }
     console.log('Contenido del QR: ', resultString);
   }
 
@@ -50,7 +60,7 @@ export class SacannerPagePage implements OnInit {
     this.currentDevice = device;
   }
 
-  constructor() { }
+  constructor(private readonly navSrv: NavController) { }
 
   ngOnInit() {
   }

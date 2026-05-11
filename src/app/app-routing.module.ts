@@ -71,12 +71,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/sacanner-page/sacanner-page.module').then( m => m.SacannerPagePageModule)
   },
   {
+    path: 'item-management',
+    loadChildren: () => import('./pages/item-management/item-management.module').then( m => m.ItemManagementPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'
   },
-
-
 ];
 
 @NgModule({
