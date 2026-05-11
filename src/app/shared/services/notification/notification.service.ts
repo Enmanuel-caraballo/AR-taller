@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, from, switchMap, of } from 'rxjs';
 import { Auth } from 'src/app/core/providers/auth/auth';
 import { Crud } from 'src/app/core/providers/crudFirebase/crud';
-import { FcmTokenService } from 'src/app/core/providers/fcm/fcm-token.service';
+// import { FcmTokenService } from 'src/app/core/providers/fcm/fcm-token.service';
 import { INotification } from 'src/app/interfaces/notification.interface';
 
 @Injectable({ providedIn: 'root' })
@@ -10,7 +10,7 @@ export class NotificationService {
   constructor(
     private readonly crudSrv: Crud,
     private readonly authSrv: Auth,
-    private readonly fcmTokenSrv: FcmTokenService
+    // private readonly fcmTokenSrv: FcmTokenService
   ) {}
 
   async getMyNotifications(): Promise<INotification[]> {
@@ -48,6 +48,6 @@ export class NotificationService {
     if (typeof Notification === 'undefined' || Notification.permission !== 'granted') {
       return;
     }
-    await this.fcmTokenSrv.requestPermissionAndRegister();
+    // await this.fcmTokenSrv.requestPermissionAndRegister();
   }
 }

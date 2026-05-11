@@ -3,7 +3,7 @@ import { Auth } from 'src/app/core/providers/auth/auth';
 import { AlertService } from 'src/app/core/providers/alert/alert.service';
 import { ModalController } from '@ionic/angular';
 import { ProfileModalComponent } from 'src/app/shared/components/profile-modal/profile-modal.component';
-import { FcmTokenService } from 'src/app/core/providers/fcm/fcm-token.service';
+// import { FcmTokenService } from 'src/app/core/providers/fcm/fcm-token.service';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +19,7 @@ export class HomePage implements OnInit {
     private readonly authSrv: Auth,
     private readonly alertSrv: AlertService,
     private readonly modalCtrl: ModalController,
-    private readonly fcmTokenSrv: FcmTokenService
+    // private readonly fcmTokenSrv: FcmTokenService
   ) { }
 
   async ngOnInit() {
@@ -88,7 +88,7 @@ export class HomePage implements OnInit {
 
   async enableNotifications(): Promise<void> {
     this.showNotificationBanner = false;
-    await this.fcmTokenSrv.requestPermissionAndRegister();
+    // await this.fcmTokenSrv.requestPermissionAndRegister();
   }
 
   dismissBanner(): void {

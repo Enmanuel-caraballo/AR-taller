@@ -16,7 +16,7 @@ import { IGoal } from 'src/app/interfaces/goal.interface';
 export class StartVisitPage implements OnInit, OnDestroy {
   firstName!: string;
 
-  user!: {userUid: string; userName: string; rol: string};
+  user!: { userUid: string; userName: string; rol: string };
 
   formatsArray: IFormat[] = [];
 
@@ -47,7 +47,7 @@ export class StartVisitPage implements OnInit, OnDestroy {
 
     const user = await this.authSrv.getCurrentUser();
 
-   user != undefined ? this.user = user: console.log('No user');
+    user != undefined ? this.user = user : console.log('No user');
 
 
     user != undefined ? this.firstName = user?.userName.split(' ')[0] : console.log('Sin usuario');
@@ -61,19 +61,26 @@ export class StartVisitPage implements OnInit, OnDestroy {
         this.doc = savedUser[0].doc;
 
 
-        
-       const visitsLengt = await this.crudSrv.getVisitsByDocAndMonth('visits', this.doc, month);
-       const savedGoal: IGoal[] = await this.crudSrv.getGoalByDocAndMonth('goals', this.doc, month);
 
-       this.goalLength = savedGoal[0].monthlyGoal;
-       this.visitLength = visitsLengt.length
+        const visitsLengt = await this.crudSrv.getVisitsByDocAndMonth('visits', this.doc, month);
+        const savedGoal: IGoal[] = await this.crudSrv.getGoalByDocAndMonth('goals', this.doc, month);
+
+        if (savedGoal.length > 0) {
+
+          this.goalLength = savedGoal[0].monthlyGoal;
+        } else {
+          this.goalLength = 0
+        }
+
+
+        this.visitLength = visitsLengt.length
       }
     }
 
     this.jsonPrv.getFormats().subscribe(formats => {
       this.formatsArray = formats
 
-      this.finalFormats =  this.formatsArray.filter(format => format.department.trim().toLowerCase() == this.department.trim().toLowerCase());
+      this.finalFormats = this.formatsArray.filter(format => format.department.trim().toLowerCase() == this.department.trim().toLowerCase());
       console.log(this.finalFormats);
 
     })
@@ -92,7 +99,7 @@ export class StartVisitPage implements OnInit, OnDestroy {
     }
   }
 
-  goToCreateVisit(pdfName: string, title:string){
+  goToCreateVisit(pdfName: string, title: string) {
     const fecha = this.currentTime.toLocaleDateString('es-CO', {
       weekday: 'long',
       year: 'numeric',
@@ -104,14 +111,16 @@ export class StartVisitPage implements OnInit, OnDestroy {
       minute: '2-digit'
     });
 
-     this.navSrv.navigateRoot('create-visit', {
-     state: { data:{
-      pdfName: pdfName,
-      responsible: this.user.userName,
-      madeTime: `${fecha}, ${hora}`,
-      title: title,
-      doc: this.doc
-     }}
+    this.navSrv.navigateRoot('create-visit', {
+      state: {
+        data: {
+          pdfName: pdfName,
+          responsible: this.user.userName,
+          madeTime: `${fecha}, ${hora}`,
+          title: title,
+          doc: this.doc
+        }
+      }
     });
   }
 
@@ -133,23 +142,23 @@ export class StartVisitPage implements OnInit, OnDestroy {
 
 
 
-// visitasTotales: number = 30;
+  // visitasTotales: number = 30;
 
-// Este "getter" calcula el porcentaje automáticamente
-get porcentajeMeta(): number {
-  if (this.goalLength === 0) return 0;
+  // Este "getter" calcula el porcentaje automáticamente
+  get porcentajeMeta(): number {
+    if (this.goalLength === 0) return 0;
 
-  if (this.visitLength === undefined) {
-    return 0;
+    if (this.visitLength === undefined) {
+      return 0;
+    }
+
+
+    return Math.round((this.visitLength / this.goalLength) * 100);
   }
+  get dashArrayDinamico(): string {
 
-
-  return Math.round((this.visitLength / this.goalLength) * 100);
-}
-get dashArrayDinamico(): string {
-
-  return `${this.porcentajeMeta}, 100`;
-}
+    return `${this.porcentajeMeta}, 100`;
+  }
 
 
 }

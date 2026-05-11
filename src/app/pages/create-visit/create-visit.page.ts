@@ -28,7 +28,7 @@ export class CreateVisitPage implements OnInit {
   pdfName: string = '';
   title: string = '';
 
-  data!: { madeTime: string, pdfName: string, responsible:string, title: string, doc: string}
+  data!: { madeTime: string, pdfName: string, responsible: string, title: string, doc: string }
 
 
   dinamicForm!: FormGroup;
@@ -39,29 +39,28 @@ export class CreateVisitPage implements OnInit {
   formatoActivo: any;
 
 
-  constructor(private fb: FormBuilder, private readonly router: Router, private readonly visitSrv: Visit ) {
+  constructor(private fb: FormBuilder, private readonly router: Router, private readonly visitSrv: Visit) {
 
     this.monthToSave = new Date().toISOString().slice(0, 7);
 
     const navigation = this.router.getCurrentNavigation();
 
-    if(navigation?.extras?.state){
+    if (navigation?.extras?.state) {
       this.data = navigation.extras.state['data'];
       console.log(this.data);
 
       this.pdfName = this.data.pdfName;
       this.title = this.data.title;
 
-
     }
     this.dinamicForm = this.fb.group({});
   };
 
- async ngOnInit() {
+  async ngOnInit() {
 
     this.initForm();
 
-   await this.startVisitProcces(this.pdfName);
+    await this.startVisitProcces(this.pdfName);
   };
 
   async startVisitProcces(formatoKey: string) {
@@ -92,133 +91,167 @@ export class CreateVisitPage implements OnInit {
     this.pdfBytesOriginal = await fetch(url).then(res => res.arrayBuffer());
 
     const pdfDocParaLeer = await PDFDocument.load(this.pdfBytesOriginal);
-    const todosLosCampos = pdfDocParaLeer.getForm().getFields();
-    const nombresDeCampos = todosLosCampos.map(campo => campo.getName());
+    const nombresDeCampos = pdfDocParaLeer.getForm().getFields().map(c => c.getName());
     console.log('NOMBRES EXACTOS EN EL PDF:', nombresDeCampos);
-
 
     const totalItems = this.formatoActivo.totalItems;
     const diccionario = this.formatoActivo.diccionario;
+    const tipo = this.formatoActivo.tipoRespuesta; // 👈 NUEVO
 
     this.itemsEvaluacion = [];
 
     for (let i = 1; i <= totalItems; i++) {
-      const nombreCumple = `item_cumple_${i}`;
-      const nombreNoCumple = `item_no_cumple_${i}`;
 
-      const controlCumple = new FormControl(false);
-      const controlNoCumple = new FormControl(false);
+      // ✅ CASO 1: BOOLEAN
+      if (tipo === 'boolean') {
 
-      this.dinamicForm.addControl(nombreCumple, controlCumple);
-      this.dinamicForm.addControl(nombreNoCumple, controlNoCumple);
+        const nombreCumple = `item_cumple_${i}`;
+        const nombreNoCumple = `item_no_cumple_${i}`;
 
-      controlCumple.valueChanges.subscribe(marcado => {
-        if (marcado) {
-          controlNoCumple.setValue(false, { emitEvent: false });
-        }
-      });
+        const controlCumple = new FormControl(false);
+        const controlNoCumple = new FormControl(false);
 
-      controlNoCumple.valueChanges.subscribe(marcado => {
-        if (marcado) {
-          controlCumple.setValue(false, { emitEvent: false });
-        }
-      });
+        this.dinamicForm.addControl(nombreCumple, controlCumple);
+        this.dinamicForm.addControl(nombreNoCumple, controlNoCumple);
 
-      this.itemsEvaluacion.push({
-        id: i,
-        descripcion: diccionario[i] || `Descripción pendiente para el ítem ${i}`,
-        controlCumple: nombreCumple,
-        controlNoCumple: nombreNoCumple
-      });
+        controlCumple.valueChanges.subscribe(v => {
+          if (v) controlNoCumple.setValue(false, { emitEvent: false });
+        });
+
+        controlNoCumple.valueChanges.subscribe(v => {
+          if (v) controlCumple.setValue(false, { emitEvent: false });
+        });
+
+        this.itemsEvaluacion.push({
+          id: i,
+          descripcion: diccionario[i],
+          tipo: 'boolean',
+          controlCumple: nombreCumple,
+          controlNoCumple: nombreNoCumple
+        });
+      }
+
+      // ✅ CASO 2: ESCALA 1 A 5
+      if (tipo === 'scale_1_5') {
+
+        const nombre = `item_${i}`;
+        const control = new FormControl(null, Validators.required);
+
+        this.dinamicForm.addControl(nombre, control);
+
+        this.itemsEvaluacion.push({
+          id: i,
+          descripcion: diccionario[i],
+          tipo: 'scale',
+          control: nombre
+        });
+      }
     }
 
-    // Agregar campo de observaciones al formulario dinámico (si no existe aún)
     if (!this.dinamicForm.contains('observaciones')) {
       this.dinamicForm.addControl('observaciones', new FormControl(''));
     }
 
-    console.log('Estructura lista para la vista:', this.itemsEvaluacion);
-  };
-
+    console.log('Estructura lista:', this.itemsEvaluacion);
+  }
+  ////////////////////////////////////
   async generarPDF() {
     this.cargando = true;
 
     try {
 
-      const datosDeLaVisita: IVisit = this.formVisit.getRawValue();
-
-      await this.visitSrv.createVisit(datosDeLaVisita)
+      const datos: IVisit = this.formVisit.getRawValue();
+      await this.visitSrv.createVisit(datos);
 
       const pdfDoc = await PDFDocument.load(this.pdfBytesOriginal);
       const form = pdfDoc.getForm();
 
       const respuestas = this.dinamicForm.value;
       const totalItems = this.formatoActivo.totalItems;
-      let puntajeCumple = 0;
 
-      // 1. Obtener nombres de campos para depuración (ayuda a ver si coinciden con el PDF)
-      const camposEnPdf = form.getFields().map(f => f.getName());
-      console.log('Campos detectados en el PDF:', camposEnPdf);
+      let sumaTotal = 0;
 
-      // 2. Llenar los campos del formulario dinámicamente
+      const campos = form.getFields().map(f => f.getName());
+      console.log('Campos PDF:', campos);
+
+      //  ITEMS (1 a 5)
       for (let i = 1; i <= totalItems; i++) {
-        const nombreCumple = `item_cumple_${i}`;
-        const nombreNoCumple = `item_no_cumple_${i}`;
 
-        try {
-          if (respuestas[nombreCumple] === true) {
-            const checkbox = form.getCheckBox(nombreCumple);
-            checkbox.check();
-            puntajeCumple++;
-          }
+        const control = `item_${i}`;
+        const campoPdf = `pnto_item${i}`;
 
-          if (respuestas[nombreNoCumple] === true) {
-            const checkbox = form.getCheckBox(nombreNoCumple);
-            checkbox.check();
+        const valor = respuestas[control];
+
+        if (valor !== null && valor !== undefined) {
+
+          sumaTotal += Number(valor);
+
+          try {
+            if (campos.includes(campoPdf)) {
+              form.getTextField(campoPdf).setText(valor.toString());
+            }
+          } catch (e) {
+            console.warn(`No existe ${campoPdf}`);
           }
-        } catch (e) {
-          // Si el campo no existe en el PDF, se registra un aviso pero continúa el proceso
-          console.warn(`Aviso: El campo ${nombreCumple} o ${nombreNoCumple} no existe en este formato PDF.`);
         }
       }
 
-      // 3. Llenar campos de totales y observaciones (si existen)
+      // 🔥 CALCULO
+      const max = totalItems * 5;
+      const porcentaje = (sumaTotal / max) * 100;
+
+      // 🔥 LLENAR HEADER
       try {
-        const porcentaje = (puntajeCumple / totalItems) * 100;
 
-        if (camposEnPdf.includes('total_cumplimiento_num')) {
-          form.getTextField('total_cumplimiento_num').setText(puntajeCumple.toString());
+        if (campos.includes('nombre_pdv')) {
+          form.getTextField('nombre_pdv').setText(this.pdv.value || '');
         }
 
-        if (camposEnPdf.includes('total_cumplimiento_percent')) {
-          form.getTextField('total_cumplimiento_percent').setText(`${porcentaje.toFixed(2)} %`);
+        if (campos.includes('fecha_eva')) {
+          form.getTextField('fecha_eva').setText(this.madeAt.value || '');
         }
 
-        // Llenar observaciones de visita
-        const obsValue = this.dinamicForm.get('observaciones')?.value || '';
-        if (camposEnPdf.includes('observaciones') && obsValue) {
-          form.getTextField('observaciones').setText(obsValue);
+        if (campos.includes('lider_pdv')) {
+          form.getTextField('lider_pdv').setText(this.responsible.value || '');
         }
+
+        if (campos.includes('hora_eva')) {
+          form.getTextField('hora_eva').setText(this.madeAt.value || '');
+        }
+
+        // ⚠️ ESTE ES EL IMPORTANTE
+        if (campos.includes('puntuacion_pdv')) {
+          form.getTextField('puntuacion_pdv').setText(`${porcentaje.toFixed(2)} %`);
+        }
+
+        if (campos.includes('tot_eva')) {
+          form.getTextField('tot_eva').setText(sumaTotal.toString());
+        }
+
+        const obs = this.dinamicForm.get('observaciones')?.value || '';
+        if (campos.includes('observa_eva')) {
+          form.getTextField('observa_eva').setText(obs);
+        }
+
       } catch (e) {
-        console.warn('Error al llenar los campos de totales:', e);
+        console.warn('Error llenando encabezado');
       }
 
-      const todosLosCampos = form.getFields();
-      todosLosCampos.forEach(campo => {
-        campo.enableReadOnly();
-      });
+      // 🔒 bloquear
+      form.getFields().forEach(f => f.enableReadOnly());
 
-      const pdfBytesLleno = await pdfDoc.save();
+      const pdfBytes = await pdfDoc.save();
 
-      const nombreArchivoFinal = `Visita_Auditoria_${new Date().getTime()}.pdf`;
-      this.descargarEnNavegador(pdfBytesLleno, nombreArchivoFinal);
+      this.descargarEnNavegador(pdfBytes, `Visita_${Date.now()}.pdf`);
 
     } catch (error) {
-      console.error('Error al generar el documento PDF:', error);
+      console.error('Error:', error);
     } finally {
       this.cargando = false;
     }
-  };
+  }
+
+
   //!Revisar solo muestra previsualizacion en Safari
   descargarEnNavegador(pdfBytes: Uint8Array, nombreArchivo: string) {
 
@@ -240,11 +273,11 @@ export class CreateVisitPage implements OnInit {
   };
 
 
-  private initForm(){
+  private initForm() {
     this.responsible = new FormControl(this.data.responsible, [Validators.required]);
     this.pdv = new FormControl('', [Validators.required]);
     this.usedPdf = new FormControl(this.data.pdfName, [Validators.required]);
-    this.madeAt =  new FormControl(this.data.madeTime, [Validators.required]);
+    this.madeAt = new FormControl(this.data.madeTime, [Validators.required]);
     this.doc = new FormControl(this.data.doc, [Validators.required]);
     this.month = new FormControl(this.monthToSave, [Validators.required]);
 

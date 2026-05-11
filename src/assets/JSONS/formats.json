@@ -1,18 +1,67 @@
 [
   {
     "title": "Chequeo estandarizado",
-    "name" : "chequeo_estandarizado",
-    "department": "sistemas",
+    "name": "chequeo_estandarizado",
+    "department": "operaciones",
     "description": "Chequeo de calidad estandarizado",
-    "version" : "V1.0",
-    "size" : "141KB"
+    "version": "V1.0",
+    "size": "141KB"
   },
   {
     "title": "Chequeo estandarizado",
-    "name" : "chequeo_estandarizado",
+    "name": "chequeo_estandarizado",
     "department": "sst",
     "description": "Chequeo de calidad estandarizado",
-    "version" : "V1.0",
-    "size" : "141KB"
+    "version": "V1.0",
+    "size": "141KB"
+  },
+  
+  {
+    "title": "Evaluación de Punto de Venta (PDV)",
+    "name": "Evaluacion_PDV",
+    "department": "operaciones",
+    "description": "Evaluación integral del desempeño operativo, servicio, limpieza, personal, cocina y liderazgo en puntos de venta",
+    "version": "V1.0",
+    "size": "124KB"
+  },
+  {
+    "title": "Lista de chequeo Post-Visita a PDV",
+    "name": "Lista_de_chequeo_post-visita_a_pdv",
+    "department": "calidad",
+    "description": "Verificación de condiciones higiénicas, sanitarias y operativas en puntos de venta",
+    "version": "V1.0",
+    "size": "167KB"
+  },
+  {
+    "title": "Verificacion de Orden y Limpieza Almacen",
+    "name": "Verificacion_ordenylimpieza_almacen",
+    "department": "calidad",
+    "description": "Verificación de orden y limpieza en almacén",
+    "version": "V2.0",
+    "size": "202KB"
+  },
+  {
+    "title": "Verificación de Limpieza y desinfección cocina fría",
+    "name": "Verificación_L&D_Cocina_fria",
+    "department": "calidad",
+    "description": "Verificación de Limpieza y desinfección cocina fría",
+    "version": "V2.0",
+    "size": "210KB"
+  },
+  {
+    "title": "Verificación de Limpieza y desinfección comedor",
+    "name": "Verificacion_LyD_Comedor",
+    "department": "calidad",
+    "description": "Verificación de orden, limpieza y desinfección del comedor",
+    "version": "V2.0",
+    "size": "173KB"
+  },
+  {
+    "title": "Verificación de requisitos de inocuidad en heladerías",
+    "name": "Verificación_cuatrimestral_heladerias",
+    "department": "calidad",
+    "description": "Evaluación de condiciones sanitarias, manipulación de alimentos e inocuidad en puntos de venta tipo heladería",
+    "version": "V1.0",
+    "size": "278KB"
   }
 ]
