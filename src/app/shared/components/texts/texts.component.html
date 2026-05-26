@@ -13,65 +13,79 @@
   </div>
 
   <!-- Skeleton de carga -->
-  <div class="skeleton-row" *ngIf="isLoading">
-    <div class="skeleton-card" *ngFor="let s of skeletons"></div>
-  </div>
+  @if (isLoading) {
+    <div class="skeleton-row">
+      @for (s of skeletons; track s) {
+        <div class="skeleton-card"></div>
+      }
+    </div>
+  }
 
   <!-- Carrusel de eventos -->
-  <swiper-container
-  *ngIf="!isLoading && events.length > 0"
-    class="events-swiper"
-    slides-per-view="1"
-    loop="true"
-    centered-slides="false"
-    autoplay='true'
-  >
-    <swiper-slide *ngFor="let event of events; let i = index">
-      <div class="event-card" (click)="openTaskDetail(event)" style="cursor:pointer">
-
-        <!-- Badge de fecha -->
-        <div class="date-badge" [style.background]="getAccentColor(i)">
-          <span class="badge-tag" *ngIf="getDayLabel(event.limitDate)">
-            {{ getDayLabel(event.limitDate) }}
-          </span>
-          <span class="badge-day">{{ getDayOfMonth(event.limitDate) }}</span>
-          <span class="badge-month">{{ getMonthShort(event.limitDate) }}</span>
-        </div>
-
-        <!-- Contenido del evento -->
-        <div class="event-body">
-          <p class="event-title">{{ event.title }}</p>
-
-          <div class="event-meta">
-            <div class="meta-item" *ngIf="event.link">
-              <ion-icon name="arrow-redo-outline"></ion-icon>
-              <a [href]="event.link" target="_blank" rel="noopener noreferrer">{{ event.link }}</a>
+  @if (!isLoading && events.length > 0) {
+    <swiper-container
+      class="events-swiper"
+      slides-per-view="1"
+      loop="true"
+      centered-slides="false"
+      autoplay='true'
+      >
+      @for (event of events; track event; let i = $index) {
+        <swiper-slide>
+          <div class="event-card" (click)="openTaskDetail(event)" style="cursor:pointer">
+            <!-- Badge de fecha -->
+            <div class="date-badge" [style.background]="getAccentColor(i)">
+              @if (getDayLabel(event.limitDate)) {
+                <span class="badge-tag">
+                  {{ getDayLabel(event.limitDate) }}
+                </span>
+              }
+              <span class="badge-day">{{ getDayOfMonth(event.limitDate) }}</span>
+              <span class="badge-month">{{ getMonthShort(event.limitDate) }}</span>
             </div>
-            <div class="meta-item" *ngIf="event.limitDate">
-              <ion-icon name="today-outline"></ion-icon>
-              <span>Fecha limite: {{ event.limitDate | date:'dd/MM/yyyy'}}</span>
+            <!-- Contenido del evento -->
+            <div class="event-body">
+              <p class="event-title">{{ event.title }}</p>
+              <div class="event-meta">
+                @if (event.link) {
+                  <div class="meta-item">
+                    <ion-icon name="arrow-redo-outline"></ion-icon>
+                    <a [href]="event.link" target="_blank" rel="noopener noreferrer">{{ event.link }}</a>
+                  </div>
+                }
+                @if (event.limitDate) {
+                  <div class="meta-item">
+                    <ion-icon name="today-outline"></ion-icon>
+                    <span>Fecha limite: {{ event.limitDate | date:'dd/MM/yyyy'}}</span>
+                  </div>
+                }
+              </div>
+              @if (event.start) {
+                <div class="event-time">
+                  <ion-icon name="time-outline"></ion-icon>
+                  <span>{{ event.start | date:'HH:mm' }}
+                    @if (event.end) {
+                      {{ event.end | date:'HH:mm' }}
+                    }
+                  </span>
+                </div>
+              }
             </div>
           </div>
-
-          <div class="event-time" *ngIf="event.start">
-            <ion-icon name="time-outline"></ion-icon>
-            <span>{{ event.start | date:'HH:mm' }}
-              <ng-container *ngIf="event.end">  {{ event.end | date:'HH:mm' }}</ng-container>
-            </span>
-          </div>
-        </div>
-
-      </div>
-    </swiper-slide>
-  </swiper-container>
+        </swiper-slide>
+      }
+    </swiper-container>
+  }
 
   <!-- Estado vacío -->
-  <div class="empty-state" *ngIf="!isLoading && events.length === 0">
-    <div class="empty-icon-wrap">
-      <ion-icon name="calendar-clear-outline"></ion-icon>
+  @if (!isLoading && events.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon-wrap">
+        <ion-icon name="calendar-clear-outline"></ion-icon>
+      </div>
+      <p class="empty-title">Sin tareas pendientes</p>
+      <p class="empty-sub">Tus tareas pendientes aparecerán aquí</p>
     </div>
-    <p class="empty-title">Sin tareas pendientes</p>
-    <p class="empty-sub">Tus tareas pendientes aparecerán aquí</p>
-  </div>
+  }
 
 </div>

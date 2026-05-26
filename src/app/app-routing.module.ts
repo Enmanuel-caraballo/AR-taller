@@ -75,6 +75,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/item-management/item-management.module').then( m => m.ItemManagementPageModule)
   },
   {
+    path: 'equipment-detail',
+    loadChildren: () => import('./pages/equipment-detail/equipment-detail.module').then( m => m.EquipmentDetailPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'

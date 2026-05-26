@@ -99,6 +99,10 @@ export class StartVisitPage implements OnInit, OnDestroy {
     }
   }
 
+  goBack() {
+    this.navSrv.navigateBack('/home');
+  }
+
   goToCreateVisit(pdfName: string, title:string){
     const fecha = this.currentTime.toLocaleDateString('es-CO', {
       weekday: 'long',

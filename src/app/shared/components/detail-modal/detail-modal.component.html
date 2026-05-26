@@ -15,39 +15,40 @@
     </div>
 
     <!-- Modo un único ítem -->
-    <ng-container *ngIf="isSingle">
+    @if (isSingle) {
       <p class="dm-greeting">
         {{ isEvent ? 'Este es tu evento' : 'Esta es tu tarea' }}
       </p>
       <div class="dm-title-row">
         <h1 class="dm-title">{{ firstItem.title }}</h1>
-        <div class="dm-actions" *ngIf="isOwner">
-          <ion-button fill="solid" size="small" class="dm-edit-btn" (click)="editItem()">
-            <ion-icon name="pencil-outline" slot="start"></ion-icon>
-            Editar
-          </ion-button>
-          <ion-button fill="solid" size="small" class="dm-delete-btn" (click)="deleteItem()">
-            <ion-icon name="trash-outline" slot="start"></ion-icon>
-            Eliminar
-          </ion-button>
-        </div>
+        @if (isOwner) {
+          <div class="dm-actions">
+            <ion-button fill="solid" size="small" class="dm-edit-btn" (click)="editItem()">
+              <ion-icon name="pencil-outline" slot="start"></ion-icon>
+              Editar
+            </ion-button>
+            <ion-button fill="solid" size="small" class="dm-delete-btn" (click)="deleteItem()">
+              <ion-icon name="trash-outline" slot="start"></ion-icon>
+              Eliminar
+            </ion-button>
+          </div>
+        }
       </div>
-    </ng-container>
+    }
 
     <!-- Modo lista -->
-    <ng-container *ngIf="!isSingle">
+    @if (!isSingle) {
       <p class="dm-greeting">Tienes {{ items.length }} {{ isEvent ? 'eventos' : 'tareas' }} este día</p>
-    </ng-container>
+    }
   </div>
 
   <!-- ── CONTENIDO ──────────────────────────────── -->
   <ion-content class="dm-content">
 
     <!-- ══ VISTA DETALLE (un solo ítem) ══ -->
-    <ng-container *ngIf="isSingle">
-
+    @if (isSingle) {
       <!-- EVENTO -->
-      <ng-container *ngIf="isEvent">
+      @if (isEvent) {
         <div class="dm-section">
           <div class="dm-row">
             <span class="dm-row-icon">
@@ -58,7 +59,6 @@
               <span class="dm-row-val">{{ asEvent(firstItem).start | date:'EEEE d \'de\' MMMM yyyy' }}</span>
             </div>
           </div>
-
           <div class="dm-row">
             <span class="dm-row-icon">
               <ion-icon name="time-outline"></ion-icon>
@@ -70,7 +70,6 @@
               </span>
             </div>
           </div>
-
           <div class="dm-row">
             <span class="dm-row-icon">
               <ion-icon name="location-outline"></ion-icon>
@@ -80,7 +79,6 @@
               <span class="dm-row-val">{{ asEvent(firstItem).pdv }}</span>
             </div>
           </div>
-
           <div class="dm-row">
             <span class="dm-row-icon">
               <ion-icon name="business-outline"></ion-icon>
@@ -90,7 +88,6 @@
               <span class="dm-row-val">{{ asEvent(firstItem).department }}</span>
             </div>
           </div>
-
           <div class="dm-row">
             <span class="dm-row-icon">
               <ion-icon name="person-outline"></ion-icon>
@@ -101,15 +98,15 @@
             </div>
           </div>
         </div>
-
-        <div class="dm-desc-card" *ngIf="asEvent(firstItem).description">
-          <p class="dm-desc-label">Descripción</p>
-          <p class="dm-desc-text">{{ asEvent(firstItem).description }}</p>
-        </div>
-      </ng-container>
-
+        @if (asEvent(firstItem).description) {
+          <div class="dm-desc-card">
+            <p class="dm-desc-label">Descripción</p>
+            <p class="dm-desc-text">{{ asEvent(firstItem).description }}</p>
+          </div>
+        }
+      }
       <!-- TAREA -->
-      <ng-container *ngIf="!isEvent">
+      @if (!isEvent) {
         <div class="dm-section">
           <div class="dm-row">
             <span class="dm-row-icon">
@@ -120,17 +117,17 @@
               <span class="dm-row-val">{{ asTask(firstItem).limitDate | date:'EEEE d \'de\' MMMM yyyy · HH:mm' }}</span>
             </div>
           </div>
-
-          <div class="dm-row" *ngIf="asTask(firstItem).link">
-            <span class="dm-row-icon">
-              <ion-icon name="link-outline"></ion-icon>
-            </span>
-            <div>
-              <span class="dm-row-label">Enlace</span>
-               <a class="dm-link" [href]="asTask(firstItem).link" target="_blank" rel="noopener noreferrer">{{ asTask(firstItem).link }}</a>
+          @if (asTask(firstItem).link) {
+            <div class="dm-row">
+              <span class="dm-row-icon">
+                <ion-icon name="link-outline"></ion-icon>
+              </span>
+              <div>
+                <span class="dm-row-label">Enlace</span>
+                <a class="dm-link" [href]="asTask(firstItem).link" target="_blank" rel="noopener noreferrer">{{ asTask(firstItem).link }}</a>
+              </div>
             </div>
-          </div>
-
+          }
           <div class="dm-row">
             <span class="dm-row-icon">
               <ion-icon name="alert-circle-outline"></ion-icon>
@@ -142,7 +139,6 @@
               </span>
             </div>
           </div>
-
           <div class="dm-row">
             <span class="dm-row-icon">
               <ion-icon name="person-outline"></ion-icon>
@@ -153,53 +149,63 @@
             </div>
           </div>
         </div>
-
-        <div class="dm-desc-card" *ngIf="asTask(firstItem).description">
-          <p class="dm-desc-label">Descripción</p>
-          <p class="dm-desc-text">{{ asTask(firstItem).description }}</p>
-        </div>
-      </ng-container>
-
-    </ng-container>
+        @if (asTask(firstItem).description) {
+          <div class="dm-desc-card">
+            <p class="dm-desc-label">Descripción</p>
+            <p class="dm-desc-text">{{ asTask(firstItem).description }}</p>
+          </div>
+        }
+      }
+    }
 
     <!-- ══ VISTA LISTA (múltiples ítems) ══ -->
-    <ng-container *ngIf="!isSingle">
-      <div class="dm-list-card" *ngFor="let item of items" (click)="selectItem(item)">
-
-        <div class="dm-list-head">
-          <span class="dm-list-title">{{ item.title }}</span>
-          <span class="dm-list-date" *ngIf="isEvent">
-            {{ asEvent(item).start | date:'HH:mm' }} – {{ asEvent(item).end | date:'HH:mm' }}
-          </span>
-          <span class="dm-list-date" *ngIf="!isEvent">
-            {{ asTask(item).limitDate | date:'d MMM' }}
-          </span>
+    @if (!isSingle) {
+      @for (item of items; track item) {
+        <div class="dm-list-card" (click)="selectItem(item)">
+          <div class="dm-list-head">
+            <span class="dm-list-title">{{ item.title }}</span>
+            @if (isEvent) {
+              <span class="dm-list-date">
+                {{ asEvent(item).start | date:'HH:mm' }} – {{ asEvent(item).end | date:'HH:mm' }}
+              </span>
+            }
+            @if (!isEvent) {
+              <span class="dm-list-date">
+                {{ asTask(item).limitDate | date:'d MMM' }}
+              </span>
+            }
+          </div>
+          @if (isEvent) {
+            <div class="dm-list-meta">
+              <span class="dm-chip">
+                <ion-icon name="location-outline"></ion-icon> {{ asEvent(item).pdv }}
+              </span>
+              <span class="dm-chip">
+                <ion-icon name="business-outline"></ion-icon> {{ asEvent(item).department }}
+              </span>
+            </div>
+          }
+          @if (!isEvent) {
+            <div class="dm-list-meta">
+              <span class="dm-chip" [class.dm-chip--urgent]="asTask(item).important === 'si'">
+                <ion-icon name="alert-circle-outline"></ion-icon>
+                {{ asTask(item).important === 'si' ? 'Alta prioridad' : 'Normal' }}
+              </span>
+            </div>
+          }
+          @if (isEvent && asEvent(item).description) {
+            <p class="dm-list-desc">
+              {{ asEvent(item).description }}
+            </p>
+          }
+          @if (!isEvent && asTask(item).description) {
+            <p class="dm-list-desc">
+              {{ asTask(item).description }}
+            </p>
+          }
         </div>
-
-        <div class="dm-list-meta" *ngIf="isEvent">
-          <span class="dm-chip">
-            <ion-icon name="location-outline"></ion-icon> {{ asEvent(item).pdv }}
-          </span>
-          <span class="dm-chip">
-            <ion-icon name="business-outline"></ion-icon> {{ asEvent(item).department }}
-          </span>
-        </div>
-
-        <div class="dm-list-meta" *ngIf="!isEvent">
-          <span class="dm-chip" [class.dm-chip--urgent]="asTask(item).important === 'si'">
-            <ion-icon name="alert-circle-outline"></ion-icon>
-            {{ asTask(item).important === 'si' ? 'Alta prioridad' : 'Normal' }}
-          </span>
-        </div>
-
-        <p class="dm-list-desc" *ngIf="isEvent && asEvent(item).description">
-          {{ asEvent(item).description }}
-        </p>
-        <p class="dm-list-desc" *ngIf="!isEvent && asTask(item).description">
-          {{ asTask(item).description }}
-        </p>
-      </div>
-    </ng-container>
+      }
+    }
 
   </ion-content>
 </div>

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { FullCalendarModule } from '@fullcalendar/angular'
 import { CalendarOptions, EventClickArg } from '@fullcalendar/core';

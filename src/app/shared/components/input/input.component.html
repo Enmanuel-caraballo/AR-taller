@@ -5,14 +5,21 @@
   labelPlacement="floating"
   [readonly]="isReadonly"
   (ionInput)="onType($event)">
-  <ion-input-password-toggle
-    *ngIf="type === 'password'"
-    slot="end">
-  </ion-input-password-toggle>
-
-  <ion-textarea
-  *ngIf="type === 'textArea'"
-  >
-  </ion-textarea>
+  @if (type === 'password') {
+    <ion-input-password-toggle
+      slot="end">
+    </ion-input-password-toggle>
+  }
 
 </ion-input>
+
+@if (type === 'textArea') {
+  <ion-textarea
+    [label]="label"
+    [value]="control.value || ''"
+    labelPlacement="floating"
+    [readonly]="isReadonly"
+    (ionInput)="onType($event)"
+    autoGrow="true">
+  </ion-textarea>
+}

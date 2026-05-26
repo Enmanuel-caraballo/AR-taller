@@ -13,6 +13,29 @@
   /* O la fuente principal que uses */
 }
 
+.float-back-btn {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(74, 44, 38, 0.12);
+  border: 1px solid rgba(74, 44, 38, 0.2);
+  color: var(--accent-brown);
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+
+  ion-icon { font-size: 1.2rem; }
+
+  &:active { background: rgba(74, 44, 38, 0.22); }
+}
+
 /* Header */
 .profile-header {
   display: flex;
@@ -37,7 +60,7 @@
 
 /* Welcome Section */
 .welcome-section {
-  margin-top: 30px;
+  margin-top: 54px;
 
   .subtitle {
     font-size: 0.75rem;

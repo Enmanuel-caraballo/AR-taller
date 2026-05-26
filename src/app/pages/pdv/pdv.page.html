@@ -1,33 +1,31 @@
 
 <ion-content>
 
-  <ion-card (click)="goTo()" *ngFor="let item of pdvs" class="dm-card-limpia">
-    <div class="dm-list-card">
-
-      <div class="dm-list-head">
-        <span class="dm-list-title">{{ item.name }}</span>
-
+  @for (item of pdvs; track item) {
+    <ion-card (click)="goTo()" class="dm-card-limpia">
+      <div class="dm-list-card">
+        <div class="dm-list-head">
+          <span class="dm-list-title">{{ item.name }}</span>
         <span class="dm-status-badge" [ngClass]="{
             'is-abierto': item.status === 'abierto',
             'is-cerrado': item.status === 'cerrado',
             'is-extraordinario': item.status === 'extraordinario'
           }">
-          {{ item.status }}
-        </span>
+            {{ item.status }}
+          </span>
+        </div>
+        <div class="dm-list-meta">
+          <span class="dm-schedule-chip">
+            <ion-icon name="time-outline"></ion-icon>
+            Horario: {{ item.opened }} - {{ item.closed }}
+          </span>
+        </div>
+        @if (item.state != null) {
+          <div class="dm-list-meta">
+          </div>
+        }
       </div>
-
-      <div class="dm-list-meta">
-        <span class="dm-schedule-chip">
-          <ion-icon name="time-outline"></ion-icon>
-          Horario: {{ item.opened }} - {{ item.closed }}
-        </span>
-      </div>
-
-      <div class="dm-list-meta" *ngIf="item.state != null">
-        
-      </div>
-
-    </div>
-  </ion-card>
+    </ion-card>
+  }
 
 </ion-content>

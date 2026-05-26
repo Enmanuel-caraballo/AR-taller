@@ -2,8 +2,12 @@
 
   <!-- Info del usuario -->
   <div class="pop-user">
-    <div class="pop-avatar" *ngIf="!photoURL">{{ initials }}</div>
-    <img class="pop-avatar pop-avatar--photo" [src]="photoURL" *ngIf="photoURL" alt="Foto de perfil" />
+    @if (!photoURL) {
+      <div class="pop-avatar">{{ initials }}</div>
+    }
+    @if (photoURL) {
+      <img class="pop-avatar pop-avatar--photo" [src]="photoURL" alt="Foto de perfil" />
+    }
     <div class="pop-info">
       <span class="pop-name">{{ userName }}</span>
       <span class="pop-dept">{{ department || 'Sin departamento' }}</span>

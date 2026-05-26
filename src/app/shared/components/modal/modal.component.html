@@ -12,42 +12,38 @@
 
 <ion-content class="modal-content">
   <div class="events-wrapper">
-    <div class="modal-card" *ngFor="let item of events" (click)="openDetail(item)">
-
-      <div class="card-header">
-        <ion-text class="card-title">{{ item.title }}</ion-text>
-        <ion-text class="card-date">
-          {{ item.start | date:'dd MMM yyyy' }}
+    @for (item of events; track item) {
+      <div class="modal-card" (click)="openDetail(item)">
+        <div class="card-header">
+          <ion-text class="card-title">{{ item.title }}</ion-text>
+          <ion-text class="card-date">
+            {{ item.start | date:'dd MMM yyyy' }}
+          </ion-text>
+        </div>
+        <ion-text class="card-description">
+          {{ item.description }}
         </ion-text>
+        <div class="card-footer">
+          <ion-text class="card-time">
+            Horario:
+            <strong>
+              {{ item.start | date:'HH:mm' }}
+              -
+              {{ item.end   | date:'HH:mm' }}
+            </strong>
+          </ion-text>
+          <ion-text class="card-department">
+            Área: <strong>{{ item.department }}</strong>
+          </ion-text>
+          <ion-text class="card-place">
+            Lugar: {{ item.pdv }}
+          </ion-text>
+        </div>
       </div>
-
-      <ion-text class="card-description">
-        {{ item.description }}
-      </ion-text>
-
-      <div class="card-footer">
-        <ion-text class="card-time">
-          Horario:
-          <strong>
-            {{ item.start | date:'HH:mm' }}
-            -
-            {{ item.end   | date:'HH:mm' }}
-          </strong>
-        </ion-text>
-
-        <ion-text class="card-department">
-          Área: <strong>{{ item.department }}</strong>
-        </ion-text>
-
-        <ion-text class="card-place">
-          Lugar: {{ item.pdv }}
-        </ion-text>
-      </div>
-
-    </div>
+    }
   </div>
 
-   <ion-infinite-scroll>
+  <ion-infinite-scroll>
     <ion-infinite-scroll-content disabled="true"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
